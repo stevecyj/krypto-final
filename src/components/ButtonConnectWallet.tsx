@@ -8,7 +8,7 @@ function randomColor() {
 const colorList: string[] = ['#E53E3E', '#38A169', '#00B5D8', '#44337A', '#ED64A6'];
 
 export default function ClickMe(props: ButtonProps) {
-  const [colorCode, setColorCode] = useState(colorList[randomColor()]);
+  const [_colorCode, setColorCode] = useState(colorList[randomColor()]);
 
   return (
     <Button
