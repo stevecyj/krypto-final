@@ -1,10 +1,11 @@
+import Navbar from './components/Navbar.tsx'
 import './App.css'
 
 function App() {
 
   return (
     <>
-      123
+      <Navbar></Navbar>
     </>
   )
 }
