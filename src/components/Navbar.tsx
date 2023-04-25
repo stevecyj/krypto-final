@@ -244,6 +244,10 @@ const NAV_ITEMS: Array<NavItem> = [
     href: 'mint-token',
   },
   {
+    label: 'Mint NFT',
+    href: 'mint-nft',
+  },
+  {
     label: 'Inspiration',
     children: [
       {
