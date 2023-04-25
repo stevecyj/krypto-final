@@ -258,12 +258,12 @@ const NAV_ITEMS: Array<NavItem> = [
       {
         label: 'Council',
         subLabel: 'Up-and-coming Designers',
-        href: '#',
+        href: 'council',
       },
       {
         label: 'Treasury',
         subLabel: 'Up-and-coming Designers',
-        href: '#',
+        href: 'treasury',
       },
     ],
   },
