@@ -1,6 +1,7 @@
 import DefaultLayout from '@/layouts/Default.tsx';
 import MintTokenPage from '@/pages/MintTokenPage.tsx';
 import MintNftPage from '@/pages/MintNftPage.tsx';
+import ProposalPage from '@/pages/Proposal.tsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
 
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: 'mint-nft',
         element: <MintNftPage />,
+      },
+      {
+        path: 'proposal',
+        element: <ProposalPage />,
       },
     ],
   },

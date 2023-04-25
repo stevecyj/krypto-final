@@ -221,9 +221,9 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         >
           {children &&
             children.map((child) => (
-              <Link key={child.label} py={2} href={child.href}>
+              <LinkTo key={child.label} to='child.href'>
                 {child.label}
-              </Link>
+              </LinkTo>
             ))}
         </Stack>
       </Collapse>
@@ -248,15 +248,20 @@ const NAV_ITEMS: Array<NavItem> = [
     href: 'mint-nft',
   },
   {
-    label: 'Inspiration',
+    label: 'Governance',
     children: [
       {
-        label: 'Explore Design Work',
+        label: 'Proposal',
         subLabel: 'Trending Design to inspire you',
+        href: 'proposal',
+      },
+      {
+        label: 'Council',
+        subLabel: 'Up-and-coming Designers',
         href: '#',
       },
       {
-        label: 'New & Noteworthy',
+        label: 'Treasury',
         subLabel: 'Up-and-coming Designers',
         href: '#',
       },
