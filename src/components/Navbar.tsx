@@ -54,7 +54,7 @@ export default function WithSubnavigation() {
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
           >
-            <LinkTo to='/'>Trend</LinkTo>
+            <LinkTo to='/index'>Trend</LinkTo>
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>

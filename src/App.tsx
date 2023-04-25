@@ -1,4 +1,5 @@
 import DefaultLayout from '@/layouts/Default.tsx';
+import IndexPage from '@/pages/IndexPage.tsx';
 import MintTokenPage from '@/pages/MintTokenPage.tsx';
 import MintNftPage from '@/pages/MintNftPage.tsx';
 import ProposalPage from '@/pages/Proposal.tsx';
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
     path: '/',
     element: <DefaultLayout />,
     children: [
+      {
+        path: 'index',
+        element: <IndexPage />,
+      },
       {
         path: 'mint-token',
         element: <MintTokenPage />,
