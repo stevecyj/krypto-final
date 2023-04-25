@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import ButtonColorModeToggle from '@/components/ButtonColorModeToggle.tsx';
+import ButtonConnectWallet from '@/components/ButtonConnectWallet.tsx';
 import { Link as LinkTo } from 'react-router-dom';
 
 export default function WithSubnavigation() {
@@ -63,6 +64,7 @@ export default function WithSubnavigation() {
 
         <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={6}>
           <ButtonColorModeToggle />
+          <ButtonConnectWallet />
           <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'}>
             Sign In
           </Button>
@@ -266,6 +268,14 @@ const NAV_ITEMS: Array<NavItem> = [
         href: 'treasury',
       },
     ],
+  },
+  {
+    label: 'Investing Dashboard',
+    href: 'investing-dashboard',
+  },
+  {
+    label: 'About Us',
+    href: 'about-us',
   },
   {
     label: 'Find Work',

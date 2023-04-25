@@ -4,6 +4,8 @@ import MintNftPage from '@/pages/MintNftPage.tsx';
 import ProposalPage from '@/pages/Proposal.tsx';
 import CouncilPage from '@/pages/CouncilPage.tsx';
 import TreasuryPage from '@/pages/TreasuryPage.tsx';
+import InvestingDashBoard from '@/pages/InvestingDashboard.tsx';
+import AboutUsPage from '@/pages/AboutUsPage.tsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
 
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
       {
         path: 'treasury',
         element: <TreasuryPage />,
+      },
+      {
+        path: 'investing-dashboard',
+        element: <InvestingDashBoard />,
+      },
+      {
+        path: 'about-us',
+        element: <AboutUsPage />,
       },
     ],
   },
