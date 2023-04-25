@@ -277,24 +277,24 @@ const NAV_ITEMS: Array<NavItem> = [
     label: 'About Us',
     href: 'about-us',
   },
-  {
-    label: 'Find Work',
-    children: [
-      {
-        label: 'Job Board',
-        subLabel: 'Find your dream design job',
-        href: '#',
-      },
-      {
-        label: 'Freelance Projects',
-        subLabel: 'An exclusive list for contract work',
-        href: '#',
-      },
-    ],
-  },
-
-  {
-    label: 'Hire Designers',
-    href: '#',
-  },
+  // {
+  //   label: 'Find Work',
+  //   children: [
+  //     {
+  //       label: 'Job Board',
+  //       subLabel: 'Find your dream design job',
+  //       href: '#',
+  //     },
+  //     {
+  //       label: 'Freelance Projects',
+  //       subLabel: 'An exclusive list for contract work',
+  //       href: '#',
+  //     },
+  //   ],
+  // },
+  //
+  // {
+  //   label: 'Hire Designers',
+  //   href: '#',
+  // },
 ];
