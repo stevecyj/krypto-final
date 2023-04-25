@@ -1,4 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react';
+import { Outlet } from 'react-router-dom';
 import Navbar from '@/components/Navbar.tsx';
 import Footer from '@/components/Footer.tsx';
 
@@ -8,7 +9,9 @@ const DefaultLayout = () => {
       <Box w={{ lg: '100%' }}>
         <Navbar />
       </Box>
-      <Box flexGrow={1}></Box>
+      <Box flexGrow={1}>
+        <Outlet />
+      </Box>
       <Box w={{ lg: '100%' }}>
         <Footer />
       </Box>

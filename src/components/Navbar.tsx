@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import ButtonColorModeToggle from '@/components/ButtonColorModeToggle.tsx';
+import { Link as LinkTo } from 'react-router-dom';
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -52,7 +53,7 @@ export default function WithSubnavigation() {
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
           >
-            Logo
+            <LinkTo to='/'>Trend</LinkTo>
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
@@ -239,6 +240,10 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
   {
+    label: 'Mint Token',
+    href: 'mint-token',
+  },
+  {
     label: 'Inspiration',
     children: [
       {
@@ -268,10 +273,7 @@ const NAV_ITEMS: Array<NavItem> = [
       },
     ],
   },
-  {
-    label: 'Learn Design',
-    href: '#',
-  },
+
   {
     label: 'Hire Designers',
     href: '#',
