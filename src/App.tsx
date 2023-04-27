@@ -7,7 +7,7 @@ import CouncilPage from '@/pages/CouncilPage.tsx';
 import TreasuryPage from '@/pages/TreasuryPage.tsx';
 import InvestingDashBoard from '@/pages/InvestingDashboard.tsx';
 import AboutUsPage from '@/pages/AboutUsPage.tsx';
-import { createHashRouter, RouterProvider } from 'react-router-dom';
+import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom';
 import './App.css';
 
 const router = createHashRouter([
@@ -15,6 +15,10 @@ const router = createHashRouter([
     path: '/',
     element: <DefaultLayout />,
     children: [
+      {
+        path: '',
+        element: <Navigate to='index' replace />,
+      },
       {
         path: 'index',
         element: <IndexPage />,
