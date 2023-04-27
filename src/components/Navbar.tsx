@@ -93,7 +93,7 @@ export default function WithSubnavigation() {
 
 const DesktopNav = () => {
   const linkColor = useColorModeValue('gray.600', 'gray.200');
-  const linkHoverColor = useColorModeValue('gray.800', 'white');
+  // const linkHoverColor = useColorModeValue('gray.800', 'white');
   const popoverContentBgColor = useColorModeValue('white', 'gray.800');
 
   return (
@@ -102,17 +102,7 @@ const DesktopNav = () => {
         <Box key={navItem.label}>
           <Popover trigger={'hover'} placement={'bottom-start'}>
             <PopoverTrigger>
-              <LinkTo
-                p={2}
-                to={navItem.href ?? '#'}
-                fontSize={'sm'}
-                fontWeight={500}
-                color={linkColor}
-                _hover={{
-                  textDecoration: 'none',
-                  color: linkHoverColor,
-                }}
-              >
+              <LinkTo to={navItem.href ?? '#'} color={linkColor}>
                 {navItem.label}
               </LinkTo>
             </PopoverTrigger>
@@ -142,14 +132,7 @@ const DesktopNav = () => {
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
-    <LinkTo
-      to={href}
-      role={'group'}
-      display={'block'}
-      p={2}
-      rounded={'md'}
-      _hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}
-    >
+    <LinkTo to={href ?? '#'} role={'group'}>
       <Stack direction={'row'} align={'center'}>
         <Box>
           <Text transition={'all .3s ease'} _groupHover={{ color: 'pink.400' }} fontWeight={500}>
