@@ -89,10 +89,9 @@ const DesktopNav = () => {
           <Popover trigger={'hover'} placement={'bottom-start'}>
             <PopoverTrigger>
               <Link
-                p={2}
                 as={RouterDomLink}
                 to={navItem.href ?? '#'}
-                fontSize={'xl'}
+                fontSize={'lg'}
                 color={linkColor}
                 fontWeight={500}
                 _hover={{
@@ -100,7 +99,7 @@ const DesktopNav = () => {
                   color: linkHoverColor,
                 }}
               >
-                {navItem.label}
+                <span>{navItem.label}</span>
               </Link>
             </PopoverTrigger>
 

@@ -9,7 +9,7 @@ const DefaultLayout = () => {
       <Box w={{ lg: '100%' }}>
         <Navbar />
       </Box>
-      <Box flexGrow={1} justifyContent='center'>
+      <Box justifyContent='center'>
         <Outlet />
       </Box>
       <Box w={{ lg: '100%' }}>
