@@ -79,7 +79,7 @@ export default function WithSubnavigation() {
 
 const DesktopNav = () => {
   const linkColor = useColorModeValue('gray.600', 'gray.200');
-  // const linkHoverColor = useColorModeValue('gray.800', 'white');
+  const linkHoverColor = useColorModeValue('gray.800', 'white');
   const popoverContentBgColor = useColorModeValue('white', 'gray.800');
 
   return (
@@ -88,7 +88,18 @@ const DesktopNav = () => {
         <Box key={navItem.label}>
           <Popover trigger={'hover'} placement={'bottom-start'}>
             <PopoverTrigger>
-              <Link as={RouterDomLink} to={navItem.href ?? '#'} color={linkColor}>
+              <Link
+                p={2}
+                as={RouterDomLink}
+                to={navItem.href ?? '#'}
+                fontSize={'xl'}
+                color={linkColor}
+                fontWeight={500}
+                _hover={{
+                  textDecoration: 'none',
+                  color: linkHoverColor,
+                }}
+              >
                 {navItem.label}
               </Link>
             </PopoverTrigger>
@@ -118,7 +129,15 @@ const DesktopNav = () => {
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
-    <Link as={RouterDomLink} to={href ?? '#'} role={'group'}>
+    <Link
+      as={RouterDomLink}
+      to={href ?? '#'}
+      role={'group'}
+      display={'block'}
+      p={2}
+      rounded={'md'}
+      _hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}
+    >
       <Stack direction={'row'} align={'center'}>
         <Box>
           <Text transition={'all .3s ease'} _groupHover={{ color: 'pink.400' }} fontWeight={500}>
@@ -159,8 +178,8 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
     <Stack spacing={4} onClick={children && onToggle}>
       <Flex
         py={2}
-        as={Link}
-        href={href ?? '#'}
+        as={RouterDomLink}
+        to={href ?? '#'}
         justify={'space-between'}
         align={'center'}
         _hover={{
@@ -192,7 +211,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         >
           {children &&
             children.map((child) => (
-              <Link as={RouterDomLink} key={child.label} to='child.href'>
+              <Link as={RouterDomLink} key={child.label} to={child.href}>
                 {child.label}
               </Link>
             ))}
