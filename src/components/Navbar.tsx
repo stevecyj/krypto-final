@@ -19,7 +19,7 @@ import {
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import ButtonColorModeToggle from '@/components/ButtonColorModeToggle.tsx';
 import ButtonConnectWallet from '@/components/ButtonConnectWallet.tsx';
-import { Link as LinkTo } from 'react-router-dom';
+import { Link as RouterDomLink } from 'react-router-dom';
 import TrendLogo from '@/assets/LOGO.svg';
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -55,9 +55,9 @@ export default function WithSubnavigation() {
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
           >
-            <LinkTo to='/index'>
+            <Link as={RouterDomLink} to='/index'>
               <Image src={TrendLogo} className='image' w={60} h={100} />
-            </LinkTo>
+            </Link>
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
@@ -88,9 +88,9 @@ const DesktopNav = () => {
         <Box key={navItem.label}>
           <Popover trigger={'hover'} placement={'bottom-start'}>
             <PopoverTrigger>
-              <LinkTo to={navItem.href ?? '#'} color={linkColor}>
+              <Link as={RouterDomLink} to={navItem.href ?? '#'} color={linkColor}>
                 {navItem.label}
-              </LinkTo>
+              </Link>
             </PopoverTrigger>
 
             {navItem.children && (
@@ -118,7 +118,7 @@ const DesktopNav = () => {
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
-    <LinkTo to={href ?? '#'} role={'group'}>
+    <Link as={RouterDomLink} to={href ?? '#'} role={'group'}>
       <Stack direction={'row'} align={'center'}>
         <Box>
           <Text transition={'all .3s ease'} _groupHover={{ color: 'pink.400' }} fontWeight={500}>
@@ -138,7 +138,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
           <Icon color={'pink.400'} w={5} h={5} as={ChevronRightIcon} />
         </Flex>
       </Stack>
-    </LinkTo>
+    </Link>
   );
 };
 
@@ -192,9 +192,9 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         >
           {children &&
             children.map((child) => (
-              <LinkTo key={child.label} to='child.href'>
+              <Link as={RouterDomLink} key={child.label} to='child.href'>
                 {child.label}
-              </LinkTo>
+              </Link>
             ))}
         </Stack>
       </Collapse>
