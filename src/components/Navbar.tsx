@@ -56,7 +56,16 @@ export default function WithSubnavigation() {
             color={useColorModeValue('gray.800', 'white')}
           >
             <Link as={RouterDomLink} to='/index'>
-              <Image src={TrendLogo} className='image' w={60} h={100} />
+              <Image
+                borderRadius='full'
+                borderColor={useColorModeValue('gray.900', 'gray.300')}
+                borderWidth='3px'
+                borderStyle='solid'
+                src={TrendLogo}
+                className='image'
+                boxSize={'60px'}
+                alt='logo'
+              />
             </Link>
           </Text>
 
