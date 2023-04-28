@@ -56,7 +56,7 @@ export default function WithSubnavigation() {
             color={useColorModeValue('gray.800', 'white')}
           >
             <LinkTo to='/index'>
-              <Image src={TrendLogo} className='image' w={120} h={120} />
+              <Image src={TrendLogo} className='image' w={60} h={100} />
             </LinkTo>
           </Text>
 
