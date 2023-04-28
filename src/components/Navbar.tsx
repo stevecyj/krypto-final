@@ -2,6 +2,7 @@ import {
   Box,
   Flex,
   Text,
+  Image,
   IconButton,
   Button,
   Stack,
@@ -19,7 +20,7 @@ import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon } from '@ch
 import ButtonColorModeToggle from '@/components/ButtonColorModeToggle.tsx';
 import ButtonConnectWallet from '@/components/ButtonConnectWallet.tsx';
 import { Link as LinkTo } from 'react-router-dom';
-
+import TrendLogo from '@/assets/LOGO.svg';
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
 
@@ -48,13 +49,15 @@ export default function WithSubnavigation() {
             aria-label={'Toggle Navigation'}
           />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }} align={'center'}>
           <Text
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
           >
-            <LinkTo to='/index'>Trend</LinkTo>
+            <LinkTo to='/index'>
+              <Image src={TrendLogo} className='image' w={120} h={120} />
+            </LinkTo>
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
@@ -65,23 +68,6 @@ export default function WithSubnavigation() {
         <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={6}>
           <ButtonColorModeToggle />
           <ButtonConnectWallet />
-          <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'}>
-            Sign In
-          </Button>
-          <Button
-            as={'a'}
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'pink.400'}
-            href={'#'}
-            _hover={{
-              bg: 'pink.300',
-            }}
-          >
-            Sign Up
-          </Button>
         </Stack>
       </Flex>
       <Collapse in={isOpen} animateOpacity>
