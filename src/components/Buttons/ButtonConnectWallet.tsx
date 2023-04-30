@@ -7,7 +7,7 @@ export default function ClickMe() {
     <Box
       bg={useColorModeValue('black', 'red.900')}
       color={'white'}
-      rounded={'10px'}
+      rounded={'12px'}
       _hover={{
         transform: 'translateY(-2px)',
         boxShadow: 'lg',
@@ -16,7 +16,7 @@ export default function ClickMe() {
       borderWidth='3px'
       borderStyle='solid'
     >
-      <ConnectWallet className={'wallet'} />
+      <ConnectWallet className={'wallet'} btnTitle='連接錢包' />
     </Box>
   );
 }
