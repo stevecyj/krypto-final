@@ -18,9 +18,8 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import ButtonColorModeToggle from '@/components/ButtonColorModeToggle.tsx';
-import ButtonConnectWallet from '@/components/ButtonConnectWallet.tsx';
+import ButtonConnectWallet from '@/components/Buttons/ButtonConnectWallet.tsx';
 import { Link as RouterDomLink } from 'react-router-dom';
-import {ConnectWallet} from "@thirdweb-dev/react";
 import TrendLogo from '@/assets/LOGO.svg';
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -75,10 +74,15 @@ export default function WithSubnavigation() {
           </Flex>
         </Flex>
 
-        <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={6}>
+        <Stack
+          flex={{ base: 1, md: 0 }}
+          alignItems={'center'}
+          justify={'flex-end'}
+          direction={'row'}
+          spacing={6}
+        >
           <ButtonColorModeToggle />
-          {/*<ButtonConnectWallet />*/}
-          <ConnectWallet/>
+          <ButtonConnectWallet />
         </Stack>
       </Flex>
       <Collapse in={isOpen} animateOpacity>
