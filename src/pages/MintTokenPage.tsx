@@ -15,6 +15,7 @@ import {} from '@chakra-ui/react';
 import { useContract, useContractRead, Web3Button } from '@thirdweb-dev/react';
 import * as TRENDADDRESS from '@/const/contractAddress';
 import { ethers } from 'ethers';
+import './MintTokenPage.scss';
 
 interface FeatureProps {
   heading: string;
@@ -35,12 +36,18 @@ const Feature = ({ heading, text }: FeatureProps) => {
 export default function GridListWithCTA() {
   // get contract
   const { contract: BUYACOFFEE_CONTRACT } = useContract(TRENDADDRESS.BUYACOFFEE_ADDRESS);
+  const { contract: ERC20_CONTRACT } = useContract(TRENDADDRESS.ERC20_ADDRESS);
 
   // method getTotalCoffee in contract
   const { data: totalCoffee, isLoading: loadingTotalCoffee } = useContractRead(
     BUYACOFFEE_CONTRACT,
     'getTotalCoffee',
   );
+
+  // const { data: totalSupply, isLoading: loadingMint } = useContractRead(
+  //   ERC20_CONTRACT,
+  //   'getTotalSupply',
+  // );
 
   return (
     <Box as={Container} maxW='7xl' mt={14} p={4}>
@@ -63,9 +70,9 @@ export default function GridListWithCTA() {
             <Web3Button
               contractAddress={TRENDADDRESS.BUYACOFFEE_ADDRESS}
               action={async () => {
-                await BUYACOFFEE_CONTRACT!.call('buyCoffee', ['', ''], {
+                await ERC20_CONTRACT!.call('publicMint', [1], {
                   // here use string
-                  value: ethers.utils.parseEther('0.01'),
+                  value: ethers.utils.parseEther('0.00001'),
                 });
               }}
               onSuccess={() => {
@@ -83,6 +90,12 @@ export default function GridListWithCTA() {
                 {totalCoffee?.toString()}
               </Skeleton>
             </Flex>
+            {/*<Flex>*/}
+            {/*  <Text>Total Supply：</Text>*/}
+            {/*  <Skeleton w={'20px'} isLoaded={!loadingMint}>*/}
+            {/*    {totalSupply?.toString()}*/}
+            {/*  </Skeleton>*/}
+            {/*</Flex>*/}
           </VStack>
         </GridItem>
         <GridItem>
