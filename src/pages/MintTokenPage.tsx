@@ -10,6 +10,7 @@ import {
   Container,
   Text,
   Skeleton,
+  Input,
   useColorModeValue,
   useToast,
 } from '@chakra-ui/react';
@@ -49,7 +50,6 @@ export default function GridListWithCTA() {
   );
 
   const address = useAddress();
-  console.log(address);
 
   // const { data: totalSupply, isLoading: loadingMint } = useContractRead(
   //   ERC20_CONTRACT,
@@ -66,7 +66,7 @@ export default function GridListWithCTA() {
   };
 
   const handleIncrement = () => {
-    if (mintAmount >= 3) return;
+    // if (mintAmount >= 3) return;
     setMintAmount(mintAmount + 1);
   };
 
@@ -133,12 +133,66 @@ export default function GridListWithCTA() {
                 </Skeleton>
               </Flex>
             </Box>
-            {/*<Flex>*/}
-            {/*  <Text>Total Supply：</Text>*/}
-            {/*  <Skeleton w={'20px'} isLoaded={!loadingMint}>*/}
-            {/*    {totalSupply?.toString()}*/}
-            {/*  </Skeleton>*/}
-            {/*</Flex>*/}
+
+            {/*  mint area */}
+            {address ? (
+              <Box>
+                <Flex align='center' justify='center'>
+                  <Button
+                    backgroundColor={useColorModeValue('green.600', 'green.300')}
+                    borderRadius='5px'
+                    boxShadow='0px 2px 2px 1px #0f0f0f'
+                    color='white'
+                    cursor='pointer'
+                    fontFamily='inherit'
+                    padding='15px'
+                    marginTop='10px'
+                    onClick={handleDecrement}
+                  >
+                    -
+                  </Button>
+                  <Input
+                    readOnly
+                    borderColor={useColorModeValue('green.600', 'green.300')}
+                    borderWidth='4px'
+                    borderStyle='solid'
+                    zIndex='-1'
+                    fontFamily='inherit'
+                    width='100px'
+                    height='40px'
+                    textAlign='center'
+                    paddingLeft='19px'
+                    marginTop='10px'
+                    type='number'
+                    value={mintAmount}
+                  />
+                  <Button
+                    backgroundColor={useColorModeValue('green.600', 'green.300')}
+                    borderRadius='5px'
+                    boxShadow='0px 2px 2px 1px #0f0f0f'
+                    color='white'
+                    cursor='pointer'
+                    fontFamily='inherit'
+                    padding='15px'
+                    marginTop='10px'
+                    onClick={handleIncrement}
+                  >
+                    +
+                  </Button>
+                </Flex>
+              </Box>
+            ) : (
+              <Text
+                marginTop='70px'
+                fontSize='30px'
+                letterSpacing='-5.5%'
+                fontFamily='VT323'
+                textShadow='0 3px #000'
+                color='#D6517D'
+              >
+                You must be connected to Mint
+              </Text>
+            )}
           </VStack>
         </GridItem>
         <GridItem>
