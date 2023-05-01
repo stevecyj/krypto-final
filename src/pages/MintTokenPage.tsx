@@ -11,9 +11,10 @@ import {
   Text,
   Skeleton,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
-import {} from '@chakra-ui/react';
-import { useContract, useContractRead, Web3Button } from '@thirdweb-dev/react';
+import { useContract, useContractRead, Web3Button, useAddress } from '@thirdweb-dev/react';
+import { useState } from 'react';
 import * as TREND_ADDRESS from '@/const/contractAddress';
 import * as TRENT_PRICE from '@/const/price';
 import { ethers } from 'ethers';
@@ -36,6 +37,7 @@ const Feature = ({ heading, text }: FeatureProps) => {
 };
 
 export default function GridListWithCTA() {
+  const [mintAmount, setMintAmount] = useState(1);
   // get contract
   const { contract: BUYACOFFEE_CONTRACT } = useContract(TREND_ADDRESS.BUYACOFFEE_ADDRESS);
   // const { contract: ERC20_CONTRACT } = useContract(TREND_ADDRESS.ERC20_ADDRESS);
@@ -46,10 +48,17 @@ export default function GridListWithCTA() {
     'getTotalCoffee',
   );
 
+  const address = useAddress();
+  console.log(address);
+
   // const { data: totalSupply, isLoading: loadingMint } = useContractRead(
   //   ERC20_CONTRACT,
   //   'getTotalSupply',
   // );
+
+  // toast
+  const toast = useToast();
+
 
   return (
     <Box as={Container} maxW='7xl' mt={14} p={4}>
@@ -85,10 +94,22 @@ export default function GridListWithCTA() {
                     });
                   }}
                   onSuccess={() => {
-                    alert('buying coffee success');
+                    toast({
+                      title: '謝謝惠顧',
+                      status: 'success',
+                      position: 'top',
+                      duration: 2000,
+                      isClosable: true,
+                    });
                   }}
                   onError={(error) => {
-                    alert(error);
+                    toast({
+                      title: error.message,
+                      status: 'error',
+                      position: 'top',
+                      duration: 2000,
+                      isClosable: true,
+                    });
                   }}
                 >
                   買一杯咖啡
