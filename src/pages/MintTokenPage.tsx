@@ -59,6 +59,10 @@ export default function GridListWithCTA() {
   // toast
   const toast = useToast();
 
+  // button area
+  const buttonBackgroundColor = useColorModeValue('green.600', 'green.300');
+  const inputBorderColor = useColorModeValue('green.600', 'green.300');
+  const buttonBorderColor = useColorModeValue('green.600', 'green.300');
   const handleDecrement = () => {
     if (mintAmount <= 1) return;
 
@@ -136,10 +140,10 @@ export default function GridListWithCTA() {
 
             {/*  mint area */}
             {address ? (
-              <Box>
+              <Box display='flex' flexDirection='column' alignItems='center'>
                 <Flex align='center' justify='center'>
                   <Button
-                    backgroundColor={useColorModeValue('green.600', 'green.300')}
+                    backgroundColor={buttonBackgroundColor}
                     borderRadius='5px'
                     boxShadow='0px 2px 2px 1px #0f0f0f'
                     color='white'
@@ -153,7 +157,7 @@ export default function GridListWithCTA() {
                   </Button>
                   <Input
                     readOnly
-                    borderColor={useColorModeValue('green.600', 'green.300')}
+                    borderColor={inputBorderColor}
                     borderWidth='4px'
                     borderStyle='solid'
                     zIndex='-1'
@@ -167,7 +171,7 @@ export default function GridListWithCTA() {
                     value={mintAmount}
                   />
                   <Button
-                    backgroundColor={useColorModeValue('green.600', 'green.300')}
+                    backgroundColor={buttonBackgroundColor}
                     borderRadius='5px'
                     boxShadow='0px 2px 2px 1px #0f0f0f'
                     color='white'
@@ -179,6 +183,27 @@ export default function GridListWithCTA() {
                   >
                     +
                   </Button>
+                </Flex>
+
+                {/* Token Mint */}
+                <Flex
+                  w='fit-content'
+                  borderRadius='12px'
+                  borderColor={buttonBorderColor}
+                  borderWidth='4px'
+                  borderStyle='solid'
+                >
+                  <Web3Button
+                    contractAddress={TREND_ADDRESS.BUYACOFFEE_ADDRESS}
+                    action={async () => {
+                      await BUYACOFFEE_CONTRACT!.call('mint', [mintAmount], {
+                        value: ethers.utils.parseEther((mintAmount * 0.001).toString()),
+                      });
+                    }}
+                    className='mint_button'
+                  >
+                    Mint Now
+                  </Web3Button>
                 </Flex>
               </Box>
             ) : (

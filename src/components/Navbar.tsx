@@ -17,7 +17,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import ButtonColorModeToggle from '@/components/ButtonColorModeToggle.tsx';
+import ButtonColorModeToggle from '@/components/Buttons/ButtonColorModeToggle.tsx';
 import ButtonConnectWallet from '@/components/Buttons/ButtonConnectWallet.tsx';
 import { Link as RouterDomLink } from 'react-router-dom';
 import TrendLogo from '@/assets/LOGO.svg';
