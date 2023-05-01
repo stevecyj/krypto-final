@@ -8,8 +8,13 @@ import {
   Grid,
   GridItem,
   Container,
+  Text,
+  Skeleton,
 } from '@chakra-ui/react';
 import {} from '@chakra-ui/react';
+import { useContract, useContractRead, Web3Button } from '@thirdweb-dev/react';
+import * as TRENDADDRESS from '@/const/contractAddress';
+import { ethers } from 'ethers';
 
 interface FeatureProps {
   heading: string;
@@ -27,7 +32,16 @@ const Feature = ({ heading, text }: FeatureProps) => {
   );
 };
 
-export default function gridListWithCTA() {
+export default function GridListWithCTA() {
+  // get contract
+  const { contract: BUYACOFFEE_CONTRACT } = useContract(TRENDADDRESS.BUYACOFFEE_ADDRESS);
+
+  // method getTotalCoffee in contract
+  const { data: totalCoffee, isLoading: loadingTotalCoffee } = useContractRead(
+    BUYACOFFEE_CONTRACT,
+    'getTotalCoffee',
+  );
+
   return (
     <Box as={Container} maxW='7xl' mt={14} p={4}>
       <Grid
@@ -46,6 +60,29 @@ export default function gridListWithCTA() {
             <Button colorScheme='green' size='md'>
               Call To Action
             </Button>
+            <Web3Button
+              contractAddress={TRENDADDRESS.BUYACOFFEE_ADDRESS}
+              action={async () => {
+                await BUYACOFFEE_CONTRACT!.call('buyCoffee', ['', ''], {
+                  // here use string
+                  value: ethers.utils.parseEther('0.01'),
+                });
+              }}
+              onSuccess={() => {
+                alert('buying coffee success');
+              }}
+              onError={(error) => {
+                alert(error);
+              }}
+            >
+              買一杯咖啡
+            </Web3Button>
+            <Flex>
+              <Text>Total Coffee：</Text>
+              <Skeleton w={'20px'} isLoaded={!loadingTotalCoffee}>
+                {totalCoffee?.toString()}
+              </Skeleton>
+            </Flex>
           </VStack>
         </GridItem>
         <GridItem>
