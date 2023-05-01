@@ -59,6 +59,16 @@ export default function GridListWithCTA() {
   // toast
   const toast = useToast();
 
+  const handleDecrement = () => {
+    if (mintAmount <= 1) return;
+
+    setMintAmount(mintAmount - 1);
+  };
+
+  const handleIncrement = () => {
+    if (mintAmount >= 3) return;
+    setMintAmount(mintAmount + 1);
+  };
 
   return (
     <Box as={Container} maxW='7xl' mt={14} p={4}>
