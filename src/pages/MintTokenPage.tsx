@@ -17,7 +17,8 @@ import {
 import { useContract, useContractRead, Web3Button, useAddress } from '@thirdweb-dev/react';
 import { useState } from 'react';
 import * as TREND_ADDRESS from '@/const/contractAddress';
-import * as TRENT_PRICE from '@/const/price';
+import * as TREND_PRICE from '@/const/price';
+import { useEffect } from 'react';
 import { ethers } from 'ethers';
 import './MintTokenPage.scss';
 
@@ -41,7 +42,7 @@ export default function GridListWithCTA() {
   const [mintAmount, setMintAmount] = useState(1);
   // get contract
   const { contract: BUYACOFFEE_CONTRACT } = useContract(TREND_ADDRESS.BUYACOFFEE_ADDRESS);
-  // const { contract: ERC20_CONTRACT } = useContract(TREND_ADDRESS.ERC20_ADDRESS);
+  const { contract: ERC20_CONTRACT } = useContract(TREND_ADDRESS.ERC20_ADDRESS);
 
   // method getTotalCoffee in contract
   const { data: totalCoffee, isLoading: loadingTotalCoffee } = useContractRead(
@@ -49,20 +50,27 @@ export default function GridListWithCTA() {
     'getTotalCoffee',
   );
 
-  const address = useAddress();
+  const { data: totalSupply, isLoading: loadingTotalSupply } = useContractRead(
+    ERC20_CONTRACT,
+    'totalSupply',
+  );
 
-  // const { data: totalSupply, isLoading: loadingMint } = useContractRead(
-  //   ERC20_CONTRACT,
-  //   'getTotalSupply',
-  // );
+  // 先看取得內容
+  useEffect(() => {
+    console.log('ERC20', ERC20_CONTRACT);
+  }, [ERC20_CONTRACT]);
+
+  const address = useAddress();
 
   // toast
   const toast = useToast();
 
   // button area
   const buttonBackgroundColor = useColorModeValue('green.600', 'green.300');
+  const btnHover = useColorModeValue('red.600', 'red.300');
   const inputBorderColor = useColorModeValue('green.600', 'green.300');
   const buttonBorderColor = useColorModeValue('green.600', 'green.300');
+  const textColor = useColorModeValue('green.600', 'green.300');
   const handleDecrement = () => {
     if (mintAmount <= 1) return;
 
@@ -79,16 +87,17 @@ export default function GridListWithCTA() {
       <Grid
         templateColumns={{
           base: 'repeat(1, 1fr)',
-          sm: 'repeat(2, 1fr)',
-          md: 'repeat(2, 1fr)',
+          sm: 'repeat(3, 1fr)',
+          md: 'repeat(3, 1fr)',
         }}
         gap={4}
       >
         <GridItem colSpan={1}>
           <VStack alignItems='flex-start' spacing='20px'>
             <chakra.h2 fontSize='3xl' fontWeight='700'>
-              Medium length title
+              Mint Token
             </chakra.h2>
+            {/* test area */}
             <Button colorScheme='green' size='md'>
               Call To Action
             </Button>
@@ -104,7 +113,7 @@ export default function GridListWithCTA() {
                   action={async () => {
                     await BUYACOFFEE_CONTRACT!.call('buyCoffee', ['', ''], {
                       // here use string
-                      value: ethers.utils.parseEther(TRENT_PRICE.COFFEE_PRICE),
+                      value: ethers.utils.parseEther(TREND_PRICE.COFFEE_PRICE),
                     });
                   }}
                   onSuccess={() => {
@@ -140,76 +149,101 @@ export default function GridListWithCTA() {
 
             {/*  mint area */}
             {address ? (
-              <Box display='flex' flexDirection='column' alignItems='center'>
-                <Flex align='center' justify='center'>
-                  <Button
-                    backgroundColor={buttonBackgroundColor}
-                    borderRadius='5px'
-                    boxShadow='0px 2px 2px 1px #0f0f0f'
-                    color='white'
-                    cursor='pointer'
-                    fontFamily='inherit'
-                    padding='15px'
-                    marginTop='10px'
-                    onClick={handleDecrement}
-                  >
-                    -
-                  </Button>
-                  <Input
-                    readOnly
-                    borderColor={inputBorderColor}
+              <Box display='flex' flexDirection='column' alignItems='flex-start'>
+                {/* button increase, decrease */}
+                <Box display='flex' flexDirection='column' alignItems='center' className='12345'>
+                  <Flex align='center' justify='center'>
+                    <Button
+                      backgroundColor={buttonBackgroundColor}
+                      borderRadius='5px'
+                      boxShadow='0px 2px 2px 1px #0f0f0f'
+                      color='white'
+                      cursor='pointer'
+                      fontFamily='inherit'
+                      padding='15px'
+                      marginTop='10px'
+                      _hover={{ bg: btnHover }}
+                      onClick={handleDecrement}
+                    >
+                      -
+                    </Button>
+                    <Input
+                      readOnly
+                      borderColor={inputBorderColor}
+                      borderWidth='4px'
+                      borderStyle='solid'
+                      zIndex='-1'
+                      fontFamily='inherit'
+                      width='100px'
+                      height='40px'
+                      textAlign='center'
+                      paddingLeft='19px'
+                      marginTop='10px'
+                      type='number'
+                      value={mintAmount}
+                    />
+                    <Button
+                      backgroundColor={buttonBackgroundColor}
+                      borderRadius='5px'
+                      boxShadow='0px 2px 2px 1px #0f0f0f'
+                      color='white'
+                      cursor='pointer'
+                      fontFamily='inherit'
+                      padding='15px'
+                      marginTop='10px'
+                      _hover={{ bg: btnHover }}
+                      onClick={handleIncrement}
+                    >
+                      +
+                    </Button>
+                  </Flex>
+
+                  {/* Token Mint */}
+                  <Flex
+                    w='fit-content'
+                    borderRadius='12px'
+                    borderColor={buttonBorderColor}
                     borderWidth='4px'
                     borderStyle='solid'
-                    zIndex='-1'
-                    fontFamily='inherit'
-                    width='100px'
-                    height='40px'
-                    textAlign='center'
-                    paddingLeft='19px'
-                    marginTop='10px'
-                    type='number'
-                    value={mintAmount}
-                  />
-                  <Button
-                    backgroundColor={buttonBackgroundColor}
-                    borderRadius='5px'
-                    boxShadow='0px 2px 2px 1px #0f0f0f'
-                    color='white'
-                    cursor='pointer'
-                    fontFamily='inherit'
-                    padding='15px'
-                    marginTop='10px'
-                    onClick={handleIncrement}
                   >
-                    +
-                  </Button>
-                </Flex>
-
-                {/* Token Mint */}
-                <Flex
-                  w='fit-content'
-                  borderRadius='12px'
-                  borderColor={buttonBorderColor}
-                  borderWidth='4px'
-                  borderStyle='solid'
-                >
-                  <Web3Button
-                    contractAddress={TREND_ADDRESS.BUYACOFFEE_ADDRESS}
-                    action={async () => {
-                      await BUYACOFFEE_CONTRACT!.call('mint', [mintAmount], {
-                        value: ethers.utils.parseEther((mintAmount * 0.001).toString()),
-                      });
-                    }}
-                    className='mint_button'
-                  >
-                    Mint Now
-                  </Web3Button>
-                </Flex>
+                    <Web3Button
+                      contractAddress={TREND_ADDRESS.ERC20_ADDRESS}
+                      action={async () => {
+                        await ERC20_CONTRACT!.call('publicMint', [mintAmount], {
+                          value: ethers.utils.parseEther(
+                            (mintAmount * TREND_PRICE.TOKEN_PRICE).toString(),
+                          ),
+                        });
+                      }}
+                      onSuccess={() => {
+                        toast({
+                          title: 'Mint 成功',
+                          status: 'success',
+                          position: 'top',
+                          duration: 2000,
+                          isClosable: true,
+                        });
+                      }}
+                      onError={(error) => {
+                        toast({
+                          title: error.message,
+                          status: 'error',
+                          position: 'top',
+                          duration: 2000,
+                          isClosable: true,
+                        });
+                      }}
+                    >
+                      Mint Now
+                    </Web3Button>
+                  </Flex>
+                </Box>
               </Box>
             ) : (
               <Text
                 marginTop='70px'
                 fontSize='30px'
+                fontWeight='bold'
                 letterSpacing='-5.5%'
                 fontFamily='VT323'
                 textShadow='0 3px #000'
@@ -220,12 +254,53 @@ export default function GridListWithCTA() {
             )}
           </VStack>
         </GridItem>
-        <GridItem>
+        <GridItem colSpan={2}>
           <Flex>
-            <chakra.p>
-              Provide your customers a story they would enjoy keeping in mind the objectives of your
-              website. Pay special attention to the tone of voice.
-            </chakra.p>
+            <Box>
+              {address ? (
+                <Box>
+                  <Box
+                    fontSize='26px'
+                    letterSpacing='0.5%'
+                    fontFamily='VT323'
+                    textShadow='0 2px 2px #000'
+                    lineHeight={'26px'}
+                    marginTop='20px'
+                  >
+                    <Flex>
+                      <Text color={textColor}>Total Coffee：</Text>
+                      <Skeleton
+                        startColor='pink.500'
+                        endColor='orange.500'
+                        backgroundColor='gray.500'
+                        w={'100px'}
+                        isLoaded={!loadingTotalCoffee}
+                      >
+                        {totalCoffee?.toString()}
+                      </Skeleton>
+                    </Flex>
+                    <Flex>
+                      <Text color={textColor}>NFT TotalSupply：</Text>
+                      <Skeleton w={'450px'} isLoaded={!loadingTotalSupply}>
+                        {totalSupply?.toString()}
+                      </Skeleton>
+                    </Flex>
+                  </Box>
+                </Box>
+              ) : (
+                <Text
+                  marginTop='70px'
+                  fontSize='30px'
+                  fontWeight='bold'
+                  letterSpacing='-5.5%'
+                  fontFamily='VT323'
+                  textShadow='0 3px #000'
+                  color='#D6517D'
+                >
+                  You must be connected to Mint
+                </Text>
+              )}
+            </Box>
           </Flex>
         </GridItem>
       </Grid>
