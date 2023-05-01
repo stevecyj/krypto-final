@@ -10,10 +10,12 @@ import {
   Container,
   Text,
   Skeleton,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import {} from '@chakra-ui/react';
 import { useContract, useContractRead, Web3Button } from '@thirdweb-dev/react';
-import * as TRENDADDRESS from '@/const/contractAddress';
+import * as TREND_ADDRESS from '@/const/contractAddress';
+import * as TRENT_PRICE from '@/const/price';
 import { ethers } from 'ethers';
 import './MintTokenPage.scss';
 
@@ -35,8 +37,8 @@ const Feature = ({ heading, text }: FeatureProps) => {
 
 export default function GridListWithCTA() {
   // get contract
-  const { contract: BUYACOFFEE_CONTRACT } = useContract(TRENDADDRESS.BUYACOFFEE_ADDRESS);
-  const { contract: ERC20_CONTRACT } = useContract(TRENDADDRESS.ERC20_ADDRESS);
+  const { contract: BUYACOFFEE_CONTRACT } = useContract(TREND_ADDRESS.BUYACOFFEE_ADDRESS);
+  // const { contract: ERC20_CONTRACT } = useContract(TREND_ADDRESS.ERC20_ADDRESS);
 
   // method getTotalCoffee in contract
   const { data: totalCoffee, isLoading: loadingTotalCoffee } = useContractRead(
@@ -67,29 +69,39 @@ export default function GridListWithCTA() {
             <Button colorScheme='green' size='md'>
               Call To Action
             </Button>
-            <Web3Button
-              contractAddress={TRENDADDRESS.BUYACOFFEE_ADDRESS}
-              action={async () => {
-                await ERC20_CONTRACT!.call('publicMint', [1], {
-                  // here use string
-                  value: ethers.utils.parseEther('0.00001'),
-                });
-              }}
-              onSuccess={() => {
-                alert('buying coffee success');
-              }}
-              onError={(error) => {
-                alert(error);
-              }}
-            >
-              買一杯咖啡
-            </Web3Button>
-            <Flex>
-              <Text>Total Coffee：</Text>
-              <Skeleton w={'20px'} isLoaded={!loadingTotalCoffee}>
-                {totalCoffee?.toString()}
-              </Skeleton>
-            </Flex>
+            <Box>
+              <Box
+                borderRadius='12px'
+                borderColor={useColorModeValue('green.600', 'green.300')}
+                borderWidth='4px'
+                borderStyle='solid'
+              >
+                <Web3Button
+                  contractAddress={TREND_ADDRESS.BUYACOFFEE_ADDRESS}
+                  action={async () => {
+                    await BUYACOFFEE_CONTRACT!.call('buyCoffee', ['', ''], {
+                      // here use string
+                      value: ethers.utils.parseEther(TRENT_PRICE.COFFEE_PRICE),
+                    });
+                  }}
+                  onSuccess={() => {
+                    alert('buying coffee success');
+                  }}
+                  onError={(error) => {
+                    alert(error);
+                  }}
+                >
+                  買一杯咖啡
+                </Web3Button>
+              </Box>
+
+              <Flex>
+                <Text>Total Coffee：</Text>
+                <Skeleton w={'20px'} isLoaded={!loadingTotalCoffee}>
+                  {totalCoffee?.toString()}
+                </Skeleton>
+              </Flex>
+            </Box>
             {/*<Flex>*/}
             {/*  <Text>Total Supply：</Text>*/}
             {/*  <Skeleton w={'20px'} isLoaded={!loadingMint}>*/}
