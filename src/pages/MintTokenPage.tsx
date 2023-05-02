@@ -41,13 +41,18 @@ export default function GridListWithCTA() {
   const address = useAddress();
   const [mintAmount, setMintAmount] = useState(1);
   // get contract
-  const { contract: BUYACOFFEE_CONTRACT } = useContract(TREND_ADDRESS.BUYACOFFEE_ADDRESS);
+  // const { contract: BUYACOFFEE_CONTRACT } = useContract(TREND_ADDRESS.BUYACOFFEE_ADDRESS);
   const { contract: ERC20_CONTRACT } = useContract(TREND_ADDRESS.ERC20_ADDRESS);
 
   // read contract
-  const { data: totalCoffee, isLoading: loadingTotalCoffee } = useContractRead(
-    BUYACOFFEE_CONTRACT,
-    'getTotalCoffee',
+  // const { data: totalCoffee, isLoading: loadingTotalCoffee } = useContractRead(
+  //   BUYACOFFEE_CONTRACT,
+  //   'getTotalCoffee',
+  // );
+
+  const { data: maxSupply, isLoading: loadingMaxSupply } = useContractRead(
+    ERC20_CONTRACT,
+    'maxSupply',
   );
 
   const { data: totalSupply, isLoading: loadingTotalSupply } = useContractRead(
@@ -110,54 +115,54 @@ export default function GridListWithCTA() {
               Mint Token
             </chakra.h2>
             {/* test area */}
-            <Button colorScheme='green' size='md'>
-              Call To Action
-            </Button>
-            <Box>
-              <Box
-                borderRadius='12px'
-                borderColor={useColorModeValue('green.600', 'green.300')}
-                borderWidth='4px'
-                borderStyle='solid'
-              >
-                <Web3Button
-                  contractAddress={TREND_ADDRESS.BUYACOFFEE_ADDRESS}
-                  action={async () => {
-                    await BUYACOFFEE_CONTRACT!.call('buyCoffee', ['', ''], {
-                      // here use string
-                      value: ethers.utils.parseEther(TREND_PRICE.COFFEE_PRICE),
-                    });
-                  }}
-                  onSuccess={() => {
-                    toast({
-                      title: '謝謝惠顧',
-                      status: 'success',
-                      position: 'top',
-                      duration: 2000,
-                      isClosable: true,
-                    });
-                  }}
-                  onError={(error) => {
-                    toast({
-                      title: error.message,
-                      status: 'error',
-                      position: 'top',
-                      duration: 2000,
-                      isClosable: true,
-                    });
-                  }}
-                >
-                  買一杯咖啡
-                </Web3Button>
-              </Box>
+            {/*<Button colorScheme='green' size='md'>*/}
+            {/*  Call To Action*/}
+            {/*</Button>*/}
+            {/*<Box>*/}
+            {/*  <Box*/}
+            {/*    borderRadius='12px'*/}
+            {/*    borderColor={useColorModeValue('green.600', 'green.300')}*/}
+            {/*    borderWidth='4px'*/}
+            {/*    borderStyle='solid'*/}
+            {/*  >*/}
+            {/*    <Web3Button*/}
+            {/*      contractAddress={TREND_ADDRESS.BUYACOFFEE_ADDRESS}*/}
+            {/*      action={async () => {*/}
+            {/*        await BUYACOFFEE_CONTRACT!.call('buyCoffee', ['', ''], {*/}
+            {/*          // here use string*/}
+            {/*          value: ethers.utils.parseEther(TREND_PRICE.COFFEE_PRICE),*/}
+            {/*        });*/}
+            {/*      }}*/}
+            {/*      onSuccess={() => {*/}
+            {/*        toast({*/}
+            {/*          title: '謝謝惠顧',*/}
+            {/*          status: 'success',*/}
+            {/*          position: 'top',*/}
+            {/*          duration: 2000,*/}
+            {/*          isClosable: true,*/}
+            {/*        });*/}
+            {/*      }}*/}
+            {/*      onError={(error) => {*/}
+            {/*        toast({*/}
+            {/*          title: error.message,*/}
+            {/*          status: 'error',*/}
+            {/*          position: 'top',*/}
+            {/*          duration: 2000,*/}
+            {/*          isClosable: true,*/}
+            {/*        });*/}
+            {/*      }}*/}
+            {/*    >*/}
+            {/*      買一杯咖啡*/}
+            {/*    </Web3Button>*/}
+            {/*  </Box>*/}
 
-              <Flex>
-                <Text>Total Coffee：</Text>
-                <Skeleton w={'20px'} isLoaded={!loadingTotalCoffee}>
-                  {totalCoffee?.toString()}
-                </Skeleton>
-              </Flex>
-            </Box>
+            {/*  <Flex>*/}
+            {/*    <Text>Total Coffee：</Text>*/}
+            {/*    <Skeleton w={'20px'} isLoaded={!loadingTotalCoffee}>*/}
+            {/*      {totalCoffee?.toString()}*/}
+            {/*    </Skeleton>*/}
+            {/*  </Flex>*/}
+            {/*</Box>*/}
 
             {/*  mint area */}
             {address ? (
@@ -279,15 +284,21 @@ export default function GridListWithCTA() {
                     lineHeight={'26px'}
                     marginTop='20px'
                   >
+                    {/*<Flex mb='10px'>*/}
+                    {/*  /!* right side *!/*/}
+                    {/*  <Text color={textColor}>Total Coffee：</Text>*/}
+                    {/*  <Skeleton w={'60px'} isLoaded={!loadingTotalCoffee}>*/}
+                    {/*    {totalCoffee?.toString()}*/}
+                    {/*  </Skeleton>*/}
+                    {/*</Flex>*/}
                     <Flex mb='10px'>
-                      {/* right side */}
-                      <Text color={textColor}>Total Coffee：</Text>
-                      <Skeleton w={'60px'} isLoaded={!loadingTotalCoffee}>
-                        {totalCoffee?.toString()}
+                      <Text color={textColor}>Token MaxSupply：</Text>
+                      <Skeleton w={'450px'} isLoaded={!loadingMaxSupply}>
+                        {maxSupply?.toString()}
                       </Skeleton>
                     </Flex>
                     <Flex mb='10px'>
-                      <Text color={textColor}>NFT TotalSupply：</Text>
+                      <Text color={textColor}>Token TotalSupply：</Text>
                       <Skeleton w={'450px'} isLoaded={!loadingTotalSupply}>
                         {totalSupply?.toString()}
                       </Skeleton>
@@ -318,31 +329,31 @@ export default function GridListWithCTA() {
         </GridItem>
       </Grid>
       <Divider mt={12} mb={12} />
-      <Grid
-        templateColumns={{
-          base: 'repeat(1, 1fr)',
-          sm: 'repeat(2, 1fr)',
-          md: 'repeat(4, 1fr)',
-        }}
-        gap={{ base: '8', sm: '12', md: '16' }}
-      >
-        <Feature
-          heading={'First Feature'}
-          text={'Short text describing one of you features/service'}
-        />
-        <Feature
-          heading={'Second Feature'}
-          text={'Short text describing one of you features/service'}
-        />
-        <Feature
-          heading={'Third Feature'}
-          text={'Short text describing one of you features/service'}
-        />
-        <Feature
-          heading={'Fourth Feature'}
-          text={'Short text describing one of you features/service'}
-        />
-      </Grid>
+      {/*<Grid*/}
+      {/*  templateColumns={{*/}
+      {/*    base: 'repeat(1, 1fr)',*/}
+      {/*    sm: 'repeat(2, 1fr)',*/}
+      {/*    md: 'repeat(4, 1fr)',*/}
+      {/*  }}*/}
+      {/*  gap={{ base: '8', sm: '12', md: '16' }}*/}
+      {/*>*/}
+      {/*  <Feature*/}
+      {/*    heading={'First Feature'}*/}
+      {/*    text={'Short text describing one of you features/service'}*/}
+      {/*  />*/}
+      {/*  <Feature*/}
+      {/*    heading={'Second Feature'}*/}
+      {/*    text={'Short text describing one of you features/service'}*/}
+      {/*  />*/}
+      {/*  <Feature*/}
+      {/*    heading={'Third Feature'}*/}
+      {/*    text={'Short text describing one of you features/service'}*/}
+      {/*  />*/}
+      {/*  <Feature*/}
+      {/*    heading={'Fourth Feature'}*/}
+      {/*    text={'Short text describing one of you features/service'}*/}
+      {/*  />*/}
+      {/*</Grid>*/}
     </Box>
   );
 }
