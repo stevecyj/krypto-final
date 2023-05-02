@@ -39,6 +39,7 @@ const Feature = ({ heading, text }: FeatureProps) => {
 };
 
 export default function GridListWithCTA() {
+  const address = useAddress();
   const [mintAmount, setMintAmount] = useState(1);
   // get contract
   const { contract: BUYACOFFEE_CONTRACT } = useContract(TREND_ADDRESS.BUYACOFFEE_ADDRESS);
@@ -58,6 +59,7 @@ export default function GridListWithCTA() {
   const { data: balanceOf, isLoading: loadingBalanceOf } = useContractRead(
     ERC20_CONTRACT,
     'balanceOf',
+    [address],
   );
 
   // 先看取得內容
@@ -65,7 +67,9 @@ export default function GridListWithCTA() {
     console.log('ERC20', ERC20_CONTRACT);
   }, [ERC20_CONTRACT]);
 
-  const address = useAddress();
+  useEffect(() => {
+    console.log('totalCoffee', totalCoffee);
+  }, [totalCoffee]);
 
   // toast
   const toast = useToast();
