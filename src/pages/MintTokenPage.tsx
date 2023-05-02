@@ -67,6 +67,10 @@ export default function GridListWithCTA() {
     console.log('ERC20', ERC20_CONTRACT);
   }, [ERC20_CONTRACT]);
 
+  useEffect(() => {
+    console.log('balanceOf', balanceOf?.toString());
+  }, [balanceOf]);
+
   // useEffect(() => {
   //   console.log('totalCoffee', totalCoffee);
   // }, [totalCoffee]);

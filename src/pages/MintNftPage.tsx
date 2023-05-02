@@ -10,6 +10,10 @@ import {
   Icon,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { useContract, useContractRead, useAddress } from '@thirdweb-dev/react';
+import { useEffect } from 'react';
+import * as TREND_ADDRESS from '@/const/contractAddress';
+// import { ethers } from 'ethers';
 import { IoAnalyticsSharp, IoLogoBitcoin, IoSearchSharp } from 'react-icons/io5';
 import { ReactElement } from 'react';
 
@@ -31,6 +35,21 @@ const Feature = ({ text, icon, iconBg }: FeatureProps) => {
 };
 
 export default function SplitWithImage() {
+  const address = useAddress();
+
+  const { contract: ERC721A_CONTRACT } = useContract(TREND_ADDRESS.ERC721A_ADDRESS);
+
+  // read contract
+  // balanceOf
+  const { data: balanceOf, isLoading: loadingBalanceOf } = useContractRead(
+    ERC721A_CONTRACT,
+    'balanceOf',
+    [address],
+  );
+  useEffect(() => {
+    console.log('NFTbalanceOf:', balanceOf?.toString(), 'loadingBalanceOf:', loadingBalanceOf);
+  }, [balanceOf, loadingBalanceOf]);
+
   return (
     <Container maxW={'5xl'} py={12}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
@@ -45,7 +64,7 @@ export default function SplitWithImage() {
             alignSelf={'flex-start'}
             rounded={'md'}
           >
-            Our Story
+            Your Nft
           </Text>
           <Heading>A digital Product design agency</Heading>
           <Text color={'gray.500'} fontSize={'lg'}>
