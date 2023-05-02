@@ -67,6 +67,21 @@ export default function SplitWithImage() {
       console.log('NFTtotalSupply:', totalSupply?.toString(), 'loadingSupply:', loadingSupply);
   }, [totalSupply, loadingSupply]);
 
+  // white list param
+  const { data: whitelistMintParam, isLoading: loadingWhitelistMintParam } = useContractRead(
+    ERC721A_CONTRACT,
+    'whitelistMintParam',
+  );
+  useEffect(() => {
+    whitelistMintParam &&
+      console.log(
+        'whitelistMintParam:',
+        whitelistMintParam?.toString(),
+        'loadingWhitelistParam:',
+        loadingWhitelistMintParam,
+      );
+  }, [whitelistMintParam, loadingWhitelistMintParam]);
+
   return (
     <Container maxW={'5xl'} py={12}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
