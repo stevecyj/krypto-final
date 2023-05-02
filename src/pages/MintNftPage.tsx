@@ -40,6 +40,12 @@ export default function SplitWithImage() {
   const { contract: ERC721A_CONTRACT } = useContract(TREND_ADDRESS.ERC721A_ADDRESS);
 
   // read contract
+  // auction
+  const { data: auction, isLoading: loadingAuction } = useContractRead(ERC721A_CONTRACT, 'auction');
+  useEffect(() => {
+    auction && console.log('auction:', auction?.toString(), 'loadingAuction', loadingAuction);
+  }, [auction, loadingAuction]);
+
   // balanceOf
   const { data: balanceOf, isLoading: loadingBalanceOf } = useContractRead(
     ERC721A_CONTRACT,
@@ -47,7 +53,8 @@ export default function SplitWithImage() {
     [address],
   );
   useEffect(() => {
-    console.log('NFTbalanceOf:', balanceOf?.toString(), 'loadingBalanceOf:', loadingBalanceOf);
+    balanceOf &&
+      console.log('NFTbalanceOf:', balanceOf?.toString(), 'loadingBalanceOf:', loadingBalanceOf);
   }, [balanceOf, loadingBalanceOf]);
 
   return (
