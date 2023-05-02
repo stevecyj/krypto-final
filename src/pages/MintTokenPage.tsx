@@ -44,7 +44,7 @@ export default function GridListWithCTA() {
   const { contract: BUYACOFFEE_CONTRACT } = useContract(TREND_ADDRESS.BUYACOFFEE_ADDRESS);
   const { contract: ERC20_CONTRACT } = useContract(TREND_ADDRESS.ERC20_ADDRESS);
 
-  // method getTotalCoffee in contract
+  // read contract
   const { data: totalCoffee, isLoading: loadingTotalCoffee } = useContractRead(
     BUYACOFFEE_CONTRACT,
     'getTotalCoffee',
@@ -53,6 +53,11 @@ export default function GridListWithCTA() {
   const { data: totalSupply, isLoading: loadingTotalSupply } = useContractRead(
     ERC20_CONTRACT,
     'totalSupply',
+  );
+
+  const { data: balanceOf, isLoading: loadingBalanceOf } = useContractRead(
+    ERC20_CONTRACT,
+    'balanceOf',
   );
 
   // 先看取得內容
@@ -283,6 +288,12 @@ export default function GridListWithCTA() {
                       <Text color={textColor}>NFT TotalSupply：</Text>
                       <Skeleton w={'450px'} isLoaded={!loadingTotalSupply}>
                         {totalSupply?.toString()}
+                      </Skeleton>
+                    </Flex>
+                    <Flex>
+                      <Text color={textColor}>Balance：</Text>
+                      <Skeleton w={'450px'} isLoaded={!loadingBalanceOf}>
+                        {balanceOf?.toString()}
                       </Skeleton>
                     </Flex>
                   </Box>
