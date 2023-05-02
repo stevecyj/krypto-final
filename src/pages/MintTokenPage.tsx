@@ -276,25 +276,20 @@ export default function GridListWithCTA() {
                     lineHeight={'26px'}
                     marginTop='20px'
                   >
-                    <Flex>
+                    <Flex mb='10px'>
+                      {/* right side */}
                       <Text color={textColor}>Total Coffee：</Text>
-                      <Skeleton
-                        startColor='pink.500'
-                        endColor='orange.500'
-                        backgroundColor='gray.500'
-                        w={'100px'}
-                        isLoaded={!loadingTotalCoffee}
-                      >
+                      <Skeleton w={'60px'} isLoaded={!loadingTotalCoffee}>
                         {totalCoffee?.toString()}
                       </Skeleton>
                     </Flex>
-                    <Flex>
+                    <Flex mb='10px'>
                       <Text color={textColor}>NFT TotalSupply：</Text>
                       <Skeleton w={'450px'} isLoaded={!loadingTotalSupply}>
                         {totalSupply?.toString()}
                       </Skeleton>
                     </Flex>
-                    <Flex>
+                    <Flex mb='10px'>
                       <Text color={textColor}>Balance：</Text>
                       <Skeleton w={'450px'} isLoaded={!loadingBalanceOf}>
                         {balanceOf?.toString()}
