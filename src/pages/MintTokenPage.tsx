@@ -62,14 +62,14 @@ export default function GridListWithCTA() {
     [address],
   );
 
-  // 先看取得內容
+  // test 先看取得內容
   useEffect(() => {
     console.log('ERC20', ERC20_CONTRACT);
   }, [ERC20_CONTRACT]);
 
-  useEffect(() => {
-    console.log('totalCoffee', totalCoffee);
-  }, [totalCoffee]);
+  // useEffect(() => {
+  //   console.log('totalCoffee', totalCoffee);
+  // }, [totalCoffee]);
 
   // toast
   const toast = useToast();
