@@ -21,21 +21,21 @@ import * as TREND_PRICE from '@/const/price';
 import { ethers } from 'ethers';
 import './MintTokenPage.scss';
 
-interface FeatureProps {
-  heading: string;
-  text: string;
-}
+// interface FeatureProps {
+//   heading: string;
+//   text: string;
+// }
 
-const Feature = ({ heading, text }: FeatureProps) => {
-  return (
-    <GridItem>
-      <chakra.h3 fontSize='xl' fontWeight='600'>
-        {heading}
-      </chakra.h3>
-      <chakra.p>{text}</chakra.p>
-    </GridItem>
-  );
-};
+// const Feature = ({ heading, text }: FeatureProps) => {
+//   return (
+//     <GridItem>
+//       <chakra.h3 fontSize='xl' fontWeight='600'>
+//         {heading}
+//       </chakra.h3>
+//       <chakra.p>{text}</chakra.p>
+//     </GridItem>
+//   );
+// };
 
 export default function GridListWithCTA() {
   const address = useAddress();
