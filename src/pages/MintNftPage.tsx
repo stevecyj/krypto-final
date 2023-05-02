@@ -45,6 +45,7 @@ const Feature = ({ text, icon, iconBg }: FeatureProps) => {
 export default function SplitWithImage() {
   const address = useAddress();
   const [mintAmount, setMintAmount] = useState(1);
+  const [inputValue, setInputValue] = useState('');
   const [auctionPrice] = useState(0.01);
 
   const { contract: ERC721A_CONTRACT } = useContract(TREND_ADDRESS.ERC721A_ADDRESS);
@@ -103,14 +104,29 @@ export default function SplitWithImage() {
 
   const handleDecrement = () => {
     if (mintAmount <= 1) return;
-
     setMintAmount(mintAmount - 1);
+    console.log(mintAmount);
   };
 
   const handleIncrement = () => {
     // if (mintAmount >= 3) return;
     setMintAmount(mintAmount + 1);
+    console.log(typeof mintAmount);
   };
+
+  const handleInputChange = (e: any) => {
+    const { value } = e.target;
+    const newValue = value.replace(/\D/g, ''); // 只允许输入数字
+    if (newValue.charAt(0) === '0') {
+      // 如果第一位是0则删除
+
+      setInputValue(newValue.slice(1));
+    } else {
+      setInputValue(newValue);
+    }
+    setMintAmount(Number(inputValue));
+  };
+
   return (
     <Container maxW={'7xl'} py={12}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10} mb='20px'>
@@ -141,7 +157,6 @@ export default function SplitWithImage() {
                         -
                       </Button>
                       <Input
-                        readOnly
                         borderColor={inputBorderColor}
                         borderWidth='4px'
                         borderStyle='solid'
@@ -154,6 +169,7 @@ export default function SplitWithImage() {
                         marginTop='10px'
                         type='number'
                         value={mintAmount}
+                        onChange={handleInputChange}
                       />
                       <Button
                         backgroundColor={buttonBackgroundColor}
