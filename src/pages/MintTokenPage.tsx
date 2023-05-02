@@ -15,10 +15,9 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useContract, useContractRead, Web3Button, useAddress } from '@thirdweb-dev/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as TREND_ADDRESS from '@/const/contractAddress';
 import * as TREND_PRICE from '@/const/price';
-import { useEffect } from 'react';
 import { ethers } from 'ethers';
 import './MintTokenPage.scss';
 
