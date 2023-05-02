@@ -57,6 +57,16 @@ export default function SplitWithImage() {
       console.log('NFTbalanceOf:', balanceOf?.toString(), 'loadingBalanceOf:', loadingBalanceOf);
   }, [balanceOf, loadingBalanceOf]);
 
+  // totalSupply
+  const { data: totalSupply, isLoading: loadingSupply } = useContractRead(
+    ERC721A_CONTRACT,
+    'totalSupply',
+  );
+  useEffect(() => {
+    totalSupply &&
+      console.log('NFTtotalSupply:', totalSupply?.toString(), 'loadingSupply:', loadingSupply);
+  }, [totalSupply, loadingSupply]);
+
   return (
     <Container maxW={'5xl'} py={12}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
