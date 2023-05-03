@@ -40,6 +40,8 @@ import './MintTokenPage.scss';
 export default function GridListWithCTA() {
   const address = useAddress();
   const [mintAmount, setMintAmount] = useState(1);
+  // @ts-ignore
+  const [totalPrice, setTotalPrice] = useState(ethers.utils.parseEther('1'));
   // get contract
   // const { contract: BUYACOFFEE_CONTRACT } = useContract(TREND_ADDRESS.BUYACOFFEE_ADDRESS);
   const { contract: ERC20_CONTRACT } = useContract(TREND_ADDRESS.ERC20_ADDRESS);
@@ -92,11 +94,13 @@ export default function GridListWithCTA() {
     if (mintAmount <= 1) return;
 
     setMintAmount(mintAmount - 1);
+    setTotalPrice(ethers.utils.parseEther((mintAmount - 1).toString()));
   };
 
   const handleIncrement = () => {
     // if (mintAmount >= 3) return;
     setMintAmount(mintAmount + 1);
+    setTotalPrice(ethers.utils.parseEther((mintAmount + 1).toString()));
   };
 
   return (
@@ -226,13 +230,15 @@ export default function GridListWithCTA() {
                     <Web3Button
                       contractAddress={TREND_ADDRESS.ERC20_ADDRESS}
                       action={async () => {
-                        await ERC20_CONTRACT!.call('publicMint', [mintAmount], {
+                        await ERC20_CONTRACT!.call('publicMint', [totalPrice], {
                           value: ethers.utils.parseEther(
                             (mintAmount * TREND_PRICE.TOKEN_PRICE).toString(),
                           ),
                         });
                       }}
                       onSuccess={() => {
+                        setMintAmount(1);
+                        setTotalPrice(ethers.utils.parseEther('1'));
                         toast({
                           title: 'Mint 成功',
                           status: 'success',
@@ -242,6 +248,8 @@ export default function GridListWithCTA() {
                         });
                       }}
                       onError={(error) => {
+                        setMintAmount(1);
+                        setTotalPrice(ethers.utils.parseEther('1'));
                         toast({
                           title: error.message,
                           status: 'error',
