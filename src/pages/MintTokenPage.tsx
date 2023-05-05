@@ -44,7 +44,10 @@ export default function GridListWithCTA() {
   const [totalPrice, setTotalPrice] = useState(ethers.utils.parseEther('1'));
 
   // display
-  const [balanceOfDisplay, setBalanceOfDisplay] = useState('$');
+  const [balanceOfDisplay, setBalanceOfDisplay] = useState('0');
+  const [maxSupplyDisplay, setMaxSupplyDisplay] = useState('0');
+  const [totalSupplyDisplay, setTotalSupplyDisplay] = useState('0');
+
   // get contract
   // const { contract: BUYACOFFEE_CONTRACT } = useContract(TREND_ADDRESS.BUYACOFFEE_ADDRESS);
   const { contract: ERC20_CONTRACT } = useContract(TREND_ADDRESS.ERC20_ADDRESS);
@@ -76,11 +79,22 @@ export default function GridListWithCTA() {
     console.log('ERC20', ERC20_CONTRACT);
   }, [ERC20_CONTRACT]);
 
+  // transfer to display
   useEffect(() => {
     console.log('balanceOf', balanceOf?.toString());
     // @ts-ignore
     setBalanceOfDisplay((balanceOf / ethers.utils.parseEther('1')).toString());
   }, [balanceOf]);
+
+  useEffect(() => {
+    // @ts-ignore
+    setMaxSupplyDisplay((maxSupply / ethers.utils.parseEther('1')).toString());
+  }, [maxSupply]);
+
+  useEffect(() => {
+    // @ts-ignore
+    setTotalSupplyDisplay((totalSupply / ethers.utils.parseEther('1')).toString());
+  }, [maxSupply]);
 
   // useEffect(() => {
   //   console.log('totalCoffee', totalCoffee);
@@ -307,13 +321,13 @@ export default function GridListWithCTA() {
                     <Flex mb='10px'>
                       <Text color={textColor}>Token MaxSupply：</Text>
                       <Skeleton w={'450px'} isLoaded={!loadingMaxSupply}>
-                        {maxSupply?.toString()}
+                        {maxSupplyDisplay == 'NaN' ? '' : maxSupplyDisplay}
                       </Skeleton>
                     </Flex>
                     <Flex mb='10px'>
                       <Text color={textColor}>Token TotalSupply：</Text>
                       <Skeleton w={'450px'} isLoaded={!loadingTotalSupply}>
-                        {totalSupply?.toString()}
+                        {totalSupplyDisplay == 'NaN' ? '' : totalSupplyDisplay}
                       </Skeleton>
                     </Flex>
                     <Flex mb='10px'>
