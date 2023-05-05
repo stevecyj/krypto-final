@@ -42,6 +42,9 @@ export default function GridListWithCTA() {
   const [mintAmount, setMintAmount] = useState(1);
   // @ts-ignore
   const [totalPrice, setTotalPrice] = useState(ethers.utils.parseEther('1'));
+
+  // display
+  const [balanceOfDisplay, setBalanceOfDisplay] = useState('$');
   // get contract
   // const { contract: BUYACOFFEE_CONTRACT } = useContract(TREND_ADDRESS.BUYACOFFEE_ADDRESS);
   const { contract: ERC20_CONTRACT } = useContract(TREND_ADDRESS.ERC20_ADDRESS);
@@ -75,6 +78,8 @@ export default function GridListWithCTA() {
 
   useEffect(() => {
     console.log('balanceOf', balanceOf?.toString());
+    // @ts-ignore
+    setBalanceOfDisplay((balanceOf / ethers.utils.parseEther('1')).toString());
   }, [balanceOf]);
 
   // useEffect(() => {
@@ -314,7 +319,7 @@ export default function GridListWithCTA() {
                     <Flex mb='10px'>
                       <Text color={textColor}>Balance：</Text>
                       <Skeleton w={'450px'} isLoaded={!loadingBalanceOf}>
-                        {balanceOf?.toString()}
+                        {balanceOfDisplay == 'NaN' ? '' : balanceOfDisplay}
                       </Skeleton>
                     </Flex>
                   </Box>
