@@ -15,8 +15,15 @@ import {
   useColorModeValue,
   useToast,
   Skeleton,
+  Divider,
 } from '@chakra-ui/react';
-import { useContract, useContractRead, useAddress, Web3Button } from '@thirdweb-dev/react';
+import {
+  useContract,
+  useContractRead,
+  useAddress,
+  Web3Button,
+  useOwnedNFTs,
+} from '@thirdweb-dev/react';
 import { useState, useEffect } from 'react';
 import * as TREND_ADDRESS from '@/const/contractAddress';
 // import * as TREND_PRICE from '@/const/price';
@@ -42,12 +49,13 @@ const Feature = ({ text, icon, iconBg }: FeatureProps) => {
   );
 };
 
-export default function SplitWithImage() {
+export default function MintNftPage() {
   const address = useAddress();
   const [mintAmount, setMintAmount] = useState(1);
   const [inputValue, setInputValue] = useState('');
   const [auctionPrice] = useState(0.01);
-  const [tokenIdArr, setTokenIdArr] = useState([]);
+  const [_tokenIdArr, setTokenIdArr] = useState([]);
+  const [images, setImages] = useState(['']);
 
   const { contract: ERC721A_CONTRACT } = useContract(TREND_ADDRESS.ERC721A_ADDRESS);
 
@@ -108,10 +116,22 @@ export default function SplitWithImage() {
       'loadingTokensOfOwner:',
       loadingTokensOfOwner,
     );
-    let idArr = tokensOfOwner.toString().split(',').map(Number);
-    console.log(idArr);
+    const idArr = tokensOfOwner && tokensOfOwner.toString().split(',').map(Number);
+    idArr && console.log(idArr);
+
     setTokenIdArr(idArr);
   }, [tokensOfOwner, loadingTokensOfOwner]);
+
+  // get nft img
+  const { data: ownedNFTs, isLoading: loadingOwnedNFTS } = useOwnedNFTs(ERC721A_CONTRACT, address);
+  useEffect(() => {
+    ownedNFTs && console.log('ownedNFTS', ownedNFTs, 'loadingOwnedNFTS', loadingOwnedNFTS);
+    const NFTimages = ownedNFTs && ownedNFTs!.map((item) => item.metadata.image);
+
+    // @ts-ignore
+    setImages(NFTimages);
+  }, [ownedNFTs, loadingOwnedNFTS]);
+
   // toast
   const toast = useToast();
   // button area
@@ -297,6 +317,16 @@ export default function SplitWithImage() {
         </Flex>
         <Flex>{/* nft info */}</Flex>
       </SimpleGrid>
+      <Flex></Flex>
+      <Flex justifyContent='start' flexWrap={'wrap'}>
+        {images &&
+          images.map((imgUrl) => {
+            return (
+              <Image rounded={'md'} alt={'NFT image'} src={imgUrl} objectFit={'cover'} w={'33%'} />
+            );
+          })}
+      </Flex>
+      <Divider mb='30px' />
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
         <Stack spacing={4}>
           <Text
