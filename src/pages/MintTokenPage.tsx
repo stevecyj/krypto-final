@@ -47,11 +47,12 @@ export default function GridListWithCTA() {
   const [balanceOfDisplay, setBalanceOfDisplay] = useState('0');
   const [maxSupplyDisplay, setMaxSupplyDisplay] = useState('0');
   const [totalSupplyDisplay, setTotalSupplyDisplay] = useState('0');
+  const [stakingTotalSupplyDisplay, setStakingTotalSupplyDisplay] = useState('0');
 
   // get contract
   // const { contract: BUYACOFFEE_CONTRACT } = useContract(TREND_ADDRESS.BUYACOFFEE_ADDRESS);
   const { contract: ERC20_CONTRACT } = useContract(TREND_ADDRESS.ERC20_ADDRESS);
-  // const { contract: TOKEN_STAKE_CONTRACT } = useContract(TREND_ADDRESS.TOKEN_STAKE_ADDRESS);
+  const { contract: TOKEN_STAKE_CONTRACT } = useContract(TREND_ADDRESS.TOKEN_STAKE_ADDRESS);
 
   // read contract
   // const { data: totalCoffee, isLoading: loadingTotalCoffee } = useContractRead(
@@ -75,10 +76,28 @@ export default function GridListWithCTA() {
     [address],
   );
 
+  const { data: stakingTotalSupply, isLoading: loadingStakingTotalSupply } = useContractRead(
+    TOKEN_STAKE_CONTRACT,
+    'totalSupply',
+  );
+
   // test 先看取得內容
   useEffect(() => {
     console.log('ERC20', ERC20_CONTRACT);
   }, [ERC20_CONTRACT]);
+
+  useEffect(() => {
+    stakingTotalSupply &&
+      console.log(
+        'stakingTotalSupply',
+        stakingTotalSupply,
+        'loadingStakingTotalSupply',
+        loadingStakingTotalSupply,
+      );
+    // @ts-ignore
+    setStakingTotalSupplyDisplay((stakingTotalSupply / ethers.utils.parseEther('1')).toString());
+    console.log('TOKEN_STAKING_DISPLAY', stakingTotalSupplyDisplay);
+  }, [stakingTotalSupply, loadingStakingTotalSupply]);
 
   // transfer to display
   useEffect(() => {
@@ -95,7 +114,7 @@ export default function GridListWithCTA() {
   useEffect(() => {
     // @ts-ignore
     setTotalSupplyDisplay((totalSupply / ethers.utils.parseEther('1')).toString());
-  }, [maxSupply]);
+  }, [totalSupply]);
 
   // useEffect(() => {
   //   console.log('totalCoffee', totalCoffee);
@@ -373,6 +392,182 @@ export default function GridListWithCTA() {
         </GridItem>
       </Grid>
       <Divider mt={12} mb={12} />
+      <Grid
+        templateColumns={{
+          base: 'repeat(1, 1fr)',
+          sm: 'repeat(3, 1fr)',
+          md: 'repeat(3, 1fr)',
+        }}
+        gap={4}
+      >
+        <GridItem colSpan={1}>
+          <VStack alignItems='flex-start' spacing='20px'>
+            <chakra.h2 fontSize='3xl' fontWeight='700'>
+              Mint Token
+            </chakra.h2>
+
+            {/*  mint area */}
+            {address ? (
+              <Box display='flex' flexDirection='column' alignItems='flex-start'>
+                {/* button increase, decrease */}
+                <Box display='flex' flexDirection='column' alignItems='center' className='12345'>
+                  <Flex align='center' justify='center'>
+                    <Button
+                      backgroundColor={buttonBackgroundColor}
+                      borderRadius='5px'
+                      boxShadow='0px 2px 2px 1px #0f0f0f'
+                      color='white'
+                      cursor='pointer'
+                      fontFamily='inherit'
+                      padding='15px'
+                      marginTop='10px'
+                      _hover={{ bg: btnHover }}
+                      onClick={handleDecrement}
+                    >
+                      -
+                    </Button>
+                    <Input
+                      // readOnly
+                      borderColor={inputBorderColor}
+                      borderWidth='4px'
+                      borderStyle='solid'
+                      zIndex='-1'
+                      fontFamily='inherit'
+                      width='100px'
+                      height='40px'
+                      textAlign='center'
+                      paddingLeft='19px'
+                      marginTop='10px'
+                      type='number'
+                      value={mintAmount}
+                      onChange={handleInputChange}
+                    />
+                    <Button
+                      backgroundColor={buttonBackgroundColor}
+                      borderRadius='5px'
+                      boxShadow='0px 2px 2px 1px #0f0f0f'
+                      color='white'
+                      cursor='pointer'
+                      fontFamily='inherit'
+                      padding='15px'
+                      marginTop='10px'
+                      _hover={{ bg: btnHover }}
+                      onClick={handleIncrement}
+                    >
+                      +
+                    </Button>
+                  </Flex>
+
+                  {/* Token Mint */}
+                  <Flex
+                    w='fit-content'
+                    borderRadius='12px'
+                    borderColor={buttonBorderColor}
+                    borderWidth='4px'
+                    borderStyle='solid'
+                  >
+                    <Web3Button
+                      contractAddress={TREND_ADDRESS.ERC20_ADDRESS}
+                      action={async () => {
+                        await ERC20_CONTRACT!.call('publicMint', [totalPrice], {
+                          value: ethers.utils.parseEther(
+                            (mintAmount * TREND_PRICE.TOKEN_PRICE).toString(),
+                          ),
+                        });
+                      }}
+                      onSuccess={() => {
+                        setMintAmount(1);
+                        setTotalPrice(ethers.utils.parseEther('1'));
+                        toast({
+                          title: 'Mint 成功',
+                          status: 'success',
+                          position: 'top',
+                          duration: 2000,
+                          isClosable: true,
+                        });
+                      }}
+                      onError={(error) => {
+                        setMintAmount(1);
+                        setTotalPrice(ethers.utils.parseEther('1'));
+                        toast({
+                          title: error.message,
+                          status: 'error',
+                          position: 'top',
+                          duration: 2000,
+                          isClosable: true,
+                        });
+                      }}
+                    >
+                      Mint Now
+                    </Web3Button>
+                  </Flex>
+                </Box>
+              </Box>
+            ) : (
+              <Text
+                marginTop='70px'
+                fontSize='30px'
+                fontWeight='bold'
+                letterSpacing='-5.5%'
+                fontFamily='VT323'
+                textShadow='0 3px #000'
+                color='#D6517D'
+              >
+                You must be connected to Mint
+              </Text>
+            )}
+          </VStack>
+        </GridItem>
+        <GridItem colSpan={2}>
+          <Flex>
+            <Box>
+              {address ? (
+                <Box>
+                  <Box
+                    fontSize='26px'
+                    letterSpacing='0.5%'
+                    fontFamily='VT323'
+                    textShadow='0 2px 2px #000'
+                    lineHeight={'26px'}
+                    marginTop='20px'
+                  >
+                    <Flex mb='10px'>
+                      <Text color={textColor}>Token Staking Supply：</Text>
+                      <Skeleton w={'450px'} isLoaded={!loadingMaxSupply}>
+                        {stakingTotalSupplyDisplay == 'NaN' ? '' : stakingTotalSupplyDisplay}
+                      </Skeleton>
+                    </Flex>
+                    <Flex mb='10px'>
+                      <Text color={textColor}>My Token Balance：</Text>
+                      <Skeleton w={'450px'} isLoaded={!loadingTotalSupply}>
+                        {totalSupplyDisplay == 'NaN' ? '' : totalSupplyDisplay}
+                      </Skeleton>
+                    </Flex>
+                    <Flex mb='10px'>
+                      <Text color={textColor}>Balance：</Text>
+                      <Skeleton w={'450px'} isLoaded={!loadingBalanceOf}>
+                        {balanceOfDisplay == 'NaN' ? '' : balanceOfDisplay}
+                      </Skeleton>
+                    </Flex>
+                  </Box>
+                </Box>
+              ) : (
+                <Text
+                  marginTop='70px'
+                  fontSize='30px'
+                  fontWeight='bold'
+                  letterSpacing='-5.5%'
+                  fontFamily='VT323'
+                  textShadow='0 3px #000'
+                  color='#D6517D'
+                >
+                  You must be connected to Mint
+                </Text>
+              )}
+            </Box>
+          </Flex>
+        </GridItem>
+      </Grid>
       {/*<Grid*/}
       {/*  templateColumns={{*/}
       {/*    base: 'repeat(1, 1fr)',*/}
