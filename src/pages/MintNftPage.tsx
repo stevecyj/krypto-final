@@ -47,6 +47,7 @@ export default function SplitWithImage() {
   const [mintAmount, setMintAmount] = useState(1);
   const [inputValue, setInputValue] = useState('');
   const [auctionPrice] = useState(0.01);
+  const [tokenIdArr, setTokenIdArr] = useState([]);
 
   const { contract: ERC721A_CONTRACT } = useContract(TREND_ADDRESS.ERC721A_ADDRESS);
 
@@ -93,6 +94,24 @@ export default function SplitWithImage() {
       );
   }, [whitelistMintParam, loadingWhitelistMintParam]);
 
+  // tokensOfOwner
+  const { data: tokensOfOwner, isLoading: loadingTokensOfOwner } = useContractRead(
+    ERC721A_CONTRACT,
+    'tokensOfOwner',
+    [address],
+  );
+  useEffect(() => {
+    // tokensOfOwner &&
+    console.log(
+      'tokensOfOwner',
+      tokensOfOwner?.toString(),
+      'loadingTokensOfOwner:',
+      loadingTokensOfOwner,
+    );
+    let idArr = tokensOfOwner.toString().split(',').map(Number);
+    console.log(idArr);
+    setTokenIdArr(idArr);
+  }, [tokensOfOwner, loadingTokensOfOwner]);
   // toast
   const toast = useToast();
   // button area
