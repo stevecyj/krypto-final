@@ -12,10 +12,11 @@ import {
   Box,
   Button,
   Input,
-  useColorModeValue,
-  useToast,
   Skeleton,
   Divider,
+  Spinner,
+  useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
 import {
   useContract,
@@ -123,14 +124,14 @@ export default function MintNftPage() {
   }, [tokensOfOwner, loadingTokensOfOwner]);
 
   // get nft img
-  const { data: ownedNFTs, isLoading: loadingOwnedNFTS } = useOwnedNFTs(ERC721A_CONTRACT, address);
+  const { data: ownedNFTs, isLoading: loadingOwnedNFTs } = useOwnedNFTs(ERC721A_CONTRACT, address);
   useEffect(() => {
-    ownedNFTs && console.log('ownedNFTS', ownedNFTs, 'loadingOwnedNFTS', loadingOwnedNFTS);
+    ownedNFTs && console.log('ownedNFTS', ownedNFTs, 'loadingOwnedNFTs', loadingOwnedNFTs);
     const NFTimages = ownedNFTs && ownedNFTs!.map((item) => item.metadata.image);
 
     // @ts-ignore
     setImages(NFTimages);
-  }, [ownedNFTs, loadingOwnedNFTS]);
+  }, [ownedNFTs, loadingOwnedNFTs]);
 
   // toast
   const toast = useToast();
@@ -317,14 +318,23 @@ export default function MintNftPage() {
         </Flex>
         <Flex>{/* nft info */}</Flex>
       </SimpleGrid>
-      <Flex></Flex>
-      <Flex justifyContent='start' flexWrap={'wrap'}>
-        {images &&
-          images.map((imgUrl) => {
-            return (
-              <Image rounded={'md'} alt={'NFT image'} src={imgUrl} objectFit={'cover'} w={'33%'} />
-            );
-          })}
+      <Flex justifyContent={'center'}>
+        {loadingOwnedNFTs && <Spinner size={'xl'} />}
+        <Flex justifyContent='start' flexWrap={'wrap'}>
+          {images &&
+            images.map((imgUrl, index) => {
+              return (
+                <Image
+                  key={index}
+                  rounded={'md'}
+                  alt={'NFT image'}
+                  src={imgUrl}
+                  objectFit={'cover'}
+                  w={'33%'}
+                />
+              );
+            })}
+        </Flex>
       </Flex>
       <Divider mb='30px' />
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
