@@ -48,6 +48,7 @@ export default function GridListWithCTA() {
   const [maxSupplyDisplay, setMaxSupplyDisplay] = useState('0');
   const [totalSupplyDisplay, setTotalSupplyDisplay] = useState('0');
   const [stakingTotalSupplyDisplay, setStakingTotalSupplyDisplay] = useState('0');
+  const [stakingBalanceOfDisplay, setStakingBalanceOfDisplay] = useState('0');
 
   // get contract
   // const { contract: BUYACOFFEE_CONTRACT } = useContract(TREND_ADDRESS.BUYACOFFEE_ADDRESS);
@@ -81,6 +82,12 @@ export default function GridListWithCTA() {
     'totalSupply',
   );
 
+  const { data: stakingBalanceOf, isLoading: loadingStakingBalanceOf } = useContractRead(
+    TOKEN_STAKE_CONTRACT,
+    'balanceOf',
+    [address],
+  );
+
   // test 先看取得內容
   useEffect(() => {
     console.log('ERC20', ERC20_CONTRACT);
@@ -97,7 +104,13 @@ export default function GridListWithCTA() {
     // @ts-ignore
     setStakingTotalSupplyDisplay((stakingTotalSupply / ethers.utils.parseEther('1')).toString());
     console.log('TOKEN_STAKING_DISPLAY', stakingTotalSupplyDisplay);
-  }, [stakingTotalSupply, loadingStakingTotalSupply]);
+  }, [stakingTotalSupply, loadingStakingTotalSupply, stakingTotalSupplyDisplay]);
+
+  useEffect(() => {
+    stakingBalanceOf &&
+      // @ts-ignore
+      setStakingBalanceOfDisplay((stakingBalanceOf / ethers.utils.parseEther('1')).toString());
+  }, [stakingBalanceOf, loadingStakingBalanceOf]);
 
   // transfer to display
   useEffect(() => {
@@ -539,14 +552,14 @@ export default function GridListWithCTA() {
                     </Flex>
                     <Flex mb='10px'>
                       <Text color={textColor}>My Token Balance：</Text>
-                      <Skeleton w={'450px'} isLoaded={!loadingTotalSupply}>
-                        {totalSupplyDisplay == 'NaN' ? '' : totalSupplyDisplay}
+                      <Skeleton w={'450px'} isLoaded={!loadingBalanceOf}>
+                        {balanceOfDisplay == 'NaN' ? '' : balanceOfDisplay}
                       </Skeleton>
                     </Flex>
                     <Flex mb='10px'>
-                      <Text color={textColor}>Balance：</Text>
+                      <Text color={textColor}>My Staking：</Text>
                       <Skeleton w={'450px'} isLoaded={!loadingBalanceOf}>
-                        {balanceOfDisplay == 'NaN' ? '' : balanceOfDisplay}
+                        {stakingTotalSupplyDisplay == 'NaN' ? '' : stakingBalanceOfDisplay}
                       </Skeleton>
                     </Flex>
                   </Box>
