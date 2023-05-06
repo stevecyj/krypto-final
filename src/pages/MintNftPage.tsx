@@ -330,7 +330,7 @@ export default function MintNftPage() {
                   alt={'NFT image'}
                   src={imgUrl}
                   objectFit={'cover'}
-                  w={'33%'}
+                  w={'25%'}
                 />
               );
             })}
