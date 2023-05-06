@@ -51,6 +51,7 @@ export default function GridListWithCTA() {
   // get contract
   // const { contract: BUYACOFFEE_CONTRACT } = useContract(TREND_ADDRESS.BUYACOFFEE_ADDRESS);
   const { contract: ERC20_CONTRACT } = useContract(TREND_ADDRESS.ERC20_ADDRESS);
+  // const { contract: TOKEN_STAKE_CONTRACT } = useContract(TREND_ADDRESS.TOKEN_STAKE_ADDRESS);
 
   // read contract
   // const { data: totalCoffee, isLoading: loadingTotalCoffee } = useContractRead(
@@ -121,6 +122,21 @@ export default function GridListWithCTA() {
     setMintAmount(mintAmount + 1);
     setTotalPrice(ethers.utils.parseEther((mintAmount + 1).toString()));
   };
+  // handleInput
+  const handleInputChange = (e: any) => {
+    // if (mintAmount == 0) {
+    //   setMintAmount(1);
+    // }
+    console.log(mintAmount, e.target.value);
+    setMintAmount(Number(e.target.value));
+  };
+  useEffect(() => {
+    if (mintAmount < 1) {
+      setMintAmount(1);
+    }
+    setTotalPrice(ethers.utils.parseEther(mintAmount.toString()));
+    console.log('mintAmount', mintAmount);
+  }, [mintAmount]);
 
   return (
     <Box as={Container} maxW='7xl' mt={14} p={4}>
@@ -208,7 +224,7 @@ export default function GridListWithCTA() {
                       -
                     </Button>
                     <Input
-                      readOnly
+                      // readOnly
                       borderColor={inputBorderColor}
                       borderWidth='4px'
                       borderStyle='solid'
@@ -221,6 +237,7 @@ export default function GridListWithCTA() {
                       marginTop='10px'
                       type='number'
                       value={mintAmount}
+                      onChange={handleInputChange}
                     />
                     <Button
                       backgroundColor={buttonBackgroundColor}
