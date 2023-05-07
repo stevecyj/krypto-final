@@ -40,8 +40,10 @@ import './MintTokenPage.scss';
 export default function GridListWithCTA() {
   const address = useAddress();
   const [mintAmount, setMintAmount] = useState(1);
+  const [stakeAmount, setStakeAmount] = useState(1);
   // @ts-ignore
   const [totalPrice, setTotalPrice] = useState(ethers.utils.parseEther('1'));
+  const [totalStakePrice, setTotalStakePrice] = useState(ethers.utils.parseEther('1'));
 
   // display
   const [balanceOfDisplay, setBalanceOfDisplay] = useState('0');
@@ -169,6 +171,20 @@ export default function GridListWithCTA() {
     setTotalPrice(ethers.utils.parseEther(mintAmount.toString()));
     console.log('mintAmount', mintAmount);
   }, [mintAmount]);
+
+  // stake handle
+  const handleStakeDecrement = () => {
+    if (stakeAmount <= 1) return;
+
+    setStakeAmount(stakeAmount - 1);
+    setTotalStakePrice(ethers.utils.parseEther((stakeAmount - 1).toString()));
+  };
+
+  const handleStakeIncrement = () => {
+    // if (mintAmount >= 3) return;
+    setStakeAmount(stakeAmount + 1);
+    setTotalStakePrice(ethers.utils.parseEther((stakeAmount + 1).toString()));
+  };
 
   return (
     <Box as={Container} maxW='7xl' mt={14} p={4}>
@@ -416,7 +432,7 @@ export default function GridListWithCTA() {
         <GridItem colSpan={1}>
           <VStack alignItems='flex-start' spacing='20px'>
             <chakra.h2 fontSize='3xl' fontWeight='700'>
-              Mint Token
+              Stake Token
             </chakra.h2>
 
             {/*  mint area */}
@@ -435,12 +451,12 @@ export default function GridListWithCTA() {
                       padding='15px'
                       marginTop='10px'
                       _hover={{ bg: btnHover }}
-                      onClick={handleDecrement}
+                      onClick={handleStakeDecrement}
                     >
                       -
                     </Button>
                     <Input
-                      // readOnly
+                      readOnly
                       borderColor={inputBorderColor}
                       borderWidth='4px'
                       borderStyle='solid'
@@ -452,8 +468,8 @@ export default function GridListWithCTA() {
                       paddingLeft='19px'
                       marginTop='10px'
                       type='number'
-                      value={mintAmount}
-                      onChange={handleInputChange}
+                      value={stakeAmount}
+                      // onChange={handleInputChange}
                     />
                     <Button
                       backgroundColor={buttonBackgroundColor}
@@ -465,7 +481,7 @@ export default function GridListWithCTA() {
                       padding='15px'
                       marginTop='10px'
                       _hover={{ bg: btnHover }}
-                      onClick={handleIncrement}
+                      onClick={handleStakeIncrement}
                     >
                       +
                     </Button>
@@ -480,19 +496,28 @@ export default function GridListWithCTA() {
                     borderStyle='solid'
                   >
                     <Web3Button
-                      contractAddress={TREND_ADDRESS.ERC20_ADDRESS}
+                      contractAddress={TREND_ADDRESS.TOKEN_STAKE_ADDRESS}
                       action={async () => {
-                        await ERC20_CONTRACT!.call('publicMint', [totalPrice], {
-                          value: ethers.utils.parseEther(
-                            (mintAmount * TREND_PRICE.TOKEN_PRICE).toString(),
-                          ),
-                        });
+                        await ERC20_CONTRACT!.call(
+                          'approve',
+                          [TREND_ADDRESS.TOKEN_STAKE_ADDRESS, totalStakePrice],
+                          // {
+                          //   value: ethers.utils.parseEther(stakeAmount.toString()),
+                          // },
+                        );
+                        await TOKEN_STAKE_CONTRACT!.call(
+                          'stake',
+                          [totalStakePrice],
+                          //   {
+                          //   value: ethers.utils.parseEther(stakeAmount.toString()),
+                          // }
+                        );
                       }}
                       onSuccess={() => {
                         setMintAmount(1);
                         setTotalPrice(ethers.utils.parseEther('1'));
                         toast({
-                          title: 'Mint 成功',
+                          title: 'Stake 成功',
                           status: 'success',
                           position: 'top',
                           duration: 2000,
