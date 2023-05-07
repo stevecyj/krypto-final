@@ -435,7 +435,7 @@ export default function GridListWithCTA() {
               Stake Token
             </chakra.h2>
 
-            {/*  mint area */}
+            {/*  stake area */}
             {address ? (
               <Box display='flex' flexDirection='column' alignItems='flex-start'>
                 {/* button increase, decrease */}
@@ -514,8 +514,7 @@ export default function GridListWithCTA() {
                         );
                       }}
                       onSuccess={() => {
-                        setMintAmount(1);
-                        setTotalPrice(ethers.utils.parseEther('1'));
+                        setStakeAmount(1);
                         toast({
                           title: 'Stake 成功',
                           status: 'success',
@@ -525,8 +524,7 @@ export default function GridListWithCTA() {
                         });
                       }}
                       onError={(error) => {
-                        setMintAmount(1);
-                        setTotalPrice(ethers.utils.parseEther('1'));
+                        setStakeAmount(1);
                         toast({
                           title: error.message,
                           status: 'error',
@@ -536,7 +534,7 @@ export default function GridListWithCTA() {
                         });
                       }}
                     >
-                      Mint Now
+                      Stake Now
                     </Web3Button>
                   </Flex>
                 </Box>
