@@ -177,7 +177,7 @@ export default function MintNftPage() {
         'loadingNftTotalSupply:',
         loadingNftStakeTotalSupply,
       );
-    setStakingNftTotalSupplyDisplay(nftStakeTotalSupply.toString());
+    nftStakeTotalSupply && setStakingNftTotalSupplyDisplay(nftStakeTotalSupply.toString());
   }, [nftStakeTotalSupply, loadingNftStakeTotalSupply]);
 
   // balance of nft staking
@@ -195,7 +195,7 @@ export default function MintNftPage() {
         loadingStakingNftBalanceOf,
       );
     // @ts-ignore
-    setStakingNftBalanceOfDisplay(stakingNftBalanceOf.toString());
+    stakingNftBalanceOf && setStakingNftBalanceOfDisplay(stakingNftBalanceOf.toString());
   }, [stakingNftBalanceOf, loadingStakingNftBalanceOf]);
 
   // toast
