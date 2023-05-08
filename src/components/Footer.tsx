@@ -5,7 +5,6 @@ import {
   Image,
   Link,
   Stack,
-  Text,
   useColorModeValue,
   VisuallyHidden,
 } from '@chakra-ui/react';
@@ -14,7 +13,7 @@ import { ReactNode } from 'react';
 import { Link as RouterDomLink } from 'react-router-dom';
 import TrendLogo from '@/assets/LOGO.svg';
 
-const Logo = (props: any) => {
+const Logo = () => {
   return (
     <Link as={RouterDomLink} to='/index'>
       <Image
@@ -93,17 +92,17 @@ export default function SmallCentered() {
           justify={{ base: 'center', md: 'space-between' }}
           align={{ base: 'center', md: 'center' }}
         >
-          <Stack direction={'row'} spacing={6}>
-            <SocialButton label={'Twitter'} href={'#'}>
-              <FaTwitter />
-            </SocialButton>
-            <SocialButton label={'YouTube'} href={'#'}>
-              <FaYoutube />
-            </SocialButton>
-            <SocialButton label={'Instagram'} href={'#'}>
-              <FaInstagram />
-            </SocialButton>
-          </Stack>
+          {/*<Stack direction={'row'} spacing={6}>*/}
+          {/*  <SocialButton label={'Twitter'} href={'#'}>*/}
+          {/*    <FaTwitter />*/}
+          {/*  </SocialButton>*/}
+          {/*  <SocialButton label={'YouTube'} href={'#'}>*/}
+          {/*    <FaYoutube />*/}
+          {/*  </SocialButton>*/}
+          {/*  <SocialButton label={'Instagram'} href={'#'}>*/}
+          {/*    <FaInstagram />*/}
+          {/*  </SocialButton>*/}
+          {/*</Stack>*/}
         </Container>
       </Box>
     </Box>

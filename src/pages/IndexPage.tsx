@@ -1,4 +1,5 @@
-import { Box, Button, Container, Heading, Image, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Container, Heading, Image, Stack, Text, Link } from '@chakra-ui/react';
+import { Link as RouterDomLink } from 'react-router-dom';
 import trendBg from '@/assets/trend.png';
 
 const IndexPage = () => (
@@ -15,10 +16,15 @@ const IndexPage = () => (
           </Stack>
           <Stack direction={{ base: 'column-reverse', md: 'row' }} spacing='3'>
             <Button variant='secondary' size='lg'>
-              Learn more
+              <Link as={RouterDomLink} to='/mint-token'>
+                Your Token
+              </Link>
             </Button>
+
             <Button variant='primary' size='lg'>
-              Start free trial
+              <Link as={RouterDomLink} to='/mint-nft'>
+                Your NFT
+              </Link>
             </Button>
           </Stack>
         </Stack>
