@@ -18,7 +18,6 @@ import {
   useColorModeValue,
   useToast,
   GridItem,
-  VStack,
   Grid,
 } from '@chakra-ui/react';
 import {
@@ -62,13 +61,13 @@ interface image {
 export default function MintNftPage() {
   const address = useAddress();
   const [mintAmount, setMintAmount] = useState(1);
-  const [stakeAmount, setStakeAmount] = useState(1);
+  const [_stakeAmount, setStakeAmount] = useState(1);
   const [inputValue, setInputValue] = useState('');
   const [auctionPrice] = useState(0.01);
   const [_tokenIdArr, setTokenIdArr] = useState([]);
   const [images, setImages] = useState([{ id: 0, imgUrl: '' }]);
 
-  const [totalStakePrice, setTotalStakePrice] = useState(ethers.utils.parseEther('1'));
+  const [_totalStakePrice, _setTotalStakePrice] = useState(ethers.utils.parseEther('1'));
 
   // display
   const [_totalNftSupplyDisplay, setTotalNftSupplyDisplay] = useState('0');
@@ -233,18 +232,18 @@ export default function MintNftPage() {
   };
 
   // handle stake amount
-  const handleStakeDecrement = () => {
-    if (stakeAmount <= 1) return;
-
-    setStakeAmount(stakeAmount - 1);
-    setTotalStakePrice(ethers.utils.parseEther((stakeAmount - 1).toString()));
-  };
-
-  const handleStakeIncrement = () => {
-    // if (mintAmount >= 3) return;
-    setStakeAmount(stakeAmount + 1);
-    setTotalStakePrice(ethers.utils.parseEther((stakeAmount + 1).toString()));
-  };
+  // const handleStakeDecrement = () => {
+  //   if (stakeAmount <= 1) return;
+  //
+  //   setStakeAmount(stakeAmount - 1);
+  //   setTotalStakePrice(ethers.utils.parseEther((stakeAmount - 1).toString()));
+  // };
+  //
+  // const handleStakeIncrement = () => {
+  //   // if (mintAmount >= 3) return;
+  //   setStakeAmount(stakeAmount + 1);
+  //   setTotalStakePrice(ethers.utils.parseEther((stakeAmount + 1).toString()));
+  // };
 
   // @ts-ignore
   return (
