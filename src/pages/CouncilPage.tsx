@@ -1,25 +1,45 @@
 import {
-  Stack,
-  Container,
-  Box,
+  ChakraProvider,
   Flex,
-  Text,
-  Heading,
   SimpleGrid,
-  createMultiStyleConfigHelpers,
-  defineStyle,
+  GridItem,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
 } from '@chakra-ui/react';
-import { tabsAnatomy } from '@chakra-ui/anatomy';
+import theme from '@/theme';
+import { ColorModeSwitcher } from '@/theme/ColorModeSwitcher';
 
-const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(
-  tabsAnatomy.keys,
-);
-export default function StatsGridWithImage() {
+export default function App() {
   return (
-    <Box bg={''} position={'relative'}>
-      <Container maxW={'7xl'} zIndex={0} position={'relative'}>
-        123
-      </Container>
-    </Box>
+    <ChakraProvider theme={theme}>
+      <Flex justifyContent={'center'} position='relative' h='100vh' p={12}>
+        <SimpleGrid columns={[1, 1, 1, 2]} spacing={12}>
+          <GridItem>
+            <Tabs>
+              <TabList>
+                <Tab>One</Tab>
+                <Tab>Two</Tab>
+                <Tab>Three</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <p>New default appearance defined by theme</p>
+                </TabPanel>
+                <TabPanel>
+                  <p>Tab panel two</p>
+                </TabPanel>
+                <TabPanel>
+                  <p>Tab panel three</p>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </GridItem>
+        </SimpleGrid>
+        <ColorModeSwitcher />
+      </Flex>
+    </ChakraProvider>
   );
 }
