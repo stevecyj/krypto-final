@@ -29,6 +29,7 @@ const sizes = {
     tabpanel: {
       py: '4',
       px: '6',
+      width: '80vw',
     },
   }),
 };

@@ -16,7 +16,7 @@ export default function App() {
   return (
     <ChakraProvider theme={theme}>
       <Flex justifyContent={'center'} position='relative' h='100vh' p={12}>
-        <SimpleGrid columns={[1, 1, 1, 2]} spacing={12}>
+        <SimpleGrid columns={[1, 1, 1, 1]} spacing={12}>
           <GridItem>
             <Tabs>
               <TabList>
