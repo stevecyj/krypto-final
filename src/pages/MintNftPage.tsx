@@ -49,26 +49,10 @@ import { MerkleTree } from 'merkletreejs';
 import keccak256 from 'keccak256';
 import { whitelist } from '@/const/whitelist.ts';
 
-// interface FeatureProps {
-//   text: string;
-//   iconBg: string;
-//   icon?: ReactElement;
-// }
-
 interface image {
   id: number;
   imgUrl: string;
 }
-// const Feature = ({ text, icon, iconBg }: FeatureProps) => {
-//   return (
-//     <Stack direction={'row'} align={'center'}>
-//       <Flex w={8} h={8} align={'center'} justify={'center'} rounded={'full'} bg={iconBg}>
-//         {icon}
-//       </Flex>
-//       <Text fontWeight={600}>{text}</Text>
-//     </Stack>
-//   );
-// };
 
 export default function MintNftPage() {
   const address = useAddress();
@@ -165,11 +149,13 @@ export default function MintNftPage() {
     ownedNFTs && console.log('ownedNFTS', ownedNFTs, 'loadingOwnedNFTs', loadingOwnedNFTs);
     const NFTimages: { id: number; imgUrl: string }[] | undefined =
       ownedNFTs &&
-      ownedNFTs!.map((item) => {
-        // @ts-ignore
-        const image: image = { id: item.metadata.id, imgUrl: item.metadata.image };
-        return image;
-      });
+      ownedNFTs!
+        .map((item) => {
+          // @ts-ignore
+          const image: image = { id: item.metadata.id, imgUrl: item.metadata.image };
+          return image;
+        })
+        .reverse();
 
     // @ts-ignore
     setImages(NFTimages);
@@ -387,6 +373,7 @@ export default function MintNftPage() {
                                       );
                                     }}
                                     onSuccess={() => {
+                                      setMintAmount(1);
                                       toast({
                                         title: 'NFT Mint 成功',
                                         status: 'success',
@@ -397,6 +384,7 @@ export default function MintNftPage() {
                                     }}
                                     onError={(error) => {
                                       console.log(error);
+                                      setMintAmount(1);
                                       toast({
                                         title: 'Oops!',
                                         status: 'error',
@@ -477,7 +465,7 @@ export default function MintNftPage() {
                                   ml={'5px'}
                                   mb={'5px'}
                                 >
-                                  <Text>{item.id}</Text>
+                                  <Text>#{item.id}</Text>
                                   <Flex
                                     w='fit-content'
                                     borderRadius='12px'
