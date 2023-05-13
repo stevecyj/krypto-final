@@ -13,7 +13,7 @@ import {
   Button,
   Input,
   Skeleton,
-  Divider,
+  // Divider,
   Spinner,
   ChakraProvider,
   Tabs,
@@ -255,392 +255,343 @@ export default function MintNftPage() {
 
   // @ts-ignore
   return (
-    <Container maxW={'100vw'} py={12}>
-      <SimpleGrid columns={{ base: 1, md: 1 }} spacing={10} mb='20px'>
+    <Box as={Container} maxW={'100vw'} py={12}>
+      {/*<SimpleGrid columns={{ base: 1, md: 1 }} spacing={10} mb='20px'>*/}
+      {/* tab */}
+      <ChakraProvider theme={theme}>
         <Flex flexDirection='row' justifyContent={'center'}>
-          {/* tab */}
-          <ChakraProvider theme={theme}>
-            <Flex justifyContent={'center'} position='relative' h='100vh' p={12}>
-              <SimpleGrid columns={[1, 1, 1, 1]} spacing={12}>
-                <GridItem>
-                  <Tabs>
-                    <TabList>
-                      <Tab>One</Tab>
-                      <Tab>Two</Tab>
-                      <Tab>Three</Tab>
-                    </TabList>
-                    <TabPanels>
-                      <TabPanel>
-                        <p>New default appearance defined by theme</p>
-                        {/*  mint area */}
-                        {address ? (
-                          <>
-                            <Box>
-                              <chakra.h2 fontSize='3xl' fontWeight='700'>
-                                Mint NFT
-                              </chakra.h2>
-                              <Box display='flex' flexDirection='column' alignItems='flex-start'>
-                                {/* button increase, decrease */}
-                                <Box
-                                  display='flex'
-                                  flexDirection='column'
-                                  alignItems='center'
-                                  className='12345'
-                                >
-                                  <Flex align='center' justify='center'>
-                                    <Button
-                                      backgroundColor={buttonBackgroundColor}
-                                      borderRadius='5px'
-                                      boxShadow='0px 2px 2px 1px #0f0f0f'
-                                      color='white'
-                                      cursor='pointer'
-                                      fontFamily='inherit'
-                                      padding='15px'
-                                      marginTop='10px'
-                                      _hover={{ bg: btnHover }}
-                                      onClick={handleDecrement}
-                                    >
-                                      -
-                                    </Button>
-                                    <Input
-                                      borderColor={inputBorderColor}
-                                      borderWidth='4px'
-                                      borderStyle='solid'
-                                      zIndex='-1'
-                                      fontFamily='inherit'
-                                      width='100px'
-                                      height='40px'
-                                      textAlign='center'
-                                      paddingLeft='19px'
-                                      marginTop='10px'
-                                      type='number'
-                                      value={mintAmount}
-                                      onChange={handleInputChange}
-                                    />
-                                    <Button
-                                      backgroundColor={buttonBackgroundColor}
-                                      borderRadius='5px'
-                                      boxShadow='0px 2px 2px 1px #0f0f0f'
-                                      color='white'
-                                      cursor='pointer'
-                                      fontFamily='inherit'
-                                      padding='15px'
-                                      marginTop='10px'
-                                      _hover={{ bg: btnHover }}
-                                      onClick={handleIncrement}
-                                    >
-                                      +
-                                    </Button>
-                                  </Flex>
-
-                                  {/* nft Mint */}
-                                  <Flex
-                                    w='fit-content'
-                                    borderRadius='12px'
-                                    borderColor={buttonBorderColor}
+          <Flex justifyContent={'center'} position='relative' p={12}>
+            <SimpleGrid columns={[1, 1, 1, 1]} spacing={12}>
+              <GridItem>
+                <Tabs>
+                  <TabList>
+                    <Tab>One</Tab>
+                    <Tab>Two</Tab>
+                    <Tab>Three</Tab>
+                  </TabList>
+                  <TabPanels>
+                    <TabPanel>
+                      {/*  mint area */}
+                      {address ? (
+                        <>
+                          <Box>
+                            <chakra.h2 fontSize='3xl' fontWeight='700'>
+                              Mint NFT
+                            </chakra.h2>
+                            <Box display='flex' flexDirection='column' alignItems='flex-start'>
+                              {/* button increase, decrease */}
+                              <Box
+                                display='flex'
+                                flexDirection='column'
+                                alignItems='center'
+                                className='12345'
+                              >
+                                <Flex align='center' justify='center'>
+                                  <Button
+                                    backgroundColor={buttonBackgroundColor}
+                                    borderRadius='5px'
+                                    boxShadow='0px 2px 2px 1px #0f0f0f'
+                                    color='white'
+                                    cursor='pointer'
+                                    fontFamily='inherit'
+                                    padding='15px'
+                                    marginTop='10px'
+                                    _hover={{ bg: btnHover }}
+                                    onClick={handleDecrement}
+                                  >
+                                    -
+                                  </Button>
+                                  <Input
+                                    borderColor={inputBorderColor}
                                     borderWidth='4px'
                                     borderStyle='solid'
+                                    zIndex='-1'
+                                    fontFamily='inherit'
+                                    width='100px'
+                                    height='40px'
+                                    textAlign='center'
+                                    paddingLeft='19px'
+                                    marginTop='10px'
+                                    type='number'
+                                    value={mintAmount}
+                                    onChange={handleInputChange}
+                                  />
+                                  <Button
+                                    backgroundColor={buttonBackgroundColor}
+                                    borderRadius='5px'
+                                    boxShadow='0px 2px 2px 1px #0f0f0f'
+                                    color='white'
+                                    cursor='pointer'
+                                    fontFamily='inherit'
+                                    padding='15px'
+                                    marginTop='10px'
+                                    _hover={{ bg: btnHover }}
+                                    onClick={handleIncrement}
                                   >
-                                    <Web3Button
-                                      contractAddress={TREND_ADDRESS.ERC721A_ADDRESS}
-                                      action={async () => {
-                                        await ERC721A_CONTRACT!.call(
-                                          'publicAuctionMint',
-                                          [mintAmount],
-                                          {
-                                            value: ethers.utils.parseEther(
-                                              (mintAmount * auctionPrice).toString(),
-                                            ),
-                                          },
-                                        );
-                                      }}
-                                      onSuccess={() => {
-                                        toast({
-                                          title: 'NFT Mint 成功',
-                                          status: 'success',
-                                          position: 'top',
-                                          duration: 2000,
-                                          isClosable: true,
-                                        });
-                                      }}
-                                      onError={(error) => {
-                                        console.log(error);
-                                        toast({
-                                          title: 'Oops!',
-                                          status: 'error',
-                                          position: 'top',
-                                          duration: 2000,
-                                          isClosable: true,
-                                        });
-                                      }}
-                                    >
-                                      Mint Now
-                                    </Web3Button>
-                                  </Flex>
-                                </Box>
-                              </Box>
-                            </Box>
-                            <Box ml='20px'>
-                              {/* nft info */}
-                              <Box
-                                fontSize='26px'
-                                letterSpacing='0.5%'
-                                fontFamily='VT323'
-                                textShadow='0 2px 2px #000'
-                                lineHeight={'26px'}
-                                marginTop='20px'
-                              >
-                                <Flex mb='10px'>
-                                  <Text color={textColor}>NFT TotalSupply：</Text>
-                                  <Skeleton w={'100px'} isLoaded={!loadingBalanceOf}>
-                                    {totalSupply?.toString()}
-                                  </Skeleton>
+                                    +
+                                  </Button>
                                 </Flex>
-                              </Box>
-                              <Box
-                                fontSize='26px'
-                                letterSpacing='0.5%'
-                                fontFamily='VT323'
-                                textShadow='0 2px 2px #000'
-                                lineHeight={'26px'}
-                                marginTop='20px'
-                              >
-                                <Flex mb='10px'>
-                                  <Text color={textColor}>Balance of NFT：</Text>
-                                  <Skeleton w={'100px'} isLoaded={!loadingBalanceOf}>
-                                    {balanceOf?.toString()}
-                                  </Skeleton>
-                                </Flex>
-                              </Box>
-                            </Box>
-                          </>
-                        ) : (
-                          <Text
-                            marginTop='70px'
-                            fontSize='30px'
-                            fontWeight='bold'
-                            letterSpacing='-5.5%'
-                            fontFamily='VT323'
-                            textShadow='0 3px #000'
-                            color='#D6517D'
-                          >
-                            You must be connected to Mint
-                          </Text>
-                        )}
-                      </TabPanel>
-                      <TabPanel>
-                        <p>Tab panel two</p>
-                      </TabPanel>
-                      <TabPanel>
-                        <p>Tab panel three</p>
-                      </TabPanel>
-                    </TabPanels>
-                  </Tabs>
-                </GridItem>
-              </SimpleGrid>
-              <ColorModeSwitcher />
-            </Flex>
-          </ChakraProvider>
-        </Flex>
-        <Flex>{/* nft info */}</Flex>
-      </SimpleGrid>
-      <Flex justifyContent={'center'}>
-        {loadingOwnedNFTs && <Spinner size={'xl'} />}
-        <Flex justifyContent='start' flexWrap={'wrap'} className={'aaaaa'}>
-          {images &&
-            images.map((item, index) => {
-              return (
-                <>
-                  <Flex
-                    key={index}
-                    w={'22%'}
-                    flexDirection={'column'}
-                    borderColor={inputBorderColor}
-                    borderWidth='4px'
-                    borderStyle='solid'
-                    borderRadius={'10px'}
-                    ml={'5px'}
-                    mb={'5px'}
-                  >
-                    <Text>{item.id}</Text>
-                    <Flex
-                      w='fit-content'
-                      borderRadius='12px'
-                      borderColor={buttonBorderColor}
-                      borderWidth='4px'
-                      borderStyle='solid'
-                    >
-                      <Web3Button
-                        contractAddress={TREND_ADDRESS.TOKEN_STAKE_ADDRESS}
-                        action={async () => {
-                          await ERC721A_CONTRACT!.call(
-                            'approve',
-                            [TREND_ADDRESS.NFT_STAKE_ADDRESS, item.id],
-                            // {
-                            //   value: ethers.utils.parseEther(stakeAmount.toString()),
-                            // },
-                          );
-                          await NFT_STAKE_CONTRACT!.call(
-                            'stake',
-                            [item.id],
-                            //   {
-                            //   value: ethers.utils.parseEther(stakeAmount.toString()),
-                            // }
-                          );
-                        }}
-                        onSuccess={() => {
-                          setStakeAmount(1);
-                          // setTotalPrice(ethers.utils.parseEther('1'));
-                          toast({
-                            title: 'Stake 成功',
-                            status: 'success',
-                            position: 'top',
-                            duration: 2000,
-                            isClosable: true,
-                          });
-                        }}
-                        onError={(error) => {
-                          setStakeAmount(1);
-                          // setTotalPrice(ethers.utils.parseEther('1'));
-                          toast({
-                            title: error.message,
-                            status: 'error',
-                            position: 'top',
-                            duration: 2000,
-                            isClosable: true,
-                          });
-                        }}
-                      >
-                        Stake Now
-                      </Web3Button>
-                    </Flex>
-                    <Image
-                      key={index}
-                      rounded={'md'}
-                      alt={'NFT image'}
-                      src={item.imgUrl}
-                      objectFit={'cover'}
-                      // w={'25%'}
-                    />
-                  </Flex>
-                </>
-              );
-            })}
-        </Flex>
-      </Flex>
-      <Divider mb='30px' />
-      <Grid
-        templateColumns={{
-          base: 'repeat(1, 1fr)',
-          sm: 'repeat(3, 1fr)',
-          md: 'repeat(3, 1fr)',
-        }}
-        gap={4}
-      >
-        <GridItem colSpan={1}></GridItem>
-        <GridItem colSpan={2}>
-          <Flex>
-            <Box>
-              {address ? (
-                <Box>
-                  <Box
-                    fontSize='26px'
-                    letterSpacing='0.5%'
-                    fontFamily='VT323'
-                    textShadow='0 2px 2px #000'
-                    lineHeight={'26px'}
-                    marginTop='20px'
-                  >
-                    <Flex mb='10px'>
-                      <Text color={textColor}>NFT Staking Supply：</Text>
-                      <Skeleton w={'450px'} isLoaded={!loadingNftStakeTotalSupply}>
-                        {stakingNftTotalSupplyDisplay == 'NaN' ? '' : stakingNftTotalSupplyDisplay}
-                      </Skeleton>
-                    </Flex>
-                    <Flex mb='10px'>
-                      <Text color={textColor}>My NFT Balance：</Text>
-                      <Skeleton w={'450px'} isLoaded={!loadingBalanceOf}>
-                        {balanceOf?.toString() == 'NaN' ? '' : balanceOf?.toString()}
-                      </Skeleton>
-                    </Flex>
-                    <Flex mb='10px'>
-                      <Text color={textColor}>My NFT Staking：</Text>
-                      <Skeleton w={'450px'} isLoaded={!loadingStakingNftBalanceOf}>
-                        {stakingNftBalanceOfDisplay}
-                      </Skeleton>
-                    </Flex>
-                  </Box>
-                </Box>
-              ) : (
-                <Text
-                  marginTop='70px'
-                  fontSize='30px'
-                  fontWeight='bold'
-                  letterSpacing='-5.5%'
-                  fontFamily='VT323'
-                  textShadow='0 3px #000'
-                  color='#D6517D'
-                >
-                  You must be connected to Mint
-                </Text>
-              )}
-            </Box>
-          </Flex>
-        </GridItem>
-      </Grid>
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-        {/* nft stake */}
 
-        {/*<Stack spacing={4}>*/}
-        {/*  <Text*/}
-        {/*    textTransform={'uppercase'}*/}
-        {/*    color={'blue.400'}*/}
-        {/*    fontWeight={600}*/}
-        {/*    fontSize={'sm'}*/}
-        {/*    bg={useColorModeValue('blue.50', 'blue.900')}*/}
-        {/*    p={2}*/}
-        {/*    alignSelf={'flex-start'}*/}
-        {/*    rounded={'md'}*/}
-        {/*  >*/}
-        {/*    Your Nft*/}
-        {/*  </Text>*/}
-        {/*  <Heading>A digital Product design agency</Heading>*/}
-        {/*  <Text color={'gray.500'} fontSize={'lg'}>*/}
-        {/*    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor*/}
-        {/*    invidunt ut labore*/}
-        {/*  </Text>*/}
-        {/*  <Stack*/}
-        {/*    spacing={4}*/}
-        {/*    divider={<StackDivider borderColor={useColorModeValue('gray.100', 'gray.700')} />}*/}
-        {/*  >*/}
-        {/*    <Feature*/}
-        {/*      icon={<Icon as={IoAnalyticsSharp} color={'yellow.500'} w={5} h={5} />}*/}
-        {/*      iconBg={useColorModeValue('yellow.100', 'yellow.900')}*/}
-        {/*      text={'Business Planning'}*/}
-        {/*    />*/}
-        {/*    <Feature*/}
-        {/*      icon={<Icon as={IoLogoBitcoin} color={'green.500'} w={5} h={5} />}*/}
-        {/*      iconBg={useColorModeValue('green.100', 'green.900')}*/}
-        {/*      text={'Financial Planning'}*/}
-        {/*    />*/}
-        {/*    <Feature*/}
-        {/*      icon={<Icon as={IoSearchSharp} color={'purple.500'} w={5} h={5} />}*/}
-        {/*      iconBg={useColorModeValue('purple.100', 'purple.900')}*/}
-        {/*      text={'Market Analysis'}*/}
-        {/*    />*/}
-        {/*  </Stack>*/}
-        {/*</Stack>*/}
-        {/*<Flex>*/}
-        {/*  <Image*/}
-        {/*    rounded={'md'}*/}
-        {/*    alt={'feature image'}*/}
-        {/*    src={*/}
-        {/*      'https://images.unsplash.com/photo-1554200876-56c2f25224fa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'*/}
-        {/*    }*/}
-        {/*    objectFit={'cover'}*/}
-        {/*  />*/}
-        {/*</Flex>*/}
-      </SimpleGrid>
-    </Container>
+                                {/* nft Mint */}
+                                <Flex
+                                  w='fit-content'
+                                  borderRadius='12px'
+                                  borderColor={buttonBorderColor}
+                                  borderWidth='4px'
+                                  borderStyle='solid'
+                                >
+                                  <Web3Button
+                                    contractAddress={TREND_ADDRESS.ERC721A_ADDRESS}
+                                    action={async () => {
+                                      await ERC721A_CONTRACT!.call(
+                                        'publicAuctionMint',
+                                        [mintAmount],
+                                        {
+                                          value: ethers.utils.parseEther(
+                                            (mintAmount * auctionPrice).toString(),
+                                          ),
+                                        },
+                                      );
+                                    }}
+                                    onSuccess={() => {
+                                      toast({
+                                        title: 'NFT Mint 成功',
+                                        status: 'success',
+                                        position: 'top',
+                                        duration: 2000,
+                                        isClosable: true,
+                                      });
+                                    }}
+                                    onError={(error) => {
+                                      console.log(error);
+                                      toast({
+                                        title: 'Oops!',
+                                        status: 'error',
+                                        position: 'top',
+                                        duration: 2000,
+                                        isClosable: true,
+                                      });
+                                    }}
+                                  >
+                                    Mint Now
+                                  </Web3Button>
+                                </Flex>
+                              </Box>
+                            </Box>
+                          </Box>
+                          <Box ml='20px'>
+                            {/* nft info */}
+                            <Box
+                              fontSize='26px'
+                              letterSpacing='0.5%'
+                              fontFamily='VT323'
+                              textShadow='0 2px 2px #000'
+                              lineHeight={'26px'}
+                              marginTop='20px'
+                            >
+                              <Flex mb='10px'>
+                                <Text color={textColor}>NFT TotalSupply：</Text>
+                                <Skeleton w={'100px'} isLoaded={!loadingBalanceOf}>
+                                  {totalSupply?.toString()}
+                                </Skeleton>
+                              </Flex>
+                            </Box>
+                            <Box
+                              fontSize='26px'
+                              letterSpacing='0.5%'
+                              fontFamily='VT323'
+                              textShadow='0 2px 2px #000'
+                              lineHeight={'26px'}
+                              marginTop='20px'
+                            >
+                              <Flex mb='10px'>
+                                <Text color={textColor}>Balance of NFT：</Text>
+                                <Skeleton w={'100px'} isLoaded={!loadingBalanceOf}>
+                                  {balanceOf?.toString()}
+                                </Skeleton>
+                              </Flex>
+                            </Box>
+                          </Box>
+                        </>
+                      ) : (
+                        <Text
+                          marginTop='70px'
+                          fontSize='30px'
+                          fontWeight='bold'
+                          letterSpacing='-5.5%'
+                          fontFamily='VT323'
+                          textShadow='0 3px #000'
+                          color='#D6517D'
+                        >
+                          You must be connected to Mint
+                        </Text>
+                      )}
+                      <Flex justifyContent={'center'}>
+                        {loadingOwnedNFTs && <Spinner size={'xl'} />}
+                        <Flex justifyContent='start' flexWrap={'wrap'} className={'aaaaa'}>
+                          {images &&
+                            images.map((item, index) => {
+                              return (
+                                <>
+                                  <Flex
+                                    key={index}
+                                    w={'22%'}
+                                    flexDirection={'column'}
+                                    borderColor={inputBorderColor}
+                                    borderWidth='4px'
+                                    borderStyle='solid'
+                                    borderRadius={'10px'}
+                                    ml={'5px'}
+                                    mb={'5px'}
+                                  >
+                                    <Text>{item.id}</Text>
+                                    <Flex
+                                      w='fit-content'
+                                      borderRadius='12px'
+                                      borderColor={buttonBorderColor}
+                                      borderWidth='4px'
+                                      borderStyle='solid'
+                                    >
+                                      <Web3Button
+                                        contractAddress={TREND_ADDRESS.TOKEN_STAKE_ADDRESS}
+                                        action={async () => {
+                                          await ERC721A_CONTRACT!.call(
+                                            'approve',
+                                            [TREND_ADDRESS.NFT_STAKE_ADDRESS, item.id],
+                                            // {
+                                            //   value: ethers.utils.parseEther(stakeAmount.toString()),
+                                            // },
+                                          );
+                                          await NFT_STAKE_CONTRACT!.call(
+                                            'stake',
+                                            [item.id],
+                                            //   {
+                                            //   value: ethers.utils.parseEther(stakeAmount.toString()),
+                                            // }
+                                          );
+                                        }}
+                                        onSuccess={() => {
+                                          setStakeAmount(1);
+                                          // setTotalPrice(ethers.utils.parseEther('1'));
+                                          toast({
+                                            title: 'Stake 成功',
+                                            status: 'success',
+                                            position: 'top',
+                                            duration: 2000,
+                                            isClosable: true,
+                                          });
+                                        }}
+                                        onError={(error) => {
+                                          setStakeAmount(1);
+                                          // setTotalPrice(ethers.utils.parseEther('1'));
+                                          toast({
+                                            title: error.message,
+                                            status: 'error',
+                                            position: 'top',
+                                            duration: 2000,
+                                            isClosable: true,
+                                          });
+                                        }}
+                                      >
+                                        Stake Now
+                                      </Web3Button>
+                                    </Flex>
+                                    <Image
+                                      key={index}
+                                      rounded={'md'}
+                                      alt={'NFT image'}
+                                      src={item.imgUrl}
+                                      objectFit={'cover'}
+                                      // w={'25%'}
+                                    />
+                                  </Flex>
+                                </>
+                              );
+                            })}
+                        </Flex>
+                      </Flex>
+                    </TabPanel>
+
+                    <TabPanel>
+                      <p>Tab panel two</p>
+                      <Grid
+                        templateColumns={{
+                          base: 'repeat(1, 1fr)',
+                          sm: 'repeat(3, 1fr)',
+                          md: 'repeat(3, 1fr)',
+                        }}
+                        gap={4}
+                      >
+                        <GridItem colSpan={1}></GridItem>
+                        <GridItem colSpan={2}>
+                          <Flex>
+                            <Box>
+                              {address ? (
+                                <Box>
+                                  <Box
+                                    fontSize='26px'
+                                    letterSpacing='0.5%'
+                                    fontFamily='VT323'
+                                    textShadow='0 2px 2px #000'
+                                    lineHeight={'26px'}
+                                    marginTop='20px'
+                                  >
+                                    <Flex mb='10px'>
+                                      <Text color={textColor}>NFT Staking Supply：</Text>
+                                      <Skeleton w={'450px'} isLoaded={!loadingNftStakeTotalSupply}>
+                                        {stakingNftTotalSupplyDisplay == 'NaN'
+                                          ? ''
+                                          : stakingNftTotalSupplyDisplay}
+                                      </Skeleton>
+                                    </Flex>
+                                    <Flex mb='10px'>
+                                      <Text color={textColor}>My NFT Balance：</Text>
+                                      <Skeleton w={'450px'} isLoaded={!loadingBalanceOf}>
+                                        {balanceOf?.toString() == 'NaN'
+                                          ? ''
+                                          : balanceOf?.toString()}
+                                      </Skeleton>
+                                    </Flex>
+                                    <Flex mb='10px'>
+                                      <Text color={textColor}>My NFT Staking：</Text>
+                                      <Skeleton w={'450px'} isLoaded={!loadingStakingNftBalanceOf}>
+                                        {stakingNftBalanceOfDisplay}
+                                      </Skeleton>
+                                    </Flex>
+                                  </Box>
+                                </Box>
+                              ) : (
+                                <Text
+                                  marginTop='70px'
+                                  fontSize='30px'
+                                  fontWeight='bold'
+                                  letterSpacing='-5.5%'
+                                  fontFamily='VT323'
+                                  textShadow='0 3px #000'
+                                  color='#D6517D'
+                                >
+                                  You must be connected to Mint
+                                </Text>
+                              )}
+                            </Box>
+                          </Flex>
+                        </GridItem>
+                      </Grid>
+                    </TabPanel>
+                    <TabPanel>
+                      <p>Tab panel three</p>
+                    </TabPanel>
+                  </TabPanels>
+                </Tabs>
+              </GridItem>
+            </SimpleGrid>
+            <ColorModeSwitcher />
+          </Flex>
+        </Flex>
+      </ChakraProvider>
+      {/*</SimpleGrid>*/}
+
+      {/*<Divider mb='30px' />*/}
+    </Box>
   );
 }
