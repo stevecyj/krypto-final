@@ -44,6 +44,10 @@ import theme from '@/theme';
 import { ColorModeSwitcher } from '@/theme/ColorModeSwitcher.tsx';
 // import { NFT_STAKE_ADDRESS } from '@/const/contractAddress';
 // import * as TREND_PRICE from '@/const/price.ts';
+//
+import { MerkleTree } from 'merkletreejs';
+import keccak256 from 'keccak256';
+import { whitelist } from '@/const/whitelist.ts';
 
 // interface FeatureProps {
 //   text: string;
@@ -205,6 +209,34 @@ export default function MintNftPage() {
     stakingNftBalanceOf && setStakingNftBalanceOfDisplay(stakingNftBalanceOf.toString());
   }, [stakingNftBalanceOf, loadingStakingNftBalanceOf]);
 
+  // get proof
+  // 透過 merkletreejs 套件產生 merkle tree
+  function getMerkle(whiteList: any) {
+    const leafs = whiteList.map((addr: any) => keccak256(addr));
+    return new MerkleTree(leafs, keccak256, { sortPairs: true });
+  }
+
+  const whitelistMerkleTree = getMerkle(whitelist);
+  console.log('merkle', whitelistMerkleTree);
+  //
+  // 取得 merkle tree 的 root
+  const root = whitelistMerkleTree.getRoot();
+  console.log('root', bufferToBytes32(root));
+  //
+  // 取得 proof
+  function getProof(address: any) {
+    const leaf = keccak256(address);
+    return whitelistMerkleTree.getProof(leaf).map((p) => bufferToBytes32(p.data));
+  }
+  console.log('proof', getProof(address));
+  console.log('address', address);
+
+  // 將 buffer 轉成 bytes32
+  function bufferToBytes32(buffer: any) {
+    // return '0x' + buffer.toString('hex');
+    return '0x' + buffer.toString('hex').padStart(64, '0');
+  }
+
   // toast
   const toast = useToast();
   // button area
@@ -265,7 +297,8 @@ export default function MintNftPage() {
               <GridItem>
                 <Tabs>
                   <TabList>
-                    <Tab>One</Tab>
+                    <Tab>NFT Public Mint</Tab>
+                    <Tab>NFT White List Mint</Tab>
                     <Tab>Two</Tab>
                     <Tab>Three</Tab>
                   </TabList>
@@ -276,7 +309,7 @@ export default function MintNftPage() {
                         <>
                           <Box>
                             <chakra.h2 fontSize='3xl' fontWeight='700'>
-                              Mint NFT
+                              Mint Public NFT
                             </chakra.h2>
                             <Box display='flex' flexDirection='column' alignItems='flex-start'>
                               {/* button increase, decrease */}
@@ -432,86 +465,85 @@ export default function MintNftPage() {
                           {images &&
                             images.map((item, index) => {
                               return (
-                                <>
+                                <Flex
+                                  key={index}
+                                  className={'outer'}
+                                  w={'22%'}
+                                  flexDirection={'column'}
+                                  borderColor={inputBorderColor}
+                                  borderWidth='4px'
+                                  borderStyle='solid'
+                                  borderRadius={'10px'}
+                                  ml={'5px'}
+                                  mb={'5px'}
+                                >
+                                  <Text>{item.id}</Text>
                                   <Flex
-                                    key={index}
-                                    w={'22%'}
-                                    flexDirection={'column'}
-                                    borderColor={inputBorderColor}
+                                    w='fit-content'
+                                    borderRadius='12px'
+                                    borderColor={buttonBorderColor}
                                     borderWidth='4px'
                                     borderStyle='solid'
-                                    borderRadius={'10px'}
-                                    ml={'5px'}
-                                    mb={'5px'}
                                   >
-                                    <Text>{item.id}</Text>
-                                    <Flex
-                                      w='fit-content'
-                                      borderRadius='12px'
-                                      borderColor={buttonBorderColor}
-                                      borderWidth='4px'
-                                      borderStyle='solid'
+                                    <Web3Button
+                                      contractAddress={TREND_ADDRESS.TOKEN_STAKE_ADDRESS}
+                                      action={async () => {
+                                        await ERC721A_CONTRACT!.call(
+                                          'approve',
+                                          [TREND_ADDRESS.NFT_STAKE_ADDRESS, item.id],
+                                          // {
+                                          //   value: ethers.utils.parseEther(stakeAmount.toString()),
+                                          // },
+                                        );
+                                        await NFT_STAKE_CONTRACT!.call(
+                                          'stake',
+                                          [item.id],
+                                          //   {
+                                          //   value: ethers.utils.parseEther(stakeAmount.toString()),
+                                          // }
+                                        );
+                                      }}
+                                      onSuccess={() => {
+                                        setStakeAmount(1);
+                                        // setTotalPrice(ethers.utils.parseEther('1'));
+                                        toast({
+                                          title: 'Stake 成功',
+                                          status: 'success',
+                                          position: 'top',
+                                          duration: 2000,
+                                          isClosable: true,
+                                        });
+                                      }}
+                                      onError={(error) => {
+                                        setStakeAmount(1);
+                                        // setTotalPrice(ethers.utils.parseEther('1'));
+                                        toast({
+                                          title: error.message,
+                                          status: 'error',
+                                          position: 'top',
+                                          duration: 2000,
+                                          isClosable: true,
+                                        });
+                                      }}
                                     >
-                                      <Web3Button
-                                        contractAddress={TREND_ADDRESS.TOKEN_STAKE_ADDRESS}
-                                        action={async () => {
-                                          await ERC721A_CONTRACT!.call(
-                                            'approve',
-                                            [TREND_ADDRESS.NFT_STAKE_ADDRESS, item.id],
-                                            // {
-                                            //   value: ethers.utils.parseEther(stakeAmount.toString()),
-                                            // },
-                                          );
-                                          await NFT_STAKE_CONTRACT!.call(
-                                            'stake',
-                                            [item.id],
-                                            //   {
-                                            //   value: ethers.utils.parseEther(stakeAmount.toString()),
-                                            // }
-                                          );
-                                        }}
-                                        onSuccess={() => {
-                                          setStakeAmount(1);
-                                          // setTotalPrice(ethers.utils.parseEther('1'));
-                                          toast({
-                                            title: 'Stake 成功',
-                                            status: 'success',
-                                            position: 'top',
-                                            duration: 2000,
-                                            isClosable: true,
-                                          });
-                                        }}
-                                        onError={(error) => {
-                                          setStakeAmount(1);
-                                          // setTotalPrice(ethers.utils.parseEther('1'));
-                                          toast({
-                                            title: error.message,
-                                            status: 'error',
-                                            position: 'top',
-                                            duration: 2000,
-                                            isClosable: true,
-                                          });
-                                        }}
-                                      >
-                                        Stake Now
-                                      </Web3Button>
-                                    </Flex>
-                                    <Image
-                                      key={index}
-                                      rounded={'md'}
-                                      alt={'NFT image'}
-                                      src={item.imgUrl}
-                                      objectFit={'cover'}
-                                      // w={'25%'}
-                                    />
+                                      Stake Now
+                                    </Web3Button>
                                   </Flex>
-                                </>
+                                  <Image
+                                    rounded={'md'}
+                                    alt={'NFT image'}
+                                    src={item.imgUrl}
+                                    objectFit={'cover'}
+                                    // w={'25%'}
+                                  />
+                                </Flex>
                               );
                             })}
                         </Flex>
                       </Flex>
                     </TabPanel>
 
+                    <TabPanel>whitelist mint</TabPanel>
                     <TabPanel>
                       <p>Tab panel two</p>
                       <Grid
