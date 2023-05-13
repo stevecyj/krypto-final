@@ -15,6 +15,12 @@ import {
   Skeleton,
   Divider,
   Spinner,
+  ChakraProvider,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
   useColorModeValue,
   useToast,
   GridItem,
@@ -34,6 +40,8 @@ import * as TREND_ADDRESS from '@/const/contractAddress';
 // import { IoAnalyticsSharp, IoLogoBitcoin, IoSearchSharp } from 'react-icons/io5';
 // import { ReactElement } from 'react';
 import { ethers } from 'ethers';
+import theme from '@/theme';
+import { ColorModeSwitcher } from '@/theme/ColorModeSwitcher.tsx';
 // import { NFT_STAKE_ADDRESS } from '@/const/contractAddress';
 // import * as TREND_PRICE from '@/const/price.ts';
 
@@ -247,153 +255,192 @@ export default function MintNftPage() {
 
   // @ts-ignore
   return (
-    <Container maxW={'7xl'} py={12}>
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10} mb='20px'>
-        <Flex flexDirection='row'>
-          {/*  mint area */}
-          {address ? (
-            <>
-              <Box>
-                <chakra.h2 fontSize='3xl' fontWeight='700'>
-                  Mint NFT
-                </chakra.h2>
-                <Box display='flex' flexDirection='column' alignItems='flex-start'>
-                  {/* button increase, decrease */}
-                  <Box display='flex' flexDirection='column' alignItems='center' className='12345'>
-                    <Flex align='center' justify='center'>
-                      <Button
-                        backgroundColor={buttonBackgroundColor}
-                        borderRadius='5px'
-                        boxShadow='0px 2px 2px 1px #0f0f0f'
-                        color='white'
-                        cursor='pointer'
-                        fontFamily='inherit'
-                        padding='15px'
-                        marginTop='10px'
-                        _hover={{ bg: btnHover }}
-                        onClick={handleDecrement}
-                      >
-                        -
-                      </Button>
-                      <Input
-                        borderColor={inputBorderColor}
-                        borderWidth='4px'
-                        borderStyle='solid'
-                        zIndex='-1'
-                        fontFamily='inherit'
-                        width='100px'
-                        height='40px'
-                        textAlign='center'
-                        paddingLeft='19px'
-                        marginTop='10px'
-                        type='number'
-                        value={mintAmount}
-                        onChange={handleInputChange}
-                      />
-                      <Button
-                        backgroundColor={buttonBackgroundColor}
-                        borderRadius='5px'
-                        boxShadow='0px 2px 2px 1px #0f0f0f'
-                        color='white'
-                        cursor='pointer'
-                        fontFamily='inherit'
-                        padding='15px'
-                        marginTop='10px'
-                        _hover={{ bg: btnHover }}
-                        onClick={handleIncrement}
-                      >
-                        +
-                      </Button>
-                    </Flex>
+    <Container maxW={'100vw'} py={12}>
+      <SimpleGrid columns={{ base: 1, md: 1 }} spacing={10} mb='20px'>
+        <Flex flexDirection='row' justifyContent={'center'}>
+          {/* tab */}
+          <ChakraProvider theme={theme}>
+            <Flex justifyContent={'center'} position='relative' h='100vh' p={12}>
+              <SimpleGrid columns={[1, 1, 1, 1]} spacing={12}>
+                <GridItem>
+                  <Tabs>
+                    <TabList>
+                      <Tab>One</Tab>
+                      <Tab>Two</Tab>
+                      <Tab>Three</Tab>
+                    </TabList>
+                    <TabPanels>
+                      <TabPanel>
+                        <p>New default appearance defined by theme</p>
+                        {/*  mint area */}
+                        {address ? (
+                          <>
+                            <Box>
+                              <chakra.h2 fontSize='3xl' fontWeight='700'>
+                                Mint NFT
+                              </chakra.h2>
+                              <Box display='flex' flexDirection='column' alignItems='flex-start'>
+                                {/* button increase, decrease */}
+                                <Box
+                                  display='flex'
+                                  flexDirection='column'
+                                  alignItems='center'
+                                  className='12345'
+                                >
+                                  <Flex align='center' justify='center'>
+                                    <Button
+                                      backgroundColor={buttonBackgroundColor}
+                                      borderRadius='5px'
+                                      boxShadow='0px 2px 2px 1px #0f0f0f'
+                                      color='white'
+                                      cursor='pointer'
+                                      fontFamily='inherit'
+                                      padding='15px'
+                                      marginTop='10px'
+                                      _hover={{ bg: btnHover }}
+                                      onClick={handleDecrement}
+                                    >
+                                      -
+                                    </Button>
+                                    <Input
+                                      borderColor={inputBorderColor}
+                                      borderWidth='4px'
+                                      borderStyle='solid'
+                                      zIndex='-1'
+                                      fontFamily='inherit'
+                                      width='100px'
+                                      height='40px'
+                                      textAlign='center'
+                                      paddingLeft='19px'
+                                      marginTop='10px'
+                                      type='number'
+                                      value={mintAmount}
+                                      onChange={handleInputChange}
+                                    />
+                                    <Button
+                                      backgroundColor={buttonBackgroundColor}
+                                      borderRadius='5px'
+                                      boxShadow='0px 2px 2px 1px #0f0f0f'
+                                      color='white'
+                                      cursor='pointer'
+                                      fontFamily='inherit'
+                                      padding='15px'
+                                      marginTop='10px'
+                                      _hover={{ bg: btnHover }}
+                                      onClick={handleIncrement}
+                                    >
+                                      +
+                                    </Button>
+                                  </Flex>
 
-                    {/* nft Mint */}
-                    <Flex
-                      w='fit-content'
-                      borderRadius='12px'
-                      borderColor={buttonBorderColor}
-                      borderWidth='4px'
-                      borderStyle='solid'
-                    >
-                      <Web3Button
-                        contractAddress={TREND_ADDRESS.ERC721A_ADDRESS}
-                        action={async () => {
-                          await ERC721A_CONTRACT!.call('publicAuctionMint', [mintAmount], {
-                            value: ethers.utils.parseEther((mintAmount * auctionPrice).toString()),
-                          });
-                        }}
-                        onSuccess={() => {
-                          toast({
-                            title: 'NFT Mint 成功',
-                            status: 'success',
-                            position: 'top',
-                            duration: 2000,
-                            isClosable: true,
-                          });
-                        }}
-                        onError={(error) => {
-                          console.log(error);
-                          toast({
-                            title: 'Oops!',
-                            status: 'error',
-                            position: 'top',
-                            duration: 2000,
-                            isClosable: true,
-                          });
-                        }}
-                      >
-                        Mint Now
-                      </Web3Button>
-                    </Flex>
-                  </Box>
-                </Box>
-              </Box>
-              <Box ml='20px'>
-                {/* nft info */}
-                <Box
-                  fontSize='26px'
-                  letterSpacing='0.5%'
-                  fontFamily='VT323'
-                  textShadow='0 2px 2px #000'
-                  lineHeight={'26px'}
-                  marginTop='20px'
-                >
-                  <Flex mb='10px'>
-                    <Text color={textColor}>NFT TotalSupply：</Text>
-                    <Skeleton w={'100px'} isLoaded={!loadingBalanceOf}>
-                      {totalSupply?.toString()}
-                    </Skeleton>
-                  </Flex>
-                </Box>
-                <Box
-                  fontSize='26px'
-                  letterSpacing='0.5%'
-                  fontFamily='VT323'
-                  textShadow='0 2px 2px #000'
-                  lineHeight={'26px'}
-                  marginTop='20px'
-                >
-                  <Flex mb='10px'>
-                    <Text color={textColor}>Balance of NFT：</Text>
-                    <Skeleton w={'100px'} isLoaded={!loadingBalanceOf}>
-                      {balanceOf?.toString()}
-                    </Skeleton>
-                  </Flex>
-                </Box>
-              </Box>
-            </>
-          ) : (
-            <Text
-              marginTop='70px'
-              fontSize='30px'
-              fontWeight='bold'
-              letterSpacing='-5.5%'
-              fontFamily='VT323'
-              textShadow='0 3px #000'
-              color='#D6517D'
-            >
-              You must be connected to Mint
-            </Text>
-          )}
+                                  {/* nft Mint */}
+                                  <Flex
+                                    w='fit-content'
+                                    borderRadius='12px'
+                                    borderColor={buttonBorderColor}
+                                    borderWidth='4px'
+                                    borderStyle='solid'
+                                  >
+                                    <Web3Button
+                                      contractAddress={TREND_ADDRESS.ERC721A_ADDRESS}
+                                      action={async () => {
+                                        await ERC721A_CONTRACT!.call(
+                                          'publicAuctionMint',
+                                          [mintAmount],
+                                          {
+                                            value: ethers.utils.parseEther(
+                                              (mintAmount * auctionPrice).toString(),
+                                            ),
+                                          },
+                                        );
+                                      }}
+                                      onSuccess={() => {
+                                        toast({
+                                          title: 'NFT Mint 成功',
+                                          status: 'success',
+                                          position: 'top',
+                                          duration: 2000,
+                                          isClosable: true,
+                                        });
+                                      }}
+                                      onError={(error) => {
+                                        console.log(error);
+                                        toast({
+                                          title: 'Oops!',
+                                          status: 'error',
+                                          position: 'top',
+                                          duration: 2000,
+                                          isClosable: true,
+                                        });
+                                      }}
+                                    >
+                                      Mint Now
+                                    </Web3Button>
+                                  </Flex>
+                                </Box>
+                              </Box>
+                            </Box>
+                            <Box ml='20px'>
+                              {/* nft info */}
+                              <Box
+                                fontSize='26px'
+                                letterSpacing='0.5%'
+                                fontFamily='VT323'
+                                textShadow='0 2px 2px #000'
+                                lineHeight={'26px'}
+                                marginTop='20px'
+                              >
+                                <Flex mb='10px'>
+                                  <Text color={textColor}>NFT TotalSupply：</Text>
+                                  <Skeleton w={'100px'} isLoaded={!loadingBalanceOf}>
+                                    {totalSupply?.toString()}
+                                  </Skeleton>
+                                </Flex>
+                              </Box>
+                              <Box
+                                fontSize='26px'
+                                letterSpacing='0.5%'
+                                fontFamily='VT323'
+                                textShadow='0 2px 2px #000'
+                                lineHeight={'26px'}
+                                marginTop='20px'
+                              >
+                                <Flex mb='10px'>
+                                  <Text color={textColor}>Balance of NFT：</Text>
+                                  <Skeleton w={'100px'} isLoaded={!loadingBalanceOf}>
+                                    {balanceOf?.toString()}
+                                  </Skeleton>
+                                </Flex>
+                              </Box>
+                            </Box>
+                          </>
+                        ) : (
+                          <Text
+                            marginTop='70px'
+                            fontSize='30px'
+                            fontWeight='bold'
+                            letterSpacing='-5.5%'
+                            fontFamily='VT323'
+                            textShadow='0 3px #000'
+                            color='#D6517D'
+                          >
+                            You must be connected to Mint
+                          </Text>
+                        )}
+                      </TabPanel>
+                      <TabPanel>
+                        <p>Tab panel two</p>
+                      </TabPanel>
+                      <TabPanel>
+                        <p>Tab panel three</p>
+                      </TabPanel>
+                    </TabPanels>
+                  </Tabs>
+                </GridItem>
+              </SimpleGrid>
+              <ColorModeSwitcher />
+            </Flex>
+          </ChakraProvider>
         </Flex>
         <Flex>{/* nft info */}</Flex>
       </SimpleGrid>
