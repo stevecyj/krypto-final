@@ -48,7 +48,7 @@ export default function StakingNFTsPage() {
   // const [whitelistPrice] = useState(0.5);
   const [_tokenIdArr, setTokenIdArr] = useState([]);
   const [images, setImages] = useState([{ id: 0, imgUrl: '' }]);
-  const [stakeImages, setStakeImages] = useState([{ id: 0 }]);
+  const [_stakeImages, setStakeImages] = useState([{ id: 0 }]);
 
   const [_totalStakePrice, _setTotalStakePrice] = useState(ethers.utils.parseEther('1'));
 
