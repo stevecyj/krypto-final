@@ -24,7 +24,7 @@ import {
   useColorModeValue,
   useToast,
   GridItem,
-  Grid,
+  // Grid,
 } from '@chakra-ui/react';
 import {
   useContract,
@@ -44,6 +44,7 @@ import theme from '@/theme';
 import { ColorModeSwitcher } from '@/theme/ColorModeSwitcher.tsx';
 
 import WhitelistMint from '@/components/WhitelistMint.tsx';
+import StakingNFTs from '@/components/StakingNFTs.tsx';
 // import { NFT_STAKE_ADDRESS } from '@/const/contractAddress';
 // import * as TREND_PRICE from '@/const/price.ts';
 //
@@ -69,8 +70,8 @@ export default function MintNftPage() {
 
   // display
   const [_totalNftSupplyDisplay, setTotalNftSupplyDisplay] = useState('0');
-  const [stakingNftTotalSupplyDisplay, setStakingNftTotalSupplyDisplay] = useState('0');
-  const [stakingNftBalanceOfDisplay, setStakingNftBalanceOfDisplay] = useState('0');
+  const [_stakingNftTotalSupplyDisplay, setStakingNftTotalSupplyDisplay] = useState('0');
+  const [_stakingNftBalanceOfDisplay, setStakingNftBalanceOfDisplay] = useState('0');
 
   const { contract: ERC721A_CONTRACT } = useContract(TREND_ADDRESS.ERC721A_ADDRESS);
   const { contract: NFT_STAKE_CONTRACT } = useContract(TREND_ADDRESS.NFT_STAKE_ADDRESS);
@@ -287,7 +288,7 @@ export default function MintNftPage() {
                   <TabList>
                     <Tab>Public Mint NFT </Tab>
                     <Tab>Whitelist Mint NFT </Tab>
-                    <Tab>Two</Tab>
+                    <Tab>Staking NFTs</Tab>
                     <Tab>Three</Tab>
                   </TabList>
                   <TabPanels>
@@ -328,7 +329,7 @@ export default function MintNftPage() {
                                     borderStyle='solid'
                                     zIndex='-1'
                                     fontFamily='inherit'
-                                    width='100%'
+                                    width='100px'
                                     height='40px'
                                     textAlign='center'
                                     paddingLeft='19px'
@@ -538,69 +539,59 @@ export default function MintNftPage() {
                     </TabPanel>
                     <TabPanel>
                       <p>Tab panel two</p>
-                      <Grid
-                        templateColumns={{
-                          base: 'repeat(1, 1fr)',
-                          sm: 'repeat(3, 1fr)',
-                          md: 'repeat(3, 1fr)',
-                        }}
-                        gap={4}
-                      >
-                        <GridItem colSpan={1}></GridItem>
-                        <GridItem colSpan={2}>
-                          <Flex>
+                      {/*<GridItem colSpan={1}></GridItem>*/}
+                      <Flex>
+                        <Box>
+                          {address ? (
                             <Box>
-                              {address ? (
-                                <Box>
-                                  <Box
-                                    fontSize='26px'
-                                    letterSpacing='0.5%'
-                                    fontFamily='VT323'
-                                    textShadow='0 2px 2px #000'
-                                    lineHeight={'26px'}
-                                    marginTop='20px'
-                                  >
-                                    <Flex mb='10px'>
-                                      <Text color={textColor}>NFT Staking Supply：</Text>
-                                      <Skeleton w={'450px'} isLoaded={!loadingNftStakeTotalSupply}>
-                                        {stakingNftTotalSupplyDisplay == 'NaN'
-                                          ? ''
-                                          : stakingNftTotalSupplyDisplay}
-                                      </Skeleton>
-                                    </Flex>
-                                    <Flex mb='10px'>
-                                      <Text color={textColor}>My NFT Balance：</Text>
-                                      <Skeleton w={'450px'} isLoaded={!loadingBalanceOf}>
-                                        {balanceOf?.toString() == 'NaN'
-                                          ? ''
-                                          : balanceOf?.toString()}
-                                      </Skeleton>
-                                    </Flex>
-                                    <Flex mb='10px'>
-                                      <Text color={textColor}>My NFT Staking：</Text>
-                                      <Skeleton w={'450px'} isLoaded={!loadingStakingNftBalanceOf}>
-                                        {stakingNftBalanceOfDisplay}
-                                      </Skeleton>
-                                    </Flex>
-                                  </Box>
-                                </Box>
-                              ) : (
-                                <Text
-                                  marginTop='70px'
-                                  fontSize='30px'
-                                  fontWeight='bold'
-                                  letterSpacing='-5.5%'
-                                  fontFamily='VT323'
-                                  textShadow='0 3px #000'
-                                  color='#D6517D'
-                                >
-                                  You must be connected to Mint
-                                </Text>
-                              )}
+                              <Box
+                                fontSize='26px'
+                                letterSpacing='0.5%'
+                                fontFamily='VT323'
+                                textShadow='0 2px 2px #000'
+                                lineHeight={'26px'}
+                                marginTop='20px'
+                              >
+                                {/*<Flex mb='10px'>*/}
+                                {/*  <Text color={textColor}>NFT Staking Supply：</Text>*/}
+                                {/*  <Skeleton w={'450px'} isLoaded={!loadingNftStakeTotalSupply}>*/}
+                                {/*    {stakingNftTotalSupplyDisplay == 'NaN'*/}
+                                {/*      ? ''*/}
+                                {/*      : stakingNftTotalSupplyDisplay}*/}
+                                {/*  </Skeleton>*/}
+                                {/*</Flex>*/}
+                                {/*<Flex mb='10px'>*/}
+                                {/*  <Text color={textColor}>My NFT Balance：</Text>*/}
+                                {/*  <Skeleton w={'450px'} isLoaded={!loadingBalanceOf}>*/}
+                                {/*    {balanceOf?.toString() == 'NaN'*/}
+                                {/*      ? ''*/}
+                                {/*      : balanceOf?.toString()}*/}
+                                {/*  </Skeleton>*/}
+                                {/*</Flex>*/}
+                                {/*<Flex mb='10px'>*/}
+                                {/*  <Text color={textColor}>My NFT Staking：</Text>*/}
+                                {/*  <Skeleton w={'450px'} isLoaded={!loadingStakingNftBalanceOf}>*/}
+                                {/*    {stakingNftBalanceOfDisplay}*/}
+                                {/*  </Skeleton>*/}
+                                {/*</Flex>*/}
+                              </Box>
                             </Box>
-                          </Flex>
-                        </GridItem>
-                      </Grid>
+                          ) : (
+                            <Text
+                              marginTop='70px'
+                              fontSize='30px'
+                              fontWeight='bold'
+                              letterSpacing='-5.5%'
+                              fontFamily='VT323'
+                              textShadow='0 3px #000'
+                              color='#D6517D'
+                            >
+                              You must be connected to Mint
+                            </Text>
+                          )}
+                        </Box>
+                        <StakingNFTs />
+                      </Flex>
                     </TabPanel>
                     <TabPanel>
                       <p>Tab panel three</p>
