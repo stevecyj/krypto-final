@@ -42,6 +42,8 @@ import * as TREND_ADDRESS from '@/const/contractAddress';
 import { ethers } from 'ethers';
 import theme from '@/theme';
 import { ColorModeSwitcher } from '@/theme/ColorModeSwitcher.tsx';
+
+import WhitelistMint from '@/components/WhitelistMint.tsx';
 // import { NFT_STAKE_ADDRESS } from '@/const/contractAddress';
 // import * as TREND_PRICE from '@/const/price.ts';
 //
@@ -283,8 +285,8 @@ export default function MintNftPage() {
               <GridItem>
                 <Tabs>
                   <TabList>
-                    <Tab>NFT Public Mint</Tab>
-                    <Tab>NFT White List Mint</Tab>
+                    <Tab>Public Mint NFT </Tab>
+                    <Tab>Whitelist Mint NFT </Tab>
                     <Tab>Two</Tab>
                     <Tab>Three</Tab>
                   </TabList>
@@ -295,7 +297,7 @@ export default function MintNftPage() {
                         <>
                           <Box>
                             <chakra.h2 fontSize='3xl' fontWeight='700'>
-                              Mint Public NFT
+                              Public Mint NFT
                             </chakra.h2>
                             <Box display='flex' flexDirection='column' alignItems='flex-start'>
                               {/* button increase, decrease */}
@@ -531,7 +533,9 @@ export default function MintNftPage() {
                       </Flex>
                     </TabPanel>
 
-                    <TabPanel>whitelist mint</TabPanel>
+                    <TabPanel>
+                      <WhitelistMint />
+                    </TabPanel>
                     <TabPanel>
                       <p>Tab panel two</p>
                       <Grid
