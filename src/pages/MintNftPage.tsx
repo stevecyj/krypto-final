@@ -328,7 +328,7 @@ export default function MintNftPage() {
                                     borderStyle='solid'
                                     zIndex='-1'
                                     fontFamily='inherit'
-                                    width='100px'
+                                    width='100%'
                                     height='40px'
                                     textAlign='center'
                                     paddingLeft='19px'

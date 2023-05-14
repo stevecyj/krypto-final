@@ -1,7 +1,7 @@
 import {
   Box,
   VStack,
-  Button,
+  // Button,
   Flex,
   Divider,
   chakra,
@@ -24,13 +24,13 @@ import {
 import theme from '@/theme';
 import { ColorModeSwitcher } from '@/theme/ColorModeSwitcher';
 import { useContract, useContractRead, Web3Button, useAddress } from '@thirdweb-dev/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEventHandler } from 'react';
 import * as TREND_ADDRESS from '@/const/contractAddress';
 import * as TREND_PRICE from '@/const/price';
 import { ethers } from 'ethers';
 import './MintTokenPage.scss';
 
-export default function GridListWithCTA() {
+export default function MintTokenPage() {
   const address = useAddress();
   const [mintAmount, setMintAmount] = useState(1);
   const [stakeAmount, setStakeAmount] = useState(1);
@@ -96,15 +96,23 @@ export default function GridListWithCTA() {
 
   useEffect(() => {
     stakingBalanceOf &&
-      // @ts-ignore
-      setStakingBalanceOfDisplay((stakingBalanceOf / ethers.utils.parseEther('1')).toString());
+      console.log(
+        'stakingBalanceOf',
+        stakingBalanceOf,
+        'loadingStakingBalanceOf',
+        loadingStakingBalanceOf,
+      );
+    // @ts-ignore
+    setStakingBalanceOfDisplay((stakingBalanceOf / ethers.utils.parseEther('1')).toString());
+    console.log('stakingBalanceOfDisplay', stakingBalanceOfDisplay);
   }, [stakingBalanceOf, loadingStakingBalanceOf]);
 
   // transfer to display
   useEffect(() => {
     console.log('balanceOf', balanceOf?.toString());
     // @ts-ignore
-    setBalanceOfDisplay((balanceOf / ethers.utils.parseEther('1')).toString());
+    setBalanceOfDisplay((balanceOf / ethers.utils.parseUnits('1.0', 18)).toString());
+    // setBalanceOfDisplay((balanceOf / ethers.utils.parseEther('1')).toString());
   }, [balanceOf]);
 
   useEffect(() => {
@@ -121,52 +129,120 @@ export default function GridListWithCTA() {
   const toast = useToast();
 
   // button area
-  const buttonBackgroundColor = useColorModeValue('green.600', 'green.300');
-  const btnHover = useColorModeValue('red.600', 'red.300');
+  // const buttonBackgroundColor = useColorModeValue('green.600', 'green.300');
+  // const btnHover = useColorModeValue('red.600', 'red.300');
   const inputBorderColor = useColorModeValue('green.600', 'green.300');
   const buttonBorderColor = useColorModeValue('green.600', 'green.300');
   const textColor = useColorModeValue('green.600', 'green.300');
-  const handleDecrement = () => {
-    if (mintAmount <= 1) return;
+  // const handleDecrement = () => {
+  //   if (mintAmount <= 1) return;
+  //
+  //   setMintAmount(mintAmount - 1);
+  //   setTotalPrice(ethers.utils.parseEther((mintAmount - 1).toString()));
+  // };
+  //
+  // const handleIncrement = () => {
+  //   // if (mintAmount >= 3) return;
+  //   setMintAmount(mintAmount + 1);
+  //   setTotalPrice(ethers.utils.parseEther((mintAmount + 1).toString()));
+  // };
 
-    setMintAmount(mintAmount - 1);
-    setTotalPrice(ethers.utils.parseEther((mintAmount - 1).toString()));
-  };
-
-  const handleIncrement = () => {
-    // if (mintAmount >= 3) return;
-    setMintAmount(mintAmount + 1);
-    setTotalPrice(ethers.utils.parseEther((mintAmount + 1).toString()));
-  };
   // handleInput
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e: any, type: any) => {
+    console.log('inputChange');
     // if (mintAmount == 0) {
     //   setMintAmount(1);
     // }
-    console.log(mintAmount, e.target.value);
+    let val = e.target.value;
+    const t = val.charAt(0);
+    if (type === 'int') {
+      // 限制只能输入数字
+      val = val.replace(/[^\d+]/g, '');
+    } else {
+      // 先把非数字的都替换掉，除了数字和.
+      val = val.replace(/[^\d.]/g, '');
+      // 保证只有出现一个.而没有多个.
+      val = val.replace(/\.{2,}/g, '.');
+      // 必须保证第一个为数字而不是.
+      val = val.replace(/^\./g, '');
+      // 保证.只出现一次，而不能出现两次以上
+      val = val.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.');
+    }
+    // 负数处理
+    if (t === '-') {
+      e.target.value = '-' + val;
+    } else {
+      e.target.value = val;
+    }
+
+    console.log('mintAmount', e.target.value);
     setMintAmount(Number(e.target.value));
   };
+  // @ts-ignore
+  const changeEventHandler: ChangeEventHandler<HTMLInputElement> = handleInputChange;
   useEffect(() => {
-    if (mintAmount < 1) {
-      setMintAmount(1);
-    }
+    // if (mintAmount < 1) {
+    //   setMintAmount(1);
+    // }
     setTotalPrice(ethers.utils.parseEther(mintAmount.toString()));
     console.log('mintAmount', mintAmount);
   }, [mintAmount]);
 
   // stake handle
-  const handleStakeDecrement = () => {
-    if (stakeAmount <= 1) return;
+  // const handleStakeDecrement = () => {
+  //   if (stakeAmount <= 1) return;
+  //
+  //   setStakeAmount(stakeAmount - 1);
+  //   setTotalStakePrice(ethers.utils.parseEther((stakeAmount - 1).toString()));
+  // };
+  //
+  // const handleStakeIncrement = () => {
+  //   // if (mintAmount >= 3) return;
+  //   setStakeAmount(stakeAmount + 1);
+  //   setTotalStakePrice(ethers.utils.parseEther((stakeAmount + 1).toString()));
+  // };
 
-    setStakeAmount(stakeAmount - 1);
-    setTotalStakePrice(ethers.utils.parseEther((stakeAmount - 1).toString()));
-  };
+  // stake handle input
+  const handleStakeInputChange = (e: any, type: any) => {
+    // if (mintAmount == 0) {
+    //   setMintAmount(1);
+    // }
+    let val = e.target.value;
+    const t = val.charAt(0);
+    if (type === 'int') {
+      // 限制只能输入数字
+      val = val.replace(/[^\d+]/g, '');
+    } else {
+      // 先把非数字的都替换掉，除了数字和.
+      val = val.replace(/[^\d.]/g, '');
+      // 保证只有出现一个.而没有多个.
+      val = val.replace(/\.{2,}/g, '.');
+      // 必须保证第一个为数字而不是.
+      val = val.replace(/^\./g, '');
+      // 保证.只出现一次，而不能出现两次以上
+      val = val.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.');
+    }
+    // 负数处理
+    if (t === '-') {
+      e.target.value = '-' + val;
+    } else {
+      e.target.value = val;
+    }
 
-  const handleStakeIncrement = () => {
-    // if (mintAmount >= 3) return;
-    setStakeAmount(stakeAmount + 1);
-    setTotalStakePrice(ethers.utils.parseEther((stakeAmount + 1).toString()));
+    setStakeAmount(Number(e.target.value));
+    console.log('stakeTokenAmount', e.target.value);
+    // @ts-ignore
   };
+  // @ts-ignore
+  const handleStakeChangeEventHandler: ChangeEventHandler<HTMLInputElement> =
+    handleStakeInputChange;
+  useEffect(() => {
+    // if (mintAmount < 1) {
+    //   setMintAmount(1);
+    // }
+    setTotalStakePrice(ethers.utils.parseEther(stakeAmount.toString()));
+    // console.log('totalStakePrice', totalStakePrice);
+  }, [stakeAmount]);
 
   return (
     <Box as={Container} maxW='100vw' mt={14} p={4}>
@@ -207,20 +283,20 @@ export default function GridListWithCTA() {
                                 className='12345'
                               >
                                 <Flex align='center' justify='center'>
-                                  <Button
-                                    backgroundColor={buttonBackgroundColor}
-                                    borderRadius='5px'
-                                    boxShadow='0px 2px 2px 1px #0f0f0f'
-                                    color='white'
-                                    cursor='pointer'
-                                    fontFamily='inherit'
-                                    padding='15px'
-                                    marginTop='10px'
-                                    _hover={{ bg: btnHover }}
-                                    onClick={handleDecrement}
-                                  >
-                                    -
-                                  </Button>
+                                  {/*<Button*/}
+                                  {/*  backgroundColor={buttonBackgroundColor}*/}
+                                  {/*  borderRadius='5px'*/}
+                                  {/*  boxShadow='0px 2px 2px 1px #0f0f0f'*/}
+                                  {/*  color='white'*/}
+                                  {/*  cursor='pointer'*/}
+                                  {/*  fontFamily='inherit'*/}
+                                  {/*  padding='15px'*/}
+                                  {/*  marginTop='10px'*/}
+                                  {/*  _hover={{ bg: btnHover }}*/}
+                                  {/*  onClick={handleDecrement}*/}
+                                  {/*>*/}
+                                  {/*  -*/}
+                                  {/*</Button>*/}
                                   <Input
                                     // readOnly
                                     borderColor={inputBorderColor}
@@ -228,29 +304,29 @@ export default function GridListWithCTA() {
                                     borderStyle='solid'
                                     zIndex='-1'
                                     fontFamily='inherit'
-                                    width='100px'
+                                    width='100%'
                                     height='40px'
                                     textAlign='center'
                                     paddingLeft='19px'
                                     marginTop='10px'
                                     type='number'
                                     value={mintAmount}
-                                    onChange={handleInputChange}
+                                    onChange={changeEventHandler}
                                   />
-                                  <Button
-                                    backgroundColor={buttonBackgroundColor}
-                                    borderRadius='5px'
-                                    boxShadow='0px 2px 2px 1px #0f0f0f'
-                                    color='white'
-                                    cursor='pointer'
-                                    fontFamily='inherit'
-                                    padding='15px'
-                                    marginTop='10px'
-                                    _hover={{ bg: btnHover }}
-                                    onClick={handleIncrement}
-                                  >
-                                    +
-                                  </Button>
+                                  {/*<Button*/}
+                                  {/*  backgroundColor={buttonBackgroundColor}*/}
+                                  {/*  borderRadius='5px'*/}
+                                  {/*  boxShadow='0px 2px 2px 1px #0f0f0f'*/}
+                                  {/*  color='white'*/}
+                                  {/*  cursor='pointer'*/}
+                                  {/*  fontFamily='inherit'*/}
+                                  {/*  padding='15px'*/}
+                                  {/*  marginTop='10px'*/}
+                                  {/*  _hover={{ bg: btnHover }}*/}
+                                  {/*  onClick={handleIncrement}*/}
+                                  {/*>*/}
+                                  {/*  +*/}
+                                  {/*</Button>*/}
                                 </Flex>
 
                                 {/* Token Mint */}
@@ -266,7 +342,9 @@ export default function GridListWithCTA() {
                                     action={async () => {
                                       await ERC20_CONTRACT!.call('publicMint', [totalPrice], {
                                         value: ethers.utils.parseEther(
-                                          (mintAmount * TREND_PRICE.TOKEN_PRICE).toString(),
+                                          (mintAmount * TREND_PRICE.TOKEN_PRICE)
+                                            .toFixed(18)
+                                            .toString(),
                                         ),
                                       });
                                     }}
@@ -398,50 +476,49 @@ export default function GridListWithCTA() {
                                 className='12345'
                               >
                                 <Flex align='center' justify='center'>
-                                  <Button
-                                    backgroundColor={buttonBackgroundColor}
-                                    borderRadius='5px'
-                                    boxShadow='0px 2px 2px 1px #0f0f0f'
-                                    color='white'
-                                    cursor='pointer'
-                                    fontFamily='inherit'
-                                    padding='15px'
-                                    marginTop='10px'
-                                    _hover={{ bg: btnHover }}
-                                    onClick={handleStakeDecrement}
-                                  >
-                                    -
-                                  </Button>
+                                  {/*<Button*/}
+                                  {/*  backgroundColor={buttonBackgroundColor}*/}
+                                  {/*  borderRadius='5px'*/}
+                                  {/*  boxShadow='0px 2px 2px 1px #0f0f0f'*/}
+                                  {/*  color='white'*/}
+                                  {/*  cursor='pointer'*/}
+                                  {/*  fontFamily='inherit'*/}
+                                  {/*  padding='15px'*/}
+                                  {/*  marginTop='10px'*/}
+                                  {/*  _hover={{ bg: btnHover }}*/}
+                                  {/*  onClick={handleStakeDecrement}*/}
+                                  {/*>*/}
+                                  {/*  -*/}
+                                  {/*</Button>*/}
                                   <Input
-                                    readOnly
                                     borderColor={inputBorderColor}
                                     borderWidth='4px'
                                     borderStyle='solid'
                                     zIndex='-1'
                                     fontFamily='inherit'
-                                    width='100px'
+                                    width='100%'
                                     height='40px'
                                     textAlign='center'
                                     paddingLeft='19px'
                                     marginTop='10px'
                                     type='number'
                                     value={stakeAmount}
-                                    // onChange={handleInputChange}
+                                    onChange={handleStakeChangeEventHandler}
                                   />
-                                  <Button
-                                    backgroundColor={buttonBackgroundColor}
-                                    borderRadius='5px'
-                                    boxShadow='0px 2px 2px 1px #0f0f0f'
-                                    color='white'
-                                    cursor='pointer'
-                                    fontFamily='inherit'
-                                    padding='15px'
-                                    marginTop='10px'
-                                    _hover={{ bg: btnHover }}
-                                    onClick={handleStakeIncrement}
-                                  >
-                                    +
-                                  </Button>
+                                  {/*<Button*/}
+                                  {/*  backgroundColor={buttonBackgroundColor}*/}
+                                  {/*  borderRadius='5px'*/}
+                                  {/*  boxShadow='0px 2px 2px 1px #0f0f0f'*/}
+                                  {/*  color='white'*/}
+                                  {/*  cursor='pointer'*/}
+                                  {/*  fontFamily='inherit'*/}
+                                  {/*  padding='15px'*/}
+                                  {/*  marginTop='10px'*/}
+                                  {/*  _hover={{ bg: btnHover }}*/}
+                                  {/*  onClick={handleStakeIncrement}*/}
+                                  {/*>*/}
+                                  {/*  +*/}
+                                  {/*</Button>*/}
                                 </Flex>
 
                                 {/* Token Mint */}

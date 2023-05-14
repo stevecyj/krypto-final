@@ -18,7 +18,7 @@ import {
   Web3Button,
   useOwnedNFTs,
 } from '@thirdweb-dev/react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import * as TREND_ADDRESS from '@/const/contractAddress';
 // import * as TREND_PRICE from '@/const/price';
 // import { ethers } from 'ethers';
@@ -38,13 +38,14 @@ interface image {
   imgUrl: string;
 }
 
-export default function MintNftPage() {
+export default function WhitelistMintNftPage() {
   const address = useAddress();
   const [mintAmount, setMintAmount] = useState(1);
   // const [whitelistMintAmount, setWhitelistMintAmount] = useState(1);
+  const [proof, setProof] = useState([]);
   const [_stakeAmount, setStakeAmount] = useState(1);
   const [inputValue, setInputValue] = useState('');
-  const [auctionPrice] = useState(0.01);
+  const [whitelistPrice] = useState(0.5);
   const [_tokenIdArr, setTokenIdArr] = useState([]);
   const [images, setImages] = useState([{ id: 0, imgUrl: '' }]);
 
@@ -175,26 +176,53 @@ export default function MintNftPage() {
   }, [stakingNftBalanceOf, loadingStakingNftBalanceOf]);
 
   // get proof
-  // 透過 merkletreejs 套件產生 merkle tree
-  function getMerkle(whiteList: any) {
-    const leafs = whiteList.map((addr: any) => keccak256(addr));
-    return new MerkleTree(leafs, keccak256, { sortPairs: true });
-  }
+  // // 透過 merkletreejs 套件產生 merkle tree
+  // function getMerkle(whiteList: any) {
+  //   const leafs = whiteList.map((addr: any) => keccak256(addr));
+  //   return new MerkleTree(leafs, keccak256, { sortPairs: true });
+  // }
+  //
+  // const whitelistMerkleTree = getMerkle(whitelist);
+  // console.log('merkle', whitelistMerkleTree);
+  // //
+  // // 取得 merkle tree 的 root
+  // const root = whitelistMerkleTree.getRoot();
+  // console.log('root', bufferToBytes32(root));
+  // //
+  // // 取得 proof
+  // function getProof(address: any) {
+  //   const leaf = keccak256(address);
+  //   const whitelistProof = whitelistMerkleTree.getProof(leaf).map((p) => bufferToBytes32(p.data));
+  //   return whitelistProof;
+  // }
+  // console.log('proof', getProof(address));
+  // console.log('address', address);
 
-  const whitelistMerkleTree = getMerkle(whitelist);
-  console.log('merkle', whitelistMerkleTree);
-  //
-  // 取得 merkle tree 的 root
-  const root = whitelistMerkleTree.getRoot();
-  console.log('root', bufferToBytes32(root));
-  //
-  // 取得 proof
-  function getProof(address: any) {
-    const leaf = keccak256(address);
-    return whitelistMerkleTree.getProof(leaf).map((p) => bufferToBytes32(p.data));
-  }
-  console.log('proof', getProof(address));
-  console.log('address', address);
+  useEffect(() => {
+    // 透過 merkletreejs 套件產生 merkle tree
+    function getMerkle(whiteList: any) {
+      const leafs = whiteList.map((addr: any) => keccak256(addr));
+      return new MerkleTree(leafs, keccak256, { sortPairs: true });
+    }
+
+    const whitelistMerkleTree = getMerkle(whitelist);
+    console.log('merkle', whitelistMerkleTree);
+    //
+    // 取得 merkle tree 的 root
+    const root = whitelistMerkleTree.getRoot();
+    console.log('root', bufferToBytes32(root));
+    //
+    // 取得 proof
+    function getProof(address: any) {
+      const leaf = keccak256(address);
+      const whitelistProof = whitelistMerkleTree.getProof(leaf).map((p) => bufferToBytes32(p.data));
+      // @ts-ignore
+      setProof(whitelistProof);
+      return whitelistProof;
+    }
+    console.log('proof', getProof(address));
+    console.log('address', address);
+  }, [address]);
 
   // 將 buffer 轉成 bytes32
   function bufferToBytes32(buffer: any) {
@@ -305,8 +333,8 @@ export default function MintNftPage() {
                   <Web3Button
                     contractAddress={TREND_ADDRESS.ERC721A_ADDRESS}
                     action={async () => {
-                      await ERC721A_CONTRACT!.call('whitelistMint', [mintAmount], {
-                        value: ethers.utils.parseEther((mintAmount * auctionPrice).toString()),
+                      await ERC721A_CONTRACT!.call('whitelistMint', [proof, mintAmount], {
+                        value: ethers.utils.parseEther((mintAmount * whitelistPrice).toString()),
                       });
                     }}
                     onSuccess={() => {
@@ -388,7 +416,7 @@ export default function MintNftPage() {
         {loadingOwnedNFTs && <Spinner size={'xl'} />}
         <Flex justifyContent='start' flexWrap={'wrap'} className={'aaaaa'}>
           {images &&
-            images.map((item, index) => {
+            images.map((item: any, index: any) => {
               return (
                 <Flex
                   key={index}
