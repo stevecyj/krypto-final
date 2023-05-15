@@ -161,8 +161,8 @@ export default function StakingNFTsPage() {
       }
       // console.log('tmpArr', tmpArr);
       // @ts-ignore
-      setStakeImageMetadata(tmpArr.reverse());
     });
+    setStakeImageMetadata(tmpArr.reverse());
     // const stakeNFTimages: { id: number }[] | undefined =
     //   stakeOwnedNFTs &&
     //   stakeOwnedNFTs!
@@ -174,7 +174,7 @@ export default function StakingNFTsPage() {
     //     .reverse();
     // @ts-ignore
     // setStakeImages(stakeNFTimages);
-  });
+  }, [stakeOwnedNFTs, loadingStakeOwnedNFTs]);
 
   // get stake nft img
   const { data: stakeNFTs, isLoading: loadingStakeNFTs } = useContractRead(
@@ -296,6 +296,52 @@ export default function StakingNFTsPage() {
                     {stakingNftBalanceOfDisplay}
                   </Skeleton>
                 </Flex>
+                <Flex
+                  mb='10px'
+                  w='fit-content'
+                  borderRadius='12px'
+                  borderColor={buttonBorderColor}
+                  borderWidth='4px'
+                  borderStyle='solid'
+                >
+                  <Web3Button
+                    contractAddress={TREND_ADDRESS.NFT_STAKE_ADDRESS}
+                    action={async () => {
+                      await NFT_STAKE_CONTRACT!.call(
+                        'getReward',
+                        // [item.id],
+                        //   {
+                        //   value: ethers.utils.parseEther(stakeAmount.toString()),
+                        // }
+                      );
+                    }}
+                    onSuccess={() => {
+                      setStakeAmount(1);
+                      // setTotalPrice(ethers.utils.parseEther('1'));
+                      toast({
+                        title: 'Stake 成功',
+                        status: 'success',
+                        position: 'top',
+                        duration: 2000,
+                        isClosable: true,
+                      });
+                    }}
+                    onError={(error) => {
+                      // setStakeAmount(1);
+                      // setTotalPrice(ethers.utils.parseEther('1'));
+                      console.log('error', error.message);
+                      toast({
+                        title: error.message,
+                        status: 'error',
+                        position: 'top',
+                        duration: 2000,
+                        isClosable: true,
+                      });
+                    }}
+                  >
+                    Get Reward
+                  </Web3Button>
+                </Flex>
               </Box>
             </Box>
           ) : (
@@ -341,17 +387,17 @@ export default function StakingNFTsPage() {
                       borderStyle='solid'
                     >
                       <Web3Button
-                        contractAddress={TREND_ADDRESS.TOKEN_STAKE_ADDRESS}
+                        contractAddress={TREND_ADDRESS.NFT_STAKE_ADDRESS}
                         action={async () => {
-                          await ERC721A_CONTRACT!.call(
-                            'approve',
-                            [TREND_ADDRESS.NFT_STAKE_ADDRESS, item.id],
-                            // {
-                            //   value: ethers.utils.parseEther(stakeAmount.toString()),
-                            // },
-                          );
+                          // await ERC721A_CONTRACT!.call(
+                          //   'approve',
+                          //   [TREND_ADDRESS.NFT_STAKE_ADDRESS, item.id],
+                          //   // {
+                          //   //   value: ethers.utils.parseEther(stakeAmount.toString()),
+                          //   // },
+                          // );
                           await NFT_STAKE_CONTRACT!.call(
-                            'stake',
+                            'withdraw',
                             [item.id],
                             //   {
                             //   value: ethers.utils.parseEther(stakeAmount.toString()),
@@ -362,7 +408,7 @@ export default function StakingNFTsPage() {
                           setStakeAmount(1);
                           // setTotalPrice(ethers.utils.parseEther('1'));
                           toast({
-                            title: 'Stake 成功',
+                            title: 'UnStake 成功',
                             status: 'success',
                             position: 'top',
                             duration: 2000,
@@ -381,7 +427,7 @@ export default function StakingNFTsPage() {
                           });
                         }}
                       >
-                        Stake Now
+                        UnStake Now
                       </Web3Button>
                     </Flex>
                     <Image
