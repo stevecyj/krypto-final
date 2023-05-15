@@ -571,6 +571,54 @@ export default function MintTokenPage() {
                                     Stake Now
                                   </Web3Button>
                                 </Flex>
+
+                                {/* unstake */}
+                                <Flex
+                                  mb='10px'
+                                  w='fit-content'
+                                  borderRadius='12px'
+                                  borderColor={buttonBorderColor}
+                                  borderWidth='4px'
+                                  borderStyle='solid'
+                                >
+                                  <Web3Button
+                                    contractAddress={TREND_ADDRESS.TOKEN_STAKE_ADDRESS}
+                                    action={async () => {
+                                      await TOKEN_STAKE_CONTRACT!.call(
+                                        'getReward',
+                                        // [item.id],
+                                        //   {
+                                        //   value: ethers.utils.parseEther(stakeAmount.toString()),
+                                        // }
+                                      );
+                                    }}
+                                    onSuccess={() => {
+                                      setStakeAmount(1);
+                                      // setTotalPrice(ethers.utils.parseEther('1'));
+                                      toast({
+                                        title: 'Get Reward Success',
+                                        status: 'success',
+                                        position: 'top',
+                                        duration: 2000,
+                                        isClosable: true,
+                                      });
+                                    }}
+                                    onError={(error) => {
+                                      // setStakeAmount(1);
+                                      // setTotalPrice(ethers.utils.parseEther('1'));
+                                      console.log('error', error.message);
+                                      toast({
+                                        title: error.message,
+                                        status: 'error',
+                                        position: 'top',
+                                        duration: 2000,
+                                        isClosable: true,
+                                      });
+                                    }}
+                                  >
+                                    Get Reward
+                                  </Web3Button>
+                                </Flex>
                               </Box>
                             </Box>
                           ) : (

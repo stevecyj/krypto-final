@@ -336,7 +336,7 @@ export default function StakingNFTsPage() {
                       setStakeAmount(1);
                       // setTotalPrice(ethers.utils.parseEther('1'));
                       toast({
-                        title: 'Stake 成功',
+                        title: 'Get Reward Success!',
                         status: 'success',
                         position: 'top',
                         duration: 2000,
@@ -371,7 +371,7 @@ export default function StakingNFTsPage() {
               textShadow='0 3px #000'
               color='#D6517D'
             >
-              You must be connected to Mint
+              You must be connected
             </Text>
           )}
         </Box>
