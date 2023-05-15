@@ -153,15 +153,32 @@ export default function StakingNFTsPage() {
     stakeOwnedNFTs &&
       console.log('stakeOwnedNFTs', stakeOwnedNFTs, 'loadingStakeOwnedNFTs', loadingStakeOwnedNFTs);
     const tmpArr: any[] = [];
-    stakeOwnedNFTs?.forEach((item) => {
-      if (_stakeImageIds.includes(item.metadata.id)) {
-        // @ts-ignore
-        const image: image = { id: item.metadata.id, imgUrl: item.metadata.image };
-        tmpArr.push(image);
-      }
-      // console.log('tmpArr', tmpArr);
-      // @ts-ignore
-    });
+    {
+      address ? (
+        stakeOwnedNFTs?.forEach((item) => {
+          if (_stakeImageIds.includes(item.metadata.id)) {
+            // @ts-ignore
+            const image: image = { id: item.metadata.id, imgUrl: item.metadata.image };
+            tmpArr.push(image);
+          }
+          // console.log('tmpArr', tmpArr);
+          // @ts-ignore
+        })
+      ) : (
+        <Text
+          marginTop='70px'
+          fontSize='30px'
+          fontWeight='bold'
+          letterSpacing='-5.5%'
+          fontFamily='VT323'
+          textShadow='0 3px #000'
+          color='#D6517D'
+        >
+          !!!
+        </Text>
+      );
+    }
+
     setStakeImageMetadata(tmpArr.reverse());
     // const stakeNFTimages: { id: number }[] | undefined =
     //   stakeOwnedNFTs &&
