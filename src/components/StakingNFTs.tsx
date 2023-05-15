@@ -152,7 +152,7 @@ export default function StakingNFTsPage() {
   useEffect(() => {
     stakeOwnedNFTs &&
       console.log('stakeOwnedNFTs', stakeOwnedNFTs, 'loadingStakeOwnedNFTs', loadingStakeOwnedNFTs);
-    let tmpArr: any[] = [];
+    const tmpArr: any[] = [];
     stakeOwnedNFTs?.forEach((item) => {
       if (_stakeImageIds.includes(item.metadata.id)) {
         // @ts-ignore
@@ -316,9 +316,9 @@ export default function StakingNFTsPage() {
         {/* image */}
         <Flex justifyContent={'center'}>
           {loadingOwnedNFTs && <Spinner size={'xl'} />}
-          <Flex justifyContent='start' flexWrap={'wrap'} className={'aaaaa'}>
+          <Flex justifyContent='start' flexWrap={'wrap'} className={'aaaaa'} width={'80vw'}>
             {images &&
-              images!.map((item, index) => {
+              _stakeImageMetadata!.map((item, index) => {
                 return (
                   <Flex
                     key={index}

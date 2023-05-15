@@ -414,7 +414,7 @@ export default function WhitelistMintNftPage() {
       )}
       <Flex justifyContent={'center'}>
         {loadingOwnedNFTs && <Spinner size={'xl'} />}
-        <Flex justifyContent='start' flexWrap={'wrap'} className={'aaaaa'}>
+        <Flex justifyContent='start' flexWrap={'wrap'} className={'aaaaa'} width={'80vw'}>
           {images &&
             images.map((item: any, index: any) => {
               return (
