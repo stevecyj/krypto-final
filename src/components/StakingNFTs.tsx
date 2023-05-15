@@ -17,6 +17,7 @@ import {
   useAddress,
   Web3Button,
   useOwnedNFTs,
+  useNFT,
 } from '@thirdweb-dev/react';
 import { useEffect, useState } from 'react';
 import * as TREND_ADDRESS from '@/const/contractAddress';
@@ -48,7 +49,8 @@ export default function StakingNFTsPage() {
   // const [whitelistPrice] = useState(0.5);
   const [_tokenIdArr, setTokenIdArr] = useState([]);
   const [images, setImages] = useState([{ id: 0, imgUrl: '' }]);
-  const [_stakeImages, setStakeImages] = useState([{ id: 0 }]);
+  const [_stakeImageIds, setStakeImageIds] = useState(['']);
+  const [_stakeImageMetadata, setStakeImageMetadata] = useState([{ id: 0, imgUrl: '' }]);
 
   const [_totalStakePrice, _setTotalStakePrice] = useState(ethers.utils.parseEther('1'));
 
@@ -142,6 +144,38 @@ export default function StakingNFTsPage() {
     setImages(NFTimages);
   }, [ownedNFTs, loadingOwnedNFTs]);
 
+  // get stake nft by ownedNFTs
+  const { data: stakeOwnedNFTs, isLoading: loadingStakeOwnedNFTs } = useOwnedNFTs(
+    ERC721A_CONTRACT,
+    TREND_ADDRESS.NFT_STAKE_ADDRESS,
+  );
+  useEffect(() => {
+    stakeOwnedNFTs &&
+      console.log('stakeOwnedNFTs', stakeOwnedNFTs, 'loadingStakeOwnedNFTs', loadingStakeOwnedNFTs);
+    let tmpArr: any[] = [];
+    stakeOwnedNFTs?.forEach((item) => {
+      if (_stakeImageIds.includes(item.metadata.id)) {
+        // @ts-ignore
+        const image: image = { id: item.metadata.id, imgUrl: item.metadata.image };
+        tmpArr.push(image);
+      }
+      // console.log('tmpArr', tmpArr);
+      // @ts-ignore
+      setStakeImageMetadata(tmpArr.reverse());
+    });
+    // const stakeNFTimages: { id: number }[] | undefined =
+    //   stakeOwnedNFTs &&
+    //   stakeOwnedNFTs!
+    //     .map((item) => {
+    //       // @ts-ignore
+    //       const image: image = { id: item.metadata.id };
+    //       return image;
+    //     })
+    //     .reverse();
+    // @ts-ignore
+    // setStakeImages(stakeNFTimages);
+  });
+
   // get stake nft img
   const { data: stakeNFTs, isLoading: loadingStakeNFTs } = useContractRead(
     NFT_STAKE_CONTRACT,
@@ -150,15 +184,16 @@ export default function StakingNFTsPage() {
   );
   useEffect(() => {
     stakeNFTs && console.log('stakeNFTs', stakeNFTs, 'loadingStakeNFTs', loadingStakeNFTs);
-    const stakeNFTimages: { id: number }[] | undefined =
+    const stakeNFTimages: string[] | undefined =
       stakeNFTs &&
       stakeNFTs!.map((item: any) => {
         // @ts-ignore
-        const image: image = { id: item.toString() };
+        const image = item.toString();
         return image;
       });
     // @ts-ignore
-    setStakeImages(stakeNFTimages);
+    setStakeImageIds(stakeNFTimages);
+    console.log('stakeNFTimages', stakeNFTimages);
     // stakeNFTs && stakeNFTs.map((item) => console.log('stakeNFTs', item.toString()));
     // const NFTimages: { id: number; imgUrl: string }[] | undefined =
     //   stakeNFTs &&
@@ -173,6 +208,19 @@ export default function StakingNFTsPage() {
     // @ts-ignore
     // setImages(NFTimages);
   }, [stakeNFTs, loadingStakeNFTs]);
+
+  // getOwnerOfNfts(stakingNftBalanceOf)
+  // const { data: stakingNftOwnerOf, isLoading: loadingStakingNftOwnerOf } = useContractRead(
+  //   ERC721A_CONTRACT,
+  //   'getTokenURI',
+  //   [id],
+  // );
+
+  // useNFTs
+  const { data: nfts, isLoading: loadingNfts } = useNFT(ERC721A_CONTRACT, 0);
+  useEffect(() => {
+    nfts && console.log('nfts', nfts, 'loadingNfts', loadingNfts);
+  }, [nfts, loadingNfts]);
 
   // total supply of nft staking
   const { data: nftStakeTotalSupply, isLoading: loadingNftStakeTotalSupply } = useContractRead(
@@ -270,7 +318,7 @@ export default function StakingNFTsPage() {
           {loadingOwnedNFTs && <Spinner size={'xl'} />}
           <Flex justifyContent='start' flexWrap={'wrap'} className={'aaaaa'}>
             {images &&
-              images.map((item, index) => {
+              images!.map((item, index) => {
                 return (
                   <Flex
                     key={index}
