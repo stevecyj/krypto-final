@@ -2,6 +2,7 @@ import DefaultLayout from '@/layouts/Default.jsx';
 import IndexPage from '@/pages/IndexPage.tsx';
 import MintTokenPage from '@/pages/MintTokenPage.tsx';
 import MintNftPage from '@/pages/MintNftPage.tsx';
+import AirdropPage from '@/pages/AirdropPage.tsx';
 import ProposalPage from '@/pages/Proposal.jsx';
 import CouncilPage from '@/pages/CouncilPage.jsx';
 import TreasuryPage from '@/pages/TreasuryPage.jsx';
@@ -31,6 +32,10 @@ const router = createHashRouter([
       {
         path: 'mint-nft',
         element: <MintNftPage />,
+      },
+      {
+        path: 'airdrop',
+        element: <AirdropPage />,
       },
       {
         path: 'proposal',
