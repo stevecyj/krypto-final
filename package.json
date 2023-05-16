@@ -16,6 +16,7 @@
     "@chakra-ui/react": "^2.5.5",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@rollup/plugin-alias": "^5.0.0",
     "@thirdweb-dev/react": "^3.11.8",
     "@thirdweb-dev/sdk": "^3.10.11",
     "ethers": "^5",

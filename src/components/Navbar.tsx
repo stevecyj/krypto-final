@@ -244,11 +244,13 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
   {
-    label: 'Mint Token',
+    label: 'Trend Token',
+    subLabel: 'Governance Token',
     href: 'mint-token',
   },
   {
-    label: 'Mint NFT',
+    label: 'Trend Master',
+    subLabel: 'VIP Pass',
     href: 'mint-nft',
   },
   {
@@ -256,24 +258,30 @@ const NAV_ITEMS: Array<NavItem> = [
     children: [
       {
         label: 'Proposal',
-        subLabel: 'Trending Design to inspire you',
+        subLabel: 'On-Chain Governance',
         href: 'proposal',
       },
       {
         label: 'Council',
-        subLabel: 'Up-and-coming Designers',
+        subLabel: 'On-Chain Governance',
         href: 'council',
-      },
-      {
-        label: 'Treasury',
-        subLabel: 'Up-and-coming Designers',
-        href: 'treasury',
-      },
+      }
     ],
   },
   {
-    label: 'Investing Dashboard',
-    href: 'investing-dashboard',
+    label: 'Treasury',
+    children: [
+      {
+        label: 'Treasury',
+        subLabel: 'For Trend Token Holders',
+        href: 'treasury',
+      },
+      {
+        label: 'Master Treasury',
+        subLabel: 'For Trend Master NFT Holders',
+        href: 'master_treasury',
+      }
+    ]
   },
   {
     label: 'About Us',
