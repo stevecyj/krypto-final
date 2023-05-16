@@ -346,7 +346,9 @@ export default function MintTokenPage() {
                                     borderColor={inputBorderColor}
                                     borderWidth='4px'
                                     borderStyle='solid'
-                                    zIndex='-1'
+                                    _hover={{ borderColor: 'red.500' }}
+                                    _focus={{ borderColor: 'red.500' }}
+                                    // zIndex='10'
                                     fontFamily='inherit'
                                     width='100%'
                                     height='40px'
@@ -538,7 +540,8 @@ export default function MintTokenPage() {
                                     borderColor={inputBorderColor}
                                     borderWidth='4px'
                                     borderStyle='solid'
-                                    zIndex='-1'
+                                    _hover={{ borderColor: 'red.500' }}
+                                    _focus={{ borderColor: 'red.500' }}
                                     fontFamily='inherit'
                                     width='100%'
                                     height='40px'
@@ -684,7 +687,8 @@ export default function MintTokenPage() {
                                     borderColor={inputBorderColor}
                                     borderWidth='4px'
                                     borderStyle='solid'
-                                    zIndex='-1'
+                                    _hover={{ borderColor: 'red.500' }}
+                                    _focus={{ borderColor: 'red.500' }}
                                     fontFamily='inherit'
                                     width='100%'
                                     height='40px'
