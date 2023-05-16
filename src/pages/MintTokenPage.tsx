@@ -34,9 +34,11 @@ export default function MintTokenPage() {
   const address = useAddress();
   const [mintAmount, setMintAmount] = useState(1);
   const [stakeAmount, setStakeAmount] = useState(1);
+  const [unStakeAmount, setUnStakeAmount] = useState(1);
   // @ts-ignore
   const [totalPrice, setTotalPrice] = useState(ethers.utils.parseEther('1'));
   const [totalStakePrice, setTotalStakePrice] = useState(ethers.utils.parseEther('1'));
+  const [totalUnStakePrice, setTotalUnStakePrice] = useState(ethers.utils.parseEther('1'));
 
   // display
   const [balanceOfDisplay, setBalanceOfDisplay] = useState('0');
@@ -243,6 +245,48 @@ export default function MintTokenPage() {
     setTotalStakePrice(ethers.utils.parseEther(stakeAmount.toString()));
     // console.log('totalStakePrice', totalStakePrice);
   }, [stakeAmount]);
+
+  // unstake handle input
+  const handleUnstakeInputChange = (e: any, type: any) => {
+    // if (mintAmount == 0) {
+    //   setMintAmount(1);
+    // }
+    let val = e.target.value;
+    const t = val.charAt(0);
+    if (type === 'int') {
+      // 限制只能输入数字
+      val = val.replace(/[^\d+]/g, '');
+    } else {
+      // 先把非数字的都替换掉，除了数字和.
+      val = val.replace(/[^\d.]/g, '');
+      // 保证只有出现一个.而没有多个.
+      val = val.replace(/\.{2,}/g, '.');
+      // 必须保证第一个为数字而不是.
+      val = val.replace(/^\./g, '');
+      // 保证.只出现一次，而不能出现两次以上
+      val = val.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.');
+    }
+    // 负数处理
+    if (t === '-') {
+      e.target.value = '-' + val;
+    } else {
+      e.target.value = val;
+    }
+
+    setUnStakeAmount(Number(e.target.value));
+    console.log('unstakeTokenAmount', e.target.value);
+    // @ts-ignore
+  };
+  // @ts-ignore
+  const handleUnStakeChangeEventHandler: ChangeEventHandler<HTMLInputElement> =
+    handleUnstakeInputChange;
+  useEffect(() => {
+    // if (mintAmount < 1) {
+    //   setMintAmount(1);
+    // }
+    setTotalUnStakePrice(ethers.utils.parseEther(unStakeAmount.toString()));
+    // console.log('totalStakePrice', totalStakePrice);
+  }, [unStakeAmount]);
 
   return (
     <Box as={Container} maxW='100vw' mt={14} p={4}>
@@ -572,7 +616,7 @@ export default function MintTokenPage() {
                                   </Web3Button>
                                 </Flex>
 
-                                {/* unstake */}
+                                {/* get reward */}
                                 <Flex
                                   mb='10px'
                                   w='fit-content'
@@ -617,6 +661,104 @@ export default function MintTokenPage() {
                                     }}
                                   >
                                     Get Reward
+                                  </Web3Button>
+                                </Flex>
+
+                                {/*  stake area */}
+                                <Flex align='center' justify='center'>
+                                  {/*<Button*/}
+                                  {/*  backgroundColor={buttonBackgroundColor}*/}
+                                  {/*  borderRadius='5px'*/}
+                                  {/*  boxShadow='0px 2px 2px 1px #0f0f0f'*/}
+                                  {/*  color='white'*/}
+                                  {/*  cursor='pointer'*/}
+                                  {/*  fontFamily='inherit'*/}
+                                  {/*  padding='15px'*/}
+                                  {/*  marginTop='10px'*/}
+                                  {/*  _hover={{ bg: btnHover }}*/}
+                                  {/*  onClick={handleStakeDecrement}*/}
+                                  {/*>*/}
+                                  {/*  -*/}
+                                  {/*</Button>*/}
+                                  <Input
+                                    borderColor={inputBorderColor}
+                                    borderWidth='4px'
+                                    borderStyle='solid'
+                                    zIndex='-1'
+                                    fontFamily='inherit'
+                                    width='100%'
+                                    height='40px'
+                                    textAlign='center'
+                                    paddingLeft='19px'
+                                    marginTop='10px'
+                                    type='number'
+                                    value={unStakeAmount}
+                                    onChange={handleUnStakeChangeEventHandler}
+                                  />
+                                  {/*<Button*/}
+                                  {/*  backgroundColor={buttonBackgroundColor}*/}
+                                  {/*  borderRadius='5px'*/}
+                                  {/*  boxShadow='0px 2px 2px 1px #0f0f0f'*/}
+                                  {/*  color='white'*/}
+                                  {/*  cursor='pointer'*/}
+                                  {/*  fontFamily='inherit'*/}
+                                  {/*  padding='15px'*/}
+                                  {/*  marginTop='10px'*/}
+                                  {/*  _hover={{ bg: btnHover }}*/}
+                                  {/*  onClick={handleStakeIncrement}*/}
+                                  {/*>*/}
+                                  {/*  +*/}
+                                  {/*</Button>*/}
+                                </Flex>
+
+                                {/* Token Mint */}
+                                <Flex
+                                  w='fit-content'
+                                  borderRadius='12px'
+                                  borderColor={buttonBorderColor}
+                                  borderWidth='4px'
+                                  borderStyle='solid'
+                                >
+                                  <Web3Button
+                                    contractAddress={TREND_ADDRESS.TOKEN_STAKE_ADDRESS}
+                                    action={async () => {
+                                      // await ERC20_CONTRACT!.call(
+                                      //   'approve',
+                                      //   [TREND_ADDRESS.TOKEN_STAKE_ADDRESS, totalStakePrice],
+                                      //   // {
+                                      //   //   value: ethers.utils.parseEther(stakeAmount.toString()),
+                                      //   // },
+                                      // );
+                                      await TOKEN_STAKE_CONTRACT!.call(
+                                        'withdraw',
+                                        [totalUnStakePrice],
+                                        //   {
+                                        //   value: ethers.utils.parseEther(stakeAmount.toString()),
+                                        // }
+                                      );
+                                    }}
+                                    onSuccess={() => {
+                                      setUnStakeAmount(1);
+                                      toast({
+                                        title: 'UnStake Success',
+                                        status: 'success',
+                                        position: 'top',
+                                        duration: 2000,
+                                        isClosable: true,
+                                      });
+                                    }}
+                                    onError={(error) => {
+                                      setUnStakeAmount(1);
+                                      toast({
+                                        title: error.message,
+                                        status: 'error',
+                                        position: 'top',
+                                        duration: 2000,
+                                        isClosable: true,
+                                      });
+                                    }}
+                                  >
+                                    UnStake
                                   </Web3Button>
                                 </Flex>
                               </Box>
