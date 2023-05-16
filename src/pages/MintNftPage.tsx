@@ -289,7 +289,7 @@ export default function MintNftPage() {
                     <Tab>Public Mint NFT </Tab>
                     <Tab>Whitelist Mint NFT </Tab>
                     <Tab>Staking NFTs</Tab>
-                    <Tab>Three</Tab>
+                    {/*<Tab>Three</Tab>*/}
                   </TabList>
                   <TabPanels>
                     <TabPanel>

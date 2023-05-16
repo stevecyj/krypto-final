@@ -298,7 +298,7 @@ export default function MintTokenPage() {
                 <TabList>
                   <Tab>Mint Token</Tab>
                   <Tab>Stake Token</Tab>
-                  <Tab>Three</Tab>
+                  {/*<Tab>Three</Tab>*/}
                 </TabList>
                 <TabPanels>
                   <TabPanel>
