@@ -1,5 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
-import colors from './color.ts';
+import colors from './color.js';
 
 const customTheme = {
   colors,

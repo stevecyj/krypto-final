@@ -1,10 +1,11 @@
-import DefaultLayout from '@/layouts/Default.tsx';
+import DefaultLayout from '@/layouts/Default.jsx';
 import IndexPage from '@/pages/IndexPage.tsx';
 import MintTokenPage from '@/pages/MintTokenPage.tsx';
 import MintNftPage from '@/pages/MintNftPage.tsx';
-import ProposalPage from '@/pages/Proposal.tsx';
-import CouncilPage from '@/pages/CouncilPage.tsx';
-import TreasuryPage from '@/pages/TreasuryPage.tsx';
+import ProposalPage from '@/pages/Proposal.jsx';
+import CouncilPage from '@/pages/CouncilPage.jsx';
+import TreasuryPage from '@/pages/TreasuryPage.jsx';
+import MasterTreasuryPage from '@/pages/MasterTreasuryPage.jsx';
 import InvestingDashBoard from '@/pages/InvestingDashboard.tsx';
 import AboutUsPage from '@/pages/AboutUsPage.tsx';
 import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom';
@@ -42,6 +43,10 @@ const router = createHashRouter([
       {
         path: 'treasury',
         element: <TreasuryPage />,
+      },
+      {
+        path: 'master_treasury',
+        element: <MasterTreasuryPage />,
       },
       {
         path: 'investing-dashboard',

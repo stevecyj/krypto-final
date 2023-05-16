@@ -64,7 +64,7 @@ const TestimonialText = ({ children }: { children: ReactNode }) => {
 const TestimonialAvatar = ({ src, name, title }: { src: string; name: string; title: string }) => {
   return (
     <Flex align={'center'} mt={8} direction={'column'}>
-      <Avatar src={src} mb={2} />
+      <Avatar src={src} mb={2} size='2xl'/>
       <Stack spacing={-1} align={'center'}>
         <Text fontWeight={600}>{name}</Text>
         <Text fontSize={'sm'} color={useColorModeValue('gray.600', 'gray.400')}>
@@ -80,56 +80,53 @@ export default function WithSpeechBubbles() {
     <Box bg={useColorModeValue('gray.100', 'gray.700')}>
       <Container maxW={'7xl'} py={16} as={Stack} spacing={12}>
         <Stack spacing={0} align={'center'}>
-          <Heading>Our Clients Speak</Heading>
-          <Text>We have been working with clients around the world</Text>
+          <Heading>Our Team</Heading>
+          <Text></Text>
         </Stack>
         <Stack direction={{ base: 'column', md: 'row' }} spacing={{ base: 10, md: 4, lg: 10 }}>
           <Testimonial>
             <TestimonialContent>
-              <TestimonialHeading>Efficient Collaborating</TestimonialHeading>
+              <TestimonialHeading>Trend DAO 核心開發人員</TestimonialHeading>
               <TestimonialText>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Auctor neque sed imperdiet
-                nibh lectus feugiat nunc sem.
+                負責智能合約核心程式開發及前端治理、國庫畫面開發，是一個喜好接觸新技術的開發瘋子。
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
               src={
-                'https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                'https://hackmd.io/_uploads/Sk1Pb34Nh.jpg'
               }
-              name={'Jane Cooper'}
-              title={'CEO at ABC Corporation'}
+              name={'Paul'}
+              title={'Founder'}
             />
           </Testimonial>
           <Testimonial>
             <TestimonialContent>
-              <TestimonialHeading>Intuitive Design</TestimonialHeading>
+              <TestimonialHeading>輔助開發 & NFT製圖</TestimonialHeading>
               <TestimonialText>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Auctor neque sed imperdiet
-                nibh lectus feugiat nunc sem.
+                輔助智能合約開發及前端空投頁面開發，同時也負責Trend Master NFT的製圖，是開發時的好夥伴及藝術總監。
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
               src={
-                'https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                'https://i.imgur.com/eUF4nmh.png'
               }
-              name={'Jane Cooper'}
-              title={'CEO at ABC Corporation'}
+              name={'Andrew'}
+              title={'Founder'}
             />
           </Testimonial>
           <Testimonial>
             <TestimonialContent>
-              <TestimonialHeading>Mindblowing Service</TestimonialHeading>
+              <TestimonialHeading>前端開發</TestimonialHeading>
               <TestimonialText>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Auctor neque sed imperdiet
-                nibh lectus feugiat nunc sem.
+                主要負責前端Token、NFT及質押頁面的程式撰寫，並協助前頁面畫面美化，是非常給力的前端工程師。
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
               src={
-                'https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                'https://i.imgur.com/Yslc9A9.png'
               }
-              name={'Jane Cooper'}
-              title={'CEO at ABC Corporation'}
+              name={'Steve'}
+              title={'Founder'}
             />
           </Testimonial>
         </Stack>
