@@ -254,6 +254,11 @@ const NAV_ITEMS: Array<NavItem> = [
     href: 'mint-nft',
   },
   {
+    label: 'Airdrop',
+    subLabel: 'Top 100 VIP Pass',
+    href: 'airdrop',
+  },
+  {
     label: 'Governance',
     children: [
       {
