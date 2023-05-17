@@ -496,7 +496,6 @@ export default function MintTokenPage() {
                     </Grid>
                   </TabPanel>
                   <TabPanel>
-                    <p>Tab panel two</p>
                     <Grid
                       templateColumns={{
                         base: 'repeat(1, 1fr)',
@@ -797,7 +796,7 @@ export default function MintTokenPage() {
                                 >
                                   <Flex mb='10px'>
                                     <Text color={textColor}>Token Staking Supply：</Text>
-                                    <Skeleton w={'450px'} isLoaded={!loadingMaxSupply}>
+                                    <Skeleton w={'50%'} isLoaded={!loadingMaxSupply}>
                                       {stakingTotalSupplyDisplay == 'NaN'
                                         ? ''
                                         : stakingTotalSupplyDisplay}
@@ -805,7 +804,7 @@ export default function MintTokenPage() {
                                   </Flex>
                                   <Flex mb='10px'>
                                     <Text color={textColor}>My Token Balance：</Text>
-                                    <Skeleton w={'450px'} isLoaded={!loadingBalanceOf}>
+                                    <Skeleton w={'50%'} isLoaded={!loadingBalanceOf}>
                                       {balanceOfDisplay == 'NaN' ? '' : balanceOfDisplay}
                                     </Skeleton>
                                   </Flex>
