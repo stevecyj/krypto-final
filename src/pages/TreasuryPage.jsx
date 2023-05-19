@@ -821,7 +821,7 @@ export default function TreasuryPage() {
                                     </Flex> 
                                     <Flex alignItems={'center'} mb='10px'>                                
                                       <Text fontWeight={'bold'} fontSize='' mr='10px'>
-                                      賣出幣：{tx[1][1]}
+                                      賣出幣：{tx[1][0]}
                                       </Text>
                                     </Flex> 
                                     <Flex alignItems={'center'} mb='10px'>                                
@@ -979,6 +979,13 @@ export default function TreasuryPage() {
                                   px= {'130px'}>
                                 第{index+1}個紅包
                                 </Text>
+                                <Tooltip
+                                    label={`錢包地址：${candi[0]}`}
+                                    bg={'gray.200'}
+                                    color='black'
+                                  >
+                                    <InfoOutlineIcon />
+                                  </Tooltip>
                                 
                                 <Web3Button
                                   contractAddress={TOKEN_TREASURY_ADDRESS}
